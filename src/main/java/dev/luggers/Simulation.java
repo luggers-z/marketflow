@@ -4,17 +4,16 @@ public class Simulation {
     public Kraftwerk test = new Kraftwerk(null,new Speicherbecken());
 
     int day;
-    double startTime;
-    double currentTime;
+    long startTime;
+    long currentTime;
     Simulation(){
         day=0;
-
     };
-    public void setStartTime(double startTime) {
+    public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
     public void nextTick(){
-        currentTime=startTime- (double) System.nanoTime() /1000000;
+        currentTime=(startTime-System.nanoTime())/1000000;
 
     }
 }
