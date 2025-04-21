@@ -16,7 +16,8 @@ public class Controller extends Application {
             @Override
             public void handle(long now) {
                 if (lastUpdate > 0) {
-                    simulation.nextTick();
+                    double delta = (now - lastUpdate)/1000000000.0;
+                    simulation.nextTick(delta);
                     //render
                 }
                 lastUpdate = now;
