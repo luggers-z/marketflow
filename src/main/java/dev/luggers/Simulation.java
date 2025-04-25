@@ -1,7 +1,7 @@
 package dev.luggers;
 
 public class Simulation {
-    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken());
+    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken(null,1,1,1,1,1),1,1);
     int timemult = 672;
     int day=0;
     int hour=0;
@@ -9,9 +9,10 @@ public class Simulation {
     long startTime;
     long currentTime;
     double geld;
+    double[] strompreis = new double[13];
+    double[] wasserfluss = new double[13];
     Simulation(){
-        day=0;
-    };
+    }
     public void setStartTime(long startTime) {
         this.startTime = startTime;
     }
@@ -20,11 +21,13 @@ public class Simulation {
         fluss(delta);
     }
     public void fluss(double delta){
-        double zufluss=100;
-        geld+=test.fluss(zufluss,strompreis(),delta);
+        geld+=test.fluss(zufluss(),strompreis(),delta);
     }
     public double strompreis(){
-        return 2;
+        return strompreis[day];
+    }
+    public double zufluss(){
+        return wasserfluss[day];
     }
     public void time(){
         currentTime=(System.nanoTime()/1000000000-startTime)*timemult;
