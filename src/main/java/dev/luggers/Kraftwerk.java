@@ -7,17 +7,18 @@ public class Kraftwerk {
     double durchfluss;
     double maxdurchfluss;
     double mindurchfluss;
-    long hoehe;
+    double hoehe;
 
 
-    Kraftwerk(Kraftwerk nachfolger, Speicherbecken pool, long hoehe, long wirkungsgrad) {
+    Kraftwerk(Kraftwerk nachfolger, Speicherbecken pool, double hoehe, double wirkungsgrad) {
         nf = nachfolger;
         this.pool = pool;
         this.hoehe = hoehe;
         this.wirkungsgrad = wirkungsgrad;
     }
     public double fluss(double zufluss, double strompreis, double delta){
-        if(!pool.berechnen(zufluss - durchfluss)) durchfluss = zufluss;
+        double fluss = (zufluss-durchfluss)*delta;
+        if(!pool.berechnen(fluss)) durchfluss = zufluss;
         if (nf != null) {
             return (gewinn(durchfluss, strompreis, delta) + nf.fluss(durchfluss, strompreis, delta));
         } else {
@@ -25,8 +26,8 @@ public class Kraftwerk {
         }
     }
     public double gewinn(double durchfluss,double strompreis, double delta){
-        long energie= (long) (hoehe*durchfluss*delta*1000*9.81*wirkungsgrad);
-        long kwh= energie/3600000;
+        double energie= hoehe*durchfluss*delta*1000*9.81*wirkungsgrad;
+        double kwh= energie/3600000;
         return kwh*strompreis;
     }
 }

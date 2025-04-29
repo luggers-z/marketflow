@@ -1,14 +1,14 @@
 package dev.luggers;
 
 public class Speicherbecken {
-    long l;
-    long b;
+    double l;
+    double b;
     double h;
     double vol;
-    long minh;
-    long maxh;
+    double minh;
+    double maxh;
     Speicherbecken nf;
-    Speicherbecken(Speicherbecken nachfolger, long l, long b, double h,long minh, long maxh) {
+    Speicherbecken(Speicherbecken nachfolger, double l, double b, double h,double minh, double maxh) {
         nf = nachfolger;
         this.l = l;
         this.b = b;
@@ -17,16 +17,29 @@ public class Speicherbecken {
         this.minh = minh;
         this.maxh = maxh;
     }
-    public boolean berechnen(double zufluss){
-        double h1=vol/b/l;
-        if(h1>minh&&h1<maxh) {
-            vol += zufluss;
-            h = vol / b / l;
-            return true;
+    public boolean berechnen(double fluss){
+        double h1= (vol+fluss)/b/l;
+        if(h1>=minh) {
+            if(h1<=maxh){
+                vol += fluss;
+                h = vol / b / l;
+                return true;
+            }
+            else {
+                nf.ueberfluss(fluss);
+                return true;
+            }
         }
         else{
             return false;
         }
     }
-
+    public void ueberfluss(double fluss){
+        double h1= (vol+fluss)/b/l;
+        if(h1<=maxh) {
+            vol += fluss;
+            h = vol / b / l;
+        }
+        else {nf.ueberfluss(fluss);}
+    }
 }
