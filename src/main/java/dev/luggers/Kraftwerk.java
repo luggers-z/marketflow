@@ -15,6 +15,7 @@ public class Kraftwerk {
         this.pool = pool;
         this.hoehe = hoehe;
         this.wirkungsgrad = wirkungsgrad;
+        durchfluss = 500;
     }
     public double fluss(double zufluss, double strompreis, double delta){
         double fluss = (zufluss-durchfluss)*delta;

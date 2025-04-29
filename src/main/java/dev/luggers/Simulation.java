@@ -1,46 +1,48 @@
 package dev.luggers;
 
 public class Simulation {
-    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken(null,1,1,1,1,1),1,1);
+    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken(null,20000,15,3,2.5,4),1.5,0.8);
     int timemult = 672;
+    int weekday=0;
     int day=0;
     int hour=0;
     int week=0;
-    long startTime;
-    long currentTime;
+    double currentTime;
     double geld;
     double[] strompreis = new double[13];
     double[] wasserfluss = new double[13];
     Simulation(){
     }
-    public void setStartTime(long startTime) {
-        this.startTime = startTime;
-    }
     public void nextTick(double delta){
-        time();
+        delta=delta*timemult;
+        time(delta);
         fluss(delta);
     }
     public void fluss(double delta){
         geld+=test.fluss(zufluss(),strompreis(),delta);
     }
     public double strompreis(){
-        return strompreis[day];
+        //return strompreis[day];
+        return 0.28;
     }
     public double zufluss(){
-        return wasserfluss[day];
+        //return wasserfluss[day];
+        return 500;
     }
-    public void time(){
-        currentTime=(System.nanoTime()/1000000000-startTime)*timemult;
-        if(currentTime>=3600){
+    public void time(double delta){
+        currentTime += delta;
+
+        while (currentTime >= 3600) {
             hour++;
-            currentTime=currentTime-3600;
+            currentTime -= 3600;
         }
         if (hour>=24){
+            weekday++;
             day++;
             hour=hour-24;
         }
         if (day==8){
-            day=0;
+            weekday=0;
             week=1;
         }
     }
