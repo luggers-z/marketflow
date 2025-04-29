@@ -10,12 +10,14 @@ public class Kraftwerk {
     double hoehe;
 
 
-    Kraftwerk(Kraftwerk nachfolger, Speicherbecken pool, double hoehe, double wirkungsgrad) {
+    Kraftwerk(Kraftwerk nachfolger, Speicherbecken pool, double hoehe, double wirkungsgrad, double maxdurchfluss, double mindurchfluss) {
         nf = nachfolger;
         this.pool = pool;
         this.hoehe = hoehe;
         this.wirkungsgrad = wirkungsgrad;
-        durchfluss = 500;
+        this.maxdurchfluss = maxdurchfluss;
+        this.mindurchfluss = mindurchfluss;
+        durchfluss = 510;
     }
     public double fluss(double zufluss, double strompreis, double delta){
         double fluss = (zufluss-durchfluss)*delta;

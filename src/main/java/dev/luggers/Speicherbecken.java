@@ -26,7 +26,9 @@ public class Speicherbecken {
                 return true;
             }
             else {
-                nf.ueberfluss(fluss);
+                if(nf!=null) {
+                    nf.ueberfluss(fluss);
+                }
                 return true;
             }
         }
@@ -40,6 +42,10 @@ public class Speicherbecken {
             vol += fluss;
             h = vol / b / l;
         }
-        else {nf.ueberfluss(fluss);}
+        else {
+            if(nf!=null){
+                nf.ueberfluss(fluss);
+            }
+        }
     }
 }

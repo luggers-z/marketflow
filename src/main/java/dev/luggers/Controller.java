@@ -23,12 +23,14 @@ public class Controller extends Application {
         TextArea textArea2 = new TextArea(null);
         TextArea textArea3 = new TextArea(null);
         TextArea textArea4 = new TextArea(null);
+        TextArea textArea5 = new TextArea(null);
         textArea.setEditable(false);
         textArea2.setEditable(false);
         textArea3.setEditable(false);
         textArea4.setEditable(false);
+        textArea5.setEditable(false);
         VBox root = new VBox();
-        root.getChildren().addAll(textArea,textArea2, textArea3, textArea4);
+        root.getChildren().addAll(textArea,textArea2, textArea3, textArea4, textArea5);
         Scene scene = new Scene(root, 600, 400);
 
 
@@ -44,6 +46,7 @@ public class Controller extends Application {
                         textArea2.setText(String.valueOf(simulation.hour));
                         textArea3.setText(String.valueOf(simulation.day));
                         textArea4.setText(String.valueOf(simulation.geld));
+                        textArea5.setText(String.valueOf(simulation.test.pool.h));
 
 
 

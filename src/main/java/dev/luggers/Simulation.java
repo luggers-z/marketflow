@@ -1,7 +1,7 @@
 package dev.luggers;
 
 public class Simulation {
-    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken(null,20000,15,3,2.5,4),1.5,0.8);
+    public Kraftwerk test = new Kraftwerk(null,new Speicherbecken(null,20000,15,3,0.01,4),1.5,0.8, 1, 1);
     int timemult = 672;
     int weekday=0;
     int day=0;
