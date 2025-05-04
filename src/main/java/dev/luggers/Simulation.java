@@ -1,16 +1,16 @@
 package dev.luggers;
 
 public class Simulation {
-	public Kraftwerk test = new Kraftwerk(null, new Speicherbecken(null, 20000, 15, 3, 0.01, 4), 1.5, 0.8, 1, 1);
+	public Kraftwerk start = new Kraftwerk();
 	int timemult = 672;
 	int weekday = 0;
 	int day = 0;
 	int hour = 0;
 	int week = 0;
 	double currentTime;
-	double geld;
-	double[] strompreis = new double[13];
-	double[] wasserfluss = new double[13];
+	double money;
+	double[] price = new double[14];
+	double[] inflow = new double[14];
 
 	Simulation() {
 	}
@@ -18,20 +18,24 @@ public class Simulation {
 	public void nextTick(double delta) {
 		delta = delta * timemult;
 		time(delta);
-		fluss(delta);
+		initiateFlow(delta);
+		getRevenue();
 	}
 
-	public void fluss(double delta) {
-		geld += test.fluss(zufluss(), strompreis(), delta);
+	public void initiateFlow(double delta) {
+		start.processFlow(getInflow(), delta);
 	}
-
-	public double strompreis() {
-		// return strompreis[day];
+    public void getRevenue() {
+		double revenue=start.collectEnergy()*getPrice();
+		money+=revenue;
+	}
+	public double getPrice() {
+		// return price[day];
 		return 0.28;
 	}
 
-	public double zufluss() {
-		// return wasserfluss[day];
+	public double getInflow() {
+		// return inflow[day];
 		return 500;
 	}
 

@@ -9,20 +9,20 @@ class KraftwerkTest {
 
 	@Test
 	void testKraftwerk() {
-		var maxwehr=new Kraftwerk("Maxwehr", null, 9, 1, 2, 3 );
-		assertEquals(9, maxwehr.hoehe, "height should be identical");
-		assertEquals("Maxwehr", maxwehr.getName(), "name should be identical");		
+		var maxwehr=new Kraftwerk();
+		maxwehr.processFlow(100,360000);
+		System.out.println(maxwehr.collectEnergy()*0.28);
 	}
 
 	@Test
 	@Disabled
-	void testFluss() {
+	void testProcessFlow() {
 		fail("Not yet implemented");
 	}
 
 	@Test
 	@Disabled
-	void testGewinn() {
+	void testCalculateRevenue() {
 		fail("Not yet implemented");
 	}
 

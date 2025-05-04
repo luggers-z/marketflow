@@ -1,51 +1,52 @@
 package dev.luggers;
 
 public class Speicherbecken {
-	double l;
-	double b;
-	double h;
-	double vol;
+	double length;
+	double width;
+	double height;
+	double volume;
 	double minh;
 	double maxh;
-	Speicherbecken nf;
+	double maxvolume;
+	Speicherbecken next;
 
-	Speicherbecken(Speicherbecken nachfolger, double l, double b, double h, double minh, double maxh) {
-		nf = nachfolger;
-		this.l = l;
-		this.b = b;
-		this.h = h;
-		this.vol = l * b * h;
+	Speicherbecken(Speicherbecken next, double length, double width, double height, double minh, double maxh) {
+		this.next = next;
+		this.length = length;
+		this.width = width;
+		this.height = height;
+		this.volume = length * width * height;
 		this.minh = minh;
 		this.maxh = maxh;
+		maxvolume= this.length*width*maxh;
 	}
 
-	public boolean berechnen(double fluss) {
-		double h1 = (vol + fluss) / b / l;
-		if (h1 >= minh) {
-			if (h1 <= maxh) {
-				vol += fluss;
-				h = vol / b / l;
-				return true;
-			} else {
-				if (nf != null) {
-					nf.ueberfluss(fluss);
-				}
-				return true;
-			}
-		} else {
-			return false;
-		}
+	Speicherbecken(){
+
 	}
 
-	public void ueberfluss(double fluss) {
-		double h1 = (vol + fluss) / b / l;
-		if (h1 <= maxh) {
-			vol += fluss;
-			h = vol / b / l;
-		} else {
-			if (nf != null) {
-				nf.ueberfluss(fluss);
+	public void processFlow(double inFlow) {
+		if(isFull()){
+			if (next != null) {
+				next.triggerSpillway(inFlow);
 			}
 		}
+		double projectedVolume= volume+inFlow;
+		if(projectedVolume < maxvolume){
+			volume = projectedVolume;
+		}
+		else{
+			volume = maxvolume;
+            if(next != null) {
+				next.triggerSpillway(projectedVolume - maxvolume);
+			}
+		}
+		height = volume / width / length;
+	}
+    public boolean isFull(){
+        return volume == maxvolume;
+	}
+	public void triggerSpillway(double inFlow) {
+		next.processFlow(inFlow);
 	}
 }

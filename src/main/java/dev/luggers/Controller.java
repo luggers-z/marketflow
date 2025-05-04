@@ -2,7 +2,6 @@ package dev.luggers;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
-import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
@@ -45,8 +44,8 @@ public class Controller extends Application {
                         textArea.setText(String.valueOf(simulation.currentTime));
                         textArea2.setText(String.valueOf(simulation.hour));
                         textArea3.setText(String.valueOf(simulation.day));
-                        textArea4.setText(String.valueOf(simulation.geld));
-                        textArea5.setText(String.valueOf(simulation.test.pool.h));
+                        textArea4.setText(String.valueOf(simulation.money));
+                        textArea5.setText(String.valueOf(simulation.start.pool.height));
 
 
 
