@@ -1,4 +1,5 @@
 package dev.luggers;
+
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -29,7 +30,7 @@ public class Controller extends Application {
         textArea4.setEditable(false);
         textArea5.setEditable(false);
         VBox root = new VBox();
-        root.getChildren().addAll(textArea,textArea2, textArea3, textArea4, textArea5);
+        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5);
         Scene scene = new Scene(root, 600, 400);
 
 
@@ -39,14 +40,13 @@ public class Controller extends Application {
                 if (lastUpdate > 0) {
                     double delta = (now - lastUpdate) / 1000000000.0;
 
-                        simulation.nextTick(delta);
+                    simulation.nextTick(delta);
 
-                        textArea.setText(String.valueOf(simulation.currentTime));
-                        textArea2.setText(String.valueOf(simulation.hour));
-                        textArea3.setText(String.valueOf(simulation.day));
-                        textArea4.setText(String.valueOf(simulation.money));
-                        textArea5.setText(String.valueOf(simulation.start.pool.height));
-
+                    textArea.setText(String.valueOf(simulation.currentTime));
+                    textArea2.setText(String.valueOf(simulation.hour));
+                    textArea3.setText(String.valueOf(simulation.day));
+                    textArea4.setText(String.valueOf(simulation.money));
+                    textArea5.setText(String.valueOf(simulation.start.pool.height));
 
 
                 }
