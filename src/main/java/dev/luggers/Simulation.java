@@ -20,6 +20,7 @@ public class Simulation {
 		time(delta);
 		initiateFlow(delta);
 		getRevenue();
+
 	}
 
 	public void initiateFlow(double delta) {
@@ -31,12 +32,12 @@ public class Simulation {
 	}
 	public double getPrice() {
 		// return price[day];
-		return 0.28;
+		return 0.20;
 	}
 
 	public double getInflow() {
 		// return inflow[day];
-		return 500;
+		return 250;
 	}
 
 	public void time(double delta) {

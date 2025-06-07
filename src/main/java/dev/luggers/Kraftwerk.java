@@ -59,17 +59,22 @@ public class Kraftwerk {
 
     public Kraftwerk() {
         name = null;
-        next = new Kraftwerk(null, new Speicherbecken(null, 20000, 15, 1.5, 0.01, 4), 1.5, 0.5, 1, 1);
+        next = null;
         pool = new Speicherbecken();
         height = 1.5;
-        efficiency = 0.5;
-        turbineFlow = 100;
+        efficiency = 0.8;
+        turbineFlow = 700;
         maxwaterflow = 500;
         minwaterflow = 50;
     }
 
     public void processFlow(double incomingFlow, double delta) {
-        if (pool.isFull() && turbineFlow > incomingFlow) {
+
+
+        if (pool.isFull() && turbineFlow < incomingFlow) {
+            turbineFlow = incomingFlow;
+        }
+        if (pool.isEmptyif(turbineFlow) && turbineFlow > incomingFlow) {
             turbineFlow = incomingFlow;
         }
         double flowToPool = (incomingFlow - turbineFlow) * delta;
@@ -101,5 +106,13 @@ public class Kraftwerk {
      */
     public String getName() {
         return name;
+    }
+
+    public double getturbineFlow() {
+        return turbineFlow;
+    }
+
+    public void setTurbineFlow(double turbineFlow) {
+        this.turbineFlow = turbineFlow;
     }
 }

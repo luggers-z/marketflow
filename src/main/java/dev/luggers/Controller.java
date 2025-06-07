@@ -2,6 +2,7 @@ package dev.luggers;
 
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
@@ -29,11 +30,19 @@ public class Controller extends Application {
         textArea3.setEditable(false);
         textArea4.setEditable(false);
         textArea5.setEditable(false);
+        TextField nameField = new TextField(String.valueOf(simulation.start.getturbineFlow()));
         VBox root = new VBox();
-        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5);
+        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5, nameField);
         Scene scene = new Scene(root, 600, 400);
-
-
+        nameField.textProperty().addListener((obs, oldVal, newVal) -> {
+            try {
+                double newFlow = Double.parseDouble(newVal);
+                simulation.start.setTurbineFlow(newFlow);
+                System.out.println("Speed updated: " + String.valueOf(simulation.start.getturbineFlow()));
+            } catch (NumberFormatException ignored) {
+            }
+        });
+        nameField.textProperty().get();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -42,11 +51,12 @@ public class Controller extends Application {
 
                     simulation.nextTick(delta);
 
-                    textArea.setText(String.valueOf(simulation.currentTime));
-                    textArea2.setText(String.valueOf(simulation.hour));
-                    textArea3.setText(String.valueOf(simulation.day));
-                    textArea4.setText(String.valueOf(simulation.money));
-                    textArea5.setText(String.valueOf(simulation.start.pool.height));
+
+                    textArea.setText("Zeit in Sekunden:" + String.valueOf(simulation.currentTime));
+                    textArea2.setText("Zeit in Stunden: " + String.valueOf(simulation.hour));
+                    textArea3.setText("Zeit in Tagen: " + String.valueOf(simulation.day));
+                    textArea4.setText("Geld in Euro: " + String.valueOf(simulation.money));
+                    textArea5.setText("Höhe des Flusses" + String.valueOf(simulation.start.pool.height));
 
 
                 }
