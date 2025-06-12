@@ -1,5 +1,5 @@
 package dev.luggers;
-
+import javafx.scene.control.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
 import javafx.scene.control.TextField;
@@ -7,6 +7,10 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.VBox;
+import javafx.beans.binding.*;
+import javafx.beans.property.*;
+
+import java.util.ArrayList;
 
 public class Controller extends Application {
     private long lastUpdate = 0;
@@ -30,19 +34,33 @@ public class Controller extends Application {
         textArea3.setEditable(false);
         textArea4.setEditable(false);
         textArea5.setEditable(false);
-        TextField nameField = new TextField(String.valueOf(simulation.start.getturbineFlow()));
+        Slider slider1 =new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
-        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5, nameField);
-        Scene scene = new Scene(root, 600, 400);
-        nameField.textProperty().addListener((obs, oldVal, newVal) -> {
-            try {
-                double newFlow = Double.parseDouble(newVal);
-                simulation.start.setTurbineFlow(newFlow);
-                System.out.println("Speed updated: " + String.valueOf(simulation.start.getturbineFlow()));
-            } catch (NumberFormatException ignored) {
-            }
+        slider1.valueProperty().bindBidirectional(simulation.start.turbineFlow);
+        slider1.valueProperty().addListener((obs, oldVal, newVal) -> {
+            System.out.println("Slider value changed to: " + newVal);
         });
-        nameField.textProperty().get();
+        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5, slider1);
+
+
+
+
+
+
+
+
+
+        ArrayList<VBox> Powerplants = new ArrayList<>();
+        int length = simulation.start.getLength();
+        for (int i=0; i<length; i++) {
+            VBox vbox = new VBox();
+            Kraftwerk KWi= simulation.getPowerplant(i);
+            Slider slider= new Slider(KWi.getMinWaterflow(), KWi.getMaxWaterflow(), simulation.getInflow());
+            slider.valueProperty().bindBidirectional(KWi.turbineFlow);
+            vbox.getChildren().add(slider);
+            Powerplants.add(vbox);
+        }
+        Scene scene = new Scene(Powerplants.getFirst(), 600, 400);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {

@@ -57,4 +57,10 @@ public class Simulation {
 			week = 1;
 		}
 	}
+	public Kraftwerk getPowerplant(int i){
+		if(i==0){
+			return start;
+		}
+		return start.getNext(i-1);
+	}
 }
