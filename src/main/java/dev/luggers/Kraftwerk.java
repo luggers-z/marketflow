@@ -1,5 +1,8 @@
 package dev.luggers;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
 /**
  * Powerplant is ...
  */
@@ -10,7 +13,7 @@ public class Kraftwerk {
     private final Kraftwerk next;
     protected final Speicherbecken pool;
     private final double efficiency;
-    private double turbineFlow;
+    protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     private final double maxwaterflow;
     private final double minwaterflow;
     private final double height;
@@ -38,7 +41,7 @@ public class Kraftwerk {
         this.efficiency = efficiency;
         this.maxwaterflow = maxwaterflow;
         this.minwaterflow = minwaterflow;
-        turbineFlow = 100;
+        turbineFlow.set(100);
     }
 
     /**
@@ -63,25 +66,28 @@ public class Kraftwerk {
         pool = new Speicherbecken();
         height = 1.5;
         efficiency = 0.8;
-        turbineFlow = 700;
-        maxwaterflow = 500;
+        turbineFlow.set(700);
+        maxwaterflow = 1000;
         minwaterflow = 50;
     }
 
     public void processFlow(double incomingFlow, double delta) {
+        double tempTurbineFlow=turbineFlow.get();
 
+        if (pool.isFull() && tempTurbineFlow < incomingFlow) {
+            turbineFlow.set(incomingFlow);
+            tempTurbineFlow = incomingFlow;
 
-        if (pool.isFull() && turbineFlow < incomingFlow) {
-            turbineFlow = incomingFlow;
         }
-        if (pool.isEmptyif(turbineFlow) && turbineFlow > incomingFlow) {
-            turbineFlow = incomingFlow;
+        if (pool.isEmptyif(incomingFlow-tempTurbineFlow) && tempTurbineFlow > incomingFlow) {
+            turbineFlow.set(incomingFlow);
+            tempTurbineFlow = incomingFlow;
         }
-        double flowToPool = (incomingFlow - turbineFlow) * delta;
+        double flowToPool = (incomingFlow - tempTurbineFlow) * delta;
         pool.processFlow(flowToPool);
-        energy += calculateEnergy(turbineFlow, delta);
+        energy += calculateEnergy(tempTurbineFlow, delta);
         if (next != null) {
-            next.processFlow(turbineFlow, delta);
+            next.processFlow(tempTurbineFlow, delta);
         }
     }
 
@@ -108,11 +114,24 @@ public class Kraftwerk {
         return name;
     }
 
-    public double getturbineFlow() {
-        return turbineFlow;
+    public Kraftwerk getNext(int i) {
+        if(i == 0){
+            return next;
+        }
+        return next.getNext(i-1);
+
     }
 
-    public void setTurbineFlow(double turbineFlow) {
-        this.turbineFlow = turbineFlow;
+    public int getLength() {
+        if (next != null) {
+            return (next.getLength() + 1);
+        }
+        return 1;
+    }
+    public double getMaxWaterflow() {
+        return maxwaterflow;
+    }
+    public double getMinWaterflow() {
+        return minwaterflow;
     }
 }
