@@ -1,4 +1,5 @@
 package dev.luggers;
+
 import javafx.scene.control.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -12,6 +13,7 @@ import javafx.beans.property.*;
 
 import java.util.ArrayList;
 
+
 public class Controller extends Application {
     private long lastUpdate = 0;
     Simulation simulation = new Simulation();
@@ -22,7 +24,7 @@ public class Controller extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
+        simulation.startUp();
 
         TextArea textArea = new TextArea(null);
         TextArea textArea2 = new TextArea(null);
@@ -34,7 +36,7 @@ public class Controller extends Application {
         textArea3.setEditable(false);
         textArea4.setEditable(false);
         textArea5.setEditable(false);
-        Slider slider1 =new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
+        Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
         slider1.valueProperty().bindBidirectional(simulation.start.turbineFlow);
         slider1.valueProperty().addListener((obs, oldVal, newVal) -> {
@@ -43,23 +45,18 @@ public class Controller extends Application {
         root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5, slider1);
 
 
-
-
-
-
-
-
-
         ArrayList<VBox> Powerplants = new ArrayList<>();
         int length = simulation.start.getLength();
-        for (int i=0; i<length; i++) {
+        for (int i = 0; i < length; i++) {
             VBox vbox = new VBox();
-            Kraftwerk KWi= simulation.getPowerplant(i);
-            Slider slider= new Slider(KWi.getMinWaterflow(), KWi.getMaxWaterflow(), simulation.getInflow());
+            Kraftwerk KWi = simulation.getPowerplant(i);
+            Slider slider = new Slider(KWi.getMinWaterflow(), KWi.getMaxWaterflow(), simulation.getInflow());
             slider.valueProperty().bindBidirectional(KWi.turbineFlow);
             vbox.getChildren().add(slider);
             Powerplants.add(vbox);
         }
+
+
         Scene scene = new Scene(Powerplants.getFirst(), 600, 400);
         AnimationTimer timer = new AnimationTimer() {
             @Override
@@ -78,6 +75,7 @@ public class Controller extends Application {
 
 
                 }
+
                 lastUpdate = now;
 
             }
