@@ -12,7 +12,7 @@ import javafx.beans.binding.*;
 import javafx.beans.property.*;
 
 import java.util.ArrayList;
-s
+
 
 
 public class Controller extends Application {
