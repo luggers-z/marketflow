@@ -7,7 +7,8 @@ public class Speicherbecken {
     double volume;
     double minh;
     double maxh;
-    double maxvolume;
+    double maxVolume;
+    double minVolume;
     Speicherbecken next;
 
     Speicherbecken(Speicherbecken next, double length, double width, double height, double minh, double maxh) {
@@ -18,18 +19,19 @@ public class Speicherbecken {
         this.volume = length * width * height;
         this.minh = minh;
         this.maxh = maxh;
-        maxvolume = this.length * width * maxh;
+        maxVolume = this.length * width * maxh;
+        minVolume = this.length * height * minh;
     }
 
     Speicherbecken() {
-     next =null;
-     length = 20000;
-     width = 15;
-     height= 4;
-     minh= 3;
-     maxh= 5;
-     volume = length * width * height;
-     maxvolume = length * width * maxh;
+        next = null;
+        length = 20000;
+        width = 15;
+        height = 4;
+        minh = 3;
+        maxh = 5;
+        volume = length * width * height;
+        maxVolume = length * width * maxh;
     }
 
     public void processFlow(double inFlow) {
@@ -39,34 +41,41 @@ public class Speicherbecken {
             }
         }
         double projectedVolume = volume + inFlow;
-        if (projectedVolume < maxvolume) {
+        if (projectedVolume < maxVolume) {
             volume = projectedVolume;
-        }
-
-        else {
-            volume = maxvolume;
+        } else {
+            volume = maxVolume;
             if (next != null) {
-                next.triggerSpillway(projectedVolume - maxvolume);
+                next.triggerSpillway(projectedVolume - maxVolume);
             }
         }
         height = volume / width / length;
     }
 
     public boolean isFull() {
-        return volume == maxvolume;
+        return volume == maxVolume;
     }
-    public boolean isEmptyif(double inFlow){
+
+    public boolean isEmptyif(double inFlow) {
         double projectedVolume = volume + inFlow;
-        double projectedHeight = projectedVolume/length/width;
-        if(projectedHeight<=minh){
-            volume = minh*width*length;
+        double projectedHeight = projectedVolume / length / width;
+        if (projectedHeight <= minh) {
+            volume = minh * width * length;
             return true;
-        }
-        else{
-        return false;
+        } else {
+            return false;
         }
     }
+
     public void triggerSpillway(double inFlow) {
         next.processFlow(inFlow);
+    }
+
+    public double getVolume() {
+        return volume;
+    }
+
+    public void setVolume(double volume) {
+        this.volume = volume;
     }
 }

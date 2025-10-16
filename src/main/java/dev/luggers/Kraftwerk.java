@@ -72,14 +72,14 @@ public class Kraftwerk {
     }
 
     public void processFlow(double incomingFlow, double delta) {
-        double tempTurbineFlow=turbineFlow.get();
+        double tempTurbineFlow = turbineFlow.get();
 
         if (pool.isFull() && tempTurbineFlow < incomingFlow) {
             turbineFlow.set(incomingFlow);
             tempTurbineFlow = incomingFlow;
 
         }
-        if (pool.isEmptyif(incomingFlow-tempTurbineFlow) && tempTurbineFlow > incomingFlow) {
+        if (pool.isEmptyif(incomingFlow - tempTurbineFlow) && tempTurbineFlow > incomingFlow) {
             turbineFlow.set(incomingFlow);
             tempTurbineFlow = incomingFlow;
         }
@@ -115,10 +115,10 @@ public class Kraftwerk {
     }
 
     public Kraftwerk getNext(int i) {
-        if(i == 0){
+        if (i == 0) {
             return next;
         }
-        return next.getNext(i-1);
+        return next.getNext(i - 1);
 
     }
 
@@ -128,9 +128,11 @@ public class Kraftwerk {
         }
         return 1;
     }
+
     public double getMaxWaterflow() {
         return maxwaterflow;
     }
+
     public double getMinWaterflow() {
         return minwaterflow;
     }
