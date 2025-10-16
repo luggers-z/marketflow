@@ -14,6 +14,7 @@ import javafx.beans.property.*;
 import java.util.ArrayList;
 s
 
+
 public class Controller extends Application {
     private long lastUpdate = 0;
     Simulation simulation = new Simulation();
