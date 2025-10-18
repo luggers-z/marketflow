@@ -14,10 +14,9 @@ import javafx.beans.property.*;
 import java.util.ArrayList;
 
 
-
 public class Controller extends Application {
-    private long lastUpdate = 0;
     Simulation simulation = new Simulation();
+    private long lastUpdate = 0;
 
     public static void main(String[] args) {
         launch(args);
@@ -67,13 +66,6 @@ public class Controller extends Application {
                     double delta = (now - lastUpdate) / 1000000000.0;
 
                     simulation.nextTick(delta);
-
-
-                    textArea.setText("Zeit in Sekunden:" + String.valueOf(simulation.currentTime));
-                    textArea2.setText("Zeit in Stunden: " + String.valueOf(simulation.hour));
-                    textArea3.setText("Zeit in Tagen: " + String.valueOf(simulation.day));
-                    textArea4.setText("Geld in Euro: " + String.valueOf(simulation.money));
-                    textArea5.setText("Höhe des Flusses" + String.valueOf(simulation.start.pool.height));
 
 
                 }

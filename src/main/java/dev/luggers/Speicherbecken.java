@@ -20,7 +20,7 @@ public class Speicherbecken {
         this.minh = minh;
         this.maxh = maxh;
         maxVolume = this.length * width * maxh;
-        minVolume = this.length * height * minh;
+        minVolume = this.length * width * minh;
     }
 
     Speicherbecken() {
@@ -53,7 +53,7 @@ public class Speicherbecken {
     }
 
     public boolean isFull() {
-        return volume == maxVolume;
+        return volume >= maxVolume;
     }
 
     public boolean isEmptyif(double inFlow) {

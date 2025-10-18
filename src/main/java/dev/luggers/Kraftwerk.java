@@ -8,15 +8,14 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Kraftwerk {
     public static final int KILO_HOURS = 3600000;
-
+    protected final Speicherbecken pool;
     private final String name;
     private final Kraftwerk next;
-    protected final Speicherbecken pool;
     private final double efficiency;
-    protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     private final double maxwaterflow;
     private final double minwaterflow;
     private final double height;
+    protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     private double energy;
 
     /**
