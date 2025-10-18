@@ -62,7 +62,8 @@ public class Controller extends Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (lastUpdate > 0) {
+                if (lastUpdate > 500000000) {
+
                     double delta = (now - lastUpdate) / 1000000000.0;
 
                     simulation.nextTick(delta);
