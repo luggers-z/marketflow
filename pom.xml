@@ -101,7 +101,7 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>dev.luggers.Controller</mainClass>
+                    <mainClass>dev.luggers.Application</mainClass>
                 </configuration>
             </plugin>
             <plugin>

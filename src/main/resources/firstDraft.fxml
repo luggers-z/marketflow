@@ -11,33 +11,33 @@
 <?import javafx.scene.layout.VBox?>
 
 
-<StackPane id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ImageView id="background" fitHeight="441.0" fitWidth="656.0" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="background" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@isar.png" />
          </image>
       </ImageView>
-      <AnchorPane id="mainPane" prefWidth="632.0">
+      <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
-            <AnchorPane id="topPane" layoutY="-6.0" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-6.0">
+            <AnchorPane fx:id="topPane" layoutY="-6.0" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-6.0">
                <children>
-                  <VBox id="elementField" layoutX="14.0" layoutY="14.0" prefWidth="95.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <VBox fx:id="elementField" layoutX="14.0" layoutY="14.0" prefWidth="95.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
                      <children>
                         <TextField id="moneyField" />
                         <TextField id="powerField" />
                         <TextField id="inflowField" />
                      </children>
                   </VBox>
-                  <LineChart axisSortingPolicy="NONE" layoutX="398.0" layoutY="-95.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+                  <LineChart fx:id ="leftChart" layoutX="398.0" layoutY="-95.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
                     <xAxis>
-                      <CategoryAxis />
+                      <CategoryAxis side="BOTTOM"/>
                     </xAxis>
                     <yAxis>
-                      <NumberAxis side="LEFT" />
+                      <NumberAxis side="RIGHT" />
                     </yAxis>
                   </LineChart>
-                  <LineChart layoutX="202.0" layoutY="-100.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="10.0">
+                  <LineChart fx:id= "rightChart" layoutX="202.0" layoutY="-100.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="10.0">
                     <xAxis>
                       <CategoryAxis side="BOTTOM" />
                     </xAxis>
@@ -47,7 +47,7 @@
                   </LineChart>
                </children>
             </AnchorPane>
-            <StackPane id="bottomPane" layoutX="498.0" layoutY="665.0" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <StackPane fx:id="bottomPane" layoutX="498.0" layoutY="665.0" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
          </children>
       </AnchorPane>
    </children>

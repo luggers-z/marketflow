@@ -1,21 +1,14 @@
 package dev.luggers;
 
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.*;
 import javafx.animation.AnimationTimer;
-import javafx.application.Application;
-import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.TextArea;
-import javafx.scene.layout.VBox;
-import javafx.beans.binding.*;
-import javafx.beans.property.*;
-
-import java.util.ArrayList;
 
 
-public class Controller extends Application {
+
+public class Application extends javafx.application.Application {
     Simulation simulation = new Simulation();
     private long lastUpdate = 0;
 
@@ -26,8 +19,9 @@ public class Controller extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
-        //VBox root = new VBox();
         Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Controller controller = fxmlLoader.getController();
+
         /*Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
         slider1.valueProperty().bindBidirectional(simulation.start.turbineFlow);
@@ -58,6 +52,7 @@ public class Controller extends Application {
                     simulation.nextTick(delta);
                 }
                 lastUpdate = now;
+                System.out.println(getClass().getResource("/isar.png"));
             }
         };
         timer.start();
