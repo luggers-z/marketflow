@@ -29,16 +29,13 @@ public class EnergyPriceRepository {
     public double getPrice(double fullTime) {
         int fullHours = (int) Math.floor(fullTime / 3600);
         double price;
-
-        if (fullHours == 0 || lines.size() < fullHours) {
-            String line = lines.get(fullHours);
-            String[] values = line.split(";");
-            price = Double.parseDouble(values[2].replace(",", "."));
-        } else {
+        if (lines.size() <= fullHours) {
             fullHours = fullHours - lines.size();
             return getPrice(fullHours * 3600);
         }
-
+        String line = lines.get(fullHours);
+        String[] values = line.split(";");
+        price = Double.parseDouble(values[2].replace(",", "."));
         return price;
     }
 }

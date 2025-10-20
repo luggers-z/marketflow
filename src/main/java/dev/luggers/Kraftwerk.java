@@ -98,9 +98,6 @@ public class Kraftwerk {
     public double collectEnergy() {
         double energysave = energy;
         energy = 0;
-        if (next != null) {
-            energysave += next.collectEnergy();
-        }
         return energysave;
     }
 

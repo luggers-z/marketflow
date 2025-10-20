@@ -1,5 +1,6 @@
 package dev.luggers;
 
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.animation.AnimationTimer;
 import javafx.application.Application;
@@ -24,25 +25,16 @@ public class Controller extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        simulation.startUp();
-
-        TextArea textArea = new TextArea(null);
-        TextArea textArea2 = new TextArea(null);
-        TextArea textArea3 = new TextArea(null);
-        TextArea textArea4 = new TextArea(null);
-        TextArea textArea5 = new TextArea(null);
-        textArea.setEditable(false);
-        textArea2.setEditable(false);
-        textArea3.setEditable(false);
-        textArea4.setEditable(false);
-        textArea5.setEditable(false);
-        Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
+        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
+        //VBox root = new VBox();
+        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        /*Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
         slider1.valueProperty().bindBidirectional(simulation.start.turbineFlow);
         slider1.valueProperty().addListener((obs, oldVal, newVal) -> {
             System.out.println("Slider value changed to: " + newVal);
         });
-        root.getChildren().addAll(textArea, textArea2, textArea3, textArea4, textArea5, slider1);
+        root.getChildren().addAll(slider1);
 
 
         ArrayList<VBox> Powerplants = new ArrayList<>();
@@ -55,30 +47,21 @@ public class Controller extends Application {
             vbox.getChildren().add(slider);
             Powerplants.add(vbox);
         }
+        */
 
-
-        Scene scene = new Scene(Powerplants.getFirst(), 600, 400);
+        simulation.startUp();
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
                 if (lastUpdate > 500000000) {
-
                     double delta = (now - lastUpdate) / 1000000000.0;
-
                     simulation.nextTick(delta);
-
-
                 }
-
                 lastUpdate = now;
-
             }
         };
-
         timer.start();
         ;
-
-
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);
         primaryStage.show();

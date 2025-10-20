@@ -28,14 +28,13 @@ public class InflowRepository {
     public double getInflow(double fullTime) {
         int fullHours = (int) Math.floor(fullTime / 3600);
         double inflow;
-        if (fullHours == 0 || lines.size() < fullHours) {
-            String line = lines.get(fullHours);
-            String[] values = line.split(";");
-            inflow = Double.parseDouble(values[1].replace(",", "."));
-        } else {
+        if (lines.size() <= fullHours) {
             fullHours = fullHours - lines.size();
             return getInflow(fullHours * 3600);
         }
+        String line = lines.get(fullHours);
+        String[] values = line.split(";");
+        inflow = Double.parseDouble(values[1].replace(",", "."));
         return inflow;
     }
 }

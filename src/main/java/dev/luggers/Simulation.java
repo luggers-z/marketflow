@@ -24,8 +24,6 @@ public class Simulation {
 
     Simulation() {
     }
-
-
     public void nextTick(double delta) {
         simulationClock.time(delta);
         initiateFlow(delta);
@@ -44,9 +42,12 @@ public class Simulation {
     public void initiateFlow(double delta) {
         start.processFlow(getInflow(), delta);
     }
-
     public void getRevenue() {
-        double revenue = start.collectEnergy() * getPrice();
+        double totalEnergy=0;
+        for(int i =0; i>start.getLength(); i++){
+            totalEnergy += start.getNext(i).collectEnergy();
+        }
+        double revenue = totalEnergy * getPrice();
         money += revenue;
     }
 
