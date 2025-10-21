@@ -14,6 +14,9 @@ import java.util.Properties;
 
 public class Simulation {
     public Kraftwerk start = new Kraftwerk();
+
+
+
     SimulationClock simulationClock = new SimulationClock();
     InflowRepository inflowRepository = new InflowRepository();
     EnergyPriceRepository energyPriceRepository = new EnergyPriceRepository();
@@ -44,7 +47,7 @@ public class Simulation {
     }
     public void getRevenue() {
         double totalEnergy=0;
-        for(int i =0; i>start.getLength(); i++){
+        for(int i =0; i<start.getLength(); i++){
             totalEnergy += start.getNext(i).collectEnergy();
         }
         double revenue = totalEnergy * getPrice();

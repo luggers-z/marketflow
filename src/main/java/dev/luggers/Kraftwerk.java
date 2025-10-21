@@ -112,7 +112,7 @@ public class Kraftwerk {
 
     public Kraftwerk getNext(int i) {
         if (i == 0) {
-            return next;
+            return this;
         }
         return next.getNext(i - 1);
 

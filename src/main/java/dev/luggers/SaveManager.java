@@ -62,8 +62,5 @@ public class SaveManager {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
-        prop.list(System.out);
     }
 }
-

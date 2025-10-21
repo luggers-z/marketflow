@@ -30,8 +30,7 @@ public class EnergyPriceRepository {
         int fullHours = (int) Math.floor(fullTime / 3600);
         double price;
         if (lines.size() <= fullHours) {
-            fullHours = fullHours - lines.size();
-            return getPrice(fullHours * 3600);
+            fullHours = fullHours % lines.size();
         }
         String line = lines.get(fullHours);
         String[] values = line.split(";");

@@ -9,45 +9,59 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.HBox?>
 
-
-<StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="776.0" prefWidth="912.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
+           maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
+           prefHeight="776.0" prefWidth="912.0"
+           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <ImageView fx:id="background" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@isar.png" />
          </image>
       </ImageView>
+
       <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
-            <AnchorPane fx:id="topPane" layoutY="-6.0" prefHeight="200.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="-6.0">
-               <children>
-                  <VBox fx:id="elementField" layoutX="14.0" layoutY="14.0" prefWidth="95.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="10.0" AnchorPane.topAnchor="10.0">
+
+                  <!-- VBox for text fields -->
+                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0">
+
                      <children>
-                        <TextField id="moneyField" />
-                        <TextField id="powerField" />
-                        <TextField id="inflowField" />
+                        <TextField fx:id="moneyField" />
+                        <TextField fx:id="powerField" />
+                        <TextField fx:id="inflowField" />
                      </children>
                   </VBox>
-                  <LineChart fx:id ="leftChart" layoutX="398.0" layoutY="-95.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM"/>
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="RIGHT" />
-                    </yAxis>
-                  </LineChart>
-                  <LineChart fx:id= "rightChart" layoutX="202.0" layoutY="-100.0" prefHeight="0.0" prefWidth="0.0" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="10.0">
-                    <xAxis>
-                      <CategoryAxis side="BOTTOM" />
-                    </xAxis>
-                    <yAxis>
-                      <NumberAxis side="LEFT" />
-                    </yAxis>
-                  </LineChart>
-               </children>
-            </AnchorPane>
-            <StackPane fx:id="bottomPane" layoutX="498.0" layoutY="665.0" prefHeight="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+
+                  <!-- HBox containing both charts -->
+                  <HBox fx:id="chartBox" spacing="-30" StackPane.alignment="CENTER_RIGHT" AnchorPane.topAnchor="0.0"  AnchorPane.rightAnchor="0.0"
+                  >
+                     <children>
+                        <LineChart fx:id="leftChart">
+                           <xAxis>
+                              <NumberAxis side="BOTTOM"/>
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+
+                        <LineChart fx:id="rightChart">
+                           <xAxis>
+                              <NumberAxis fx:id="xR" side="BOTTOM"/>
+                           </xAxis>
+                           <yAxis>
+                              <NumberAxis fx:id= "yR" side="LEFT" />
+                           </yAxis>
+                        </LineChart>
+                     </children>
+                  </HBox>
+
+            <StackPane fx:id="bottomPane"
+                       AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                       prefHeight="200.0"/>
          </children>
       </AnchorPane>
    </children>

@@ -1,10 +1,14 @@
 package dev.luggers;
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
+
 public class SimulationClock {
-    private int timemult = 1;
+    private int timemult = 180;
     private int weekday = 0;
     private int day = 0;
-    private int hour = 0;
+    public IntegerProperty hour = new SimpleIntegerProperty();
+
     private int week = 0;
     private double currentTime;
     private double totalTime =0;
@@ -14,18 +18,18 @@ public class SimulationClock {
         currentTime += delta;
         totalTime += delta;
         while (currentTime >= 3600) {
-            hour++;
+            hour.set(hour.get()+1);
             currentTime -= 3600;
         }
-        if (hour >= 24) {
+        if (hour.get() >= 24) {
             weekday++;
             day++;
-            hour = hour - 24;
+            hour.subtract(24);
 
         }
         if (day == 8) {
             weekday = 0;
-            week = 1;
+            week += 1;
         }
     }
 
@@ -37,4 +41,3 @@ public class SimulationClock {
         this.currentTime = totalTime;
     }
 }
-

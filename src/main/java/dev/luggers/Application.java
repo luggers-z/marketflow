@@ -19,8 +19,9 @@ public class Application extends javafx.application.Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 800, 600);
+        Scene scene = new Scene(fxmlLoader.load());
         Controller controller = fxmlLoader.getController();
+        ChartUpdater chartUpdater = new ChartUpdater(simulation, controller);
 
         /*Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
@@ -47,12 +48,19 @@ public class Application extends javafx.application.Application {
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
-                if (lastUpdate > 500000000) {
+                if (lastUpdate > 0) {
                     double delta = (now - lastUpdate) / 1000000000.0;
+                    if (delta<0.25){
+                        return;
+                    }
+                    if (delta>0.25)
+                    {
+                        delta = 0.25;
+                    }
+                    System.out.println(delta);
                     simulation.nextTick(delta);
                 }
                 lastUpdate = now;
-                System.out.println(getClass().getResource("/isar.png"));
             }
         };
         timer.start();
