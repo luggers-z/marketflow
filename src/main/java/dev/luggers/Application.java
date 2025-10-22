@@ -44,7 +44,7 @@ public class Application extends javafx.application.Application {
         */
 
         simulation.startUp();
-
+        UIUpdater uiUpdater = new UIUpdater(simulation, controller);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -65,7 +65,7 @@ public class Application extends javafx.application.Application {
         };
         timer.start();
         ;
-        UIUpdater uiUpdater = new UIUpdater(simulation, controller);
+
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);
         primaryStage.show();

@@ -32,6 +32,11 @@ public class UIUpdater {
         timeLabel = controller.getTimeLabel();
         rightChart.getData().add(seriesInflow);
         leftChart.getData().add(seriesEnergyPrice);
+
+        yAxisEnergyPrice = (NumberAxis) leftChart.getYAxis();
+        xAxisEnergyPrice = (NumberAxis) leftChart.getXAxis();
+        yAxisInflow = (NumberAxis) rightChart.getYAxis();
+        xAxisInflow = (NumberAxis) rightChart.getXAxis();
     }
     private void hourlyListener() {
         simulation.simulationClock.hourProperty().addListener((observable, oldValue, newValue) -> {
@@ -48,19 +53,9 @@ public class UIUpdater {
 
         leftChart.setLegendVisible(false);
 
-
-
-
-         yAxisInflow = (NumberAxis) rightChart.getYAxis();
-         xAxisInflow = (NumberAxis) rightChart.getXAxis();
-
         yAxisInflow.setAutoRanging(false);
         xAxisInflow.setAutoRanging(false);
         xAxisInflow.setTickUnit(1);
-
-
-        yAxisEnergyPrice = (NumberAxis) leftChart.getYAxis();
-        xAxisEnergyPrice = (NumberAxis) leftChart.getXAxis();
 
         yAxisEnergyPrice.setAutoRanging(false);
         xAxisEnergyPrice.setAutoRanging(false);
@@ -69,14 +64,6 @@ public class UIUpdater {
     }
 
     private void chartUpdater(Number newValue){
-        yAxisInflow = (NumberAxis) rightChart.getYAxis();
-        xAxisInflow = (NumberAxis) rightChart.getXAxis();
-
-        yAxisEnergyPrice = (NumberAxis) leftChart.getYAxis();
-        xAxisEnergyPrice = (NumberAxis) leftChart.getXAxis();
-
-
-
             double fullTime = newValue.doubleValue()*3600;
             int dataSize = seriesInflow.getData().size();
             int limit = Math.min(10, dataSize);

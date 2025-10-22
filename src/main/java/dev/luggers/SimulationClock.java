@@ -23,9 +23,10 @@ public class SimulationClock {
     public double gettotalTime(){
         return totalTime;
     }
-    public void setTime(double totalTime){
-        this.totalTime = totalTime;
-        this.currentTime = totalTime;
+    public void setTime(double totalTime1){
+        totalTime = totalTime1;
+        currentTime = totalTime1;
+        time(0);
     }
 
 }
