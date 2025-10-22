@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -20,11 +21,11 @@ public class Controller {
     @FXML private TextField moneyField;
     @FXML private TextField powerField;
     @FXML private TextField inflowField;
+    @FXML private Label timeLabel;
 
     @FXML private LineChart<Number, Number> rightChart;
     @FXML private LineChart<Number, Number> leftChart;
-    @FXML private NumberAxis xR;
-    @FXML private NumberAxis yR;
+
 
     @FXML
     public void initialize() {
@@ -72,5 +73,7 @@ public class Controller {
     public LineChart getLeftChart() {
         return leftChart;
     }
-
+    public Label getTimeLabel(){
+        return timeLabel;
+    }
 }

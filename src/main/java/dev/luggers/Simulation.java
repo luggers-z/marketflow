@@ -16,7 +16,6 @@ public class Simulation {
     public Kraftwerk start = new Kraftwerk();
 
 
-
     SimulationClock simulationClock = new SimulationClock();
     InflowRepository inflowRepository = new InflowRepository();
     EnergyPriceRepository energyPriceRepository = new EnergyPriceRepository();
@@ -80,5 +79,7 @@ public class Simulation {
     public Kraftwerk getStart() {
         return start;
     }
+    public void started(){
 
+    }
 }

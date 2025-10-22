@@ -45,6 +45,7 @@ public class SaveManager {
                 error.showAndWait();
             }
         }
+        simulation.started();
     }
 
     public void save(Simulation simulation) {

@@ -21,7 +21,6 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Controller controller = fxmlLoader.getController();
-        ChartUpdater chartUpdater = new ChartUpdater(simulation, controller);
 
         /*Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
         VBox root = new VBox();
@@ -45,6 +44,7 @@ public class Application extends javafx.application.Application {
         */
 
         simulation.startUp();
+
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -65,6 +65,7 @@ public class Application extends javafx.application.Application {
         };
         timer.start();
         ;
+        UIUpdater uiUpdater = new UIUpdater(simulation, controller);
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);
         primaryStage.show();

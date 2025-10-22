@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
+
 <?import javafx.scene.chart.LineChart?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.TextField?>
@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.layout.HBox?>
 
+<?import javafx.scene.control.Label?>
 <StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="776.0" prefWidth="912.0"
@@ -24,9 +25,9 @@
 
       <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
-
+            <Label fx:id="timeLabel" style="-fx-font-family: 'Segoe UI';" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" />
                   <!-- VBox for text fields -->
-                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0">
+                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="0.0">
 
                      <children>
                         <TextField fx:id="moneyField" />
