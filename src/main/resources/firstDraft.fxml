@@ -42,19 +42,19 @@
                      <children>
                         <LineChart fx:id="leftChart">
                            <xAxis>
-                              <NumberAxis side="BOTTOM"/>
+                              <NumberAxis side="BOTTOM" />
                            </xAxis>
                            <yAxis>
-                              <NumberAxis side="LEFT" />
+                              <NumberAxis side="LEFT" label="Price in €"/>
                            </yAxis>
                         </LineChart>
 
                         <LineChart fx:id="rightChart">
                            <xAxis>
-                              <NumberAxis fx:id="xR" side="BOTTOM"/>
+                              <NumberAxis fx:id="xR" side="BOTTOM" />
                            </xAxis>
                            <yAxis>
-                              <NumberAxis fx:id= "yR" side="LEFT" />
+                              <NumberAxis fx:id= "yR" side="LEFT" label="Inflow in m³/s"/>
                            </yAxis>
                         </LineChart>
                      </children>

@@ -1,6 +1,5 @@
 package dev.luggers;
 
-import javafx.scene.chart.Chart;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
@@ -18,6 +17,7 @@ public class UIUpdater {
     Simulation simulation;
     XYChart.Series<Number, Number> seriesInflow = new XYChart.Series<>();
     XYChart.Series<Number, Number> seriesEnergyPrice = new XYChart.Series<>();
+
     public UIUpdater(Simulation sim, Controller controller) {
         assign(sim, controller);
 
@@ -25,6 +25,7 @@ public class UIUpdater {
         hourlyListener();
 
     }
+
     private void assign(Simulation sim, Controller controller) {
         simulation = sim;
         rightChart = controller.getRightChart();
@@ -38,15 +39,17 @@ public class UIUpdater {
         yAxisInflow = (NumberAxis) rightChart.getYAxis();
         xAxisInflow = (NumberAxis) rightChart.getXAxis();
     }
+
     private void hourlyListener() {
         simulation.simulationClock.hourProperty().addListener((observable, oldValue, newValue) -> {
 
-                chartUpdater(newValue);
+            chartUpdater(newValue);
 
-                timeUpdater(newValue);
+            timeUpdater(newValue);
 
         });
     }
+
     private void chartSettings() {
 
         rightChart.setLegendVisible(false);
@@ -63,71 +66,85 @@ public class UIUpdater {
 
     }
 
-    private void chartUpdater(Number newValue){
-            double fullTime = newValue.doubleValue()*3600;
-            int dataSize = seriesInflow.getData().size();
-            int limit = Math.min(10, dataSize);
-            double inflow = simulation.inflowRepository.getInflow(fullTime);
+    private void chartUpdater(Number newValue) {
+        double fullTime = newValue.doubleValue() * 3600;
+        int dataSize = seriesInflow.getData().size();
+        int limit = Math.min(10, dataSize);
+        double inflow = simulation.inflowRepository.getInflow(fullTime);
 
-            seriesInflow.getData().add(new XYChart.Data(newValue, inflow));
-            xAxisInflow.setLowerBound(newValue.doubleValue()-limit);
-            xAxisInflow.setUpperBound(newValue.doubleValue()+11-limit);
+        seriesInflow.getData().add(new XYChart.Data(newValue, inflow));
+        xAxisInflow.setLowerBound(newValue.doubleValue() - limit);
+        xAxisInflow.setUpperBound(newValue.doubleValue() + 11 - limit);
 
 
+        double maximum = Double.NEGATIVE_INFINITY;
+        double minimum = Double.POSITIVE_INFINITY;
 
-            double maximum = Double.NEGATIVE_INFINITY;
-            double minimum = Double.POSITIVE_INFINITY;
+        for (int i = 1; i <= limit; i++) {
+            double lastY = seriesInflow.getData()
+                    .get(seriesInflow
+                            .getData().size() - i)
+                    .getYValue().doubleValue();
+            if (lastY > maximum) maximum = lastY;
+            if (lastY < minimum) minimum = lastY;
+        }
+        double delta = maximum - minimum;
+        if (limit == 10) {
+            yAxisInflow.setLowerBound(Math.ceil(minimum - 0.1 * delta));
+        } else {
+            yAxisInflow.setLowerBound(minimum - 10);
+        }
+        if (limit == 10) {
+            yAxisInflow.setUpperBound(Math.ceil(maximum + 0.1 * delta));
+        } else {
+            yAxisInflow.setUpperBound(maximum + 10);
+        }
+        double Price = simulation.energyPriceRepository.getPrice(fullTime);
 
-            for(int i=1; i<=limit; i++){
-                double lastY = seriesInflow.getData()
-                        .get(seriesInflow
-                                .getData().size() - i)
-                        .getYValue().doubleValue();
-                if (lastY > maximum) maximum = lastY;
-                if (lastY < minimum) minimum = lastY;
-            }
-            double delta=maximum-minimum;
-            yAxisInflow.setLowerBound(minimum-0.1*delta);
-            yAxisInflow.setUpperBound(maximum+0.1*delta);
+        seriesEnergyPrice.getData().add(new XYChart.Data(newValue, Price));
+        xAxisEnergyPrice.setLowerBound(newValue.doubleValue() - limit);
+        xAxisEnergyPrice.setUpperBound(newValue.doubleValue() + 11 - limit);
 
-            double Price = simulation.energyPriceRepository.getPrice(fullTime);
+        dataSize = seriesEnergyPrice.getData().size();
+        limit = Math.min(10, dataSize);
+        maximum = Double.NEGATIVE_INFINITY;
+        minimum = Double.POSITIVE_INFINITY;
 
-            seriesEnergyPrice.getData().add(new XYChart.Data(newValue, Price));
-            xAxisEnergyPrice.setLowerBound(Math.floor(newValue.doubleValue()-limit));
-            xAxisEnergyPrice.setUpperBound(Math.floor(newValue.doubleValue()+11-limit));
-
-            dataSize = seriesEnergyPrice.getData().size();
-            limit = Math.min(10, dataSize);
-            maximum = Double.NEGATIVE_INFINITY;
-            minimum = Double.POSITIVE_INFINITY;
-
-            for(int i=1; i<=limit; i++){
-                double lastY = seriesEnergyPrice.getData()
-                        .get(seriesEnergyPrice
-                                .getData().size() - i)
-                        .getYValue().doubleValue();
-                if (lastY > maximum) maximum = lastY;
-                if (lastY < minimum) minimum = lastY;
-            }
-            delta=maximum-minimum;
-
-            yAxisEnergyPrice.setLowerBound(Math.floor(minimum-0.1*delta));
-            yAxisEnergyPrice.setUpperBound(Math.floor(maximum+0.1*delta));
+        for (int i = 1; i <= limit; i++) {
+            double lastY = seriesEnergyPrice.getData()
+                    .get(seriesEnergyPrice
+                            .getData().size() - i)
+                    .getYValue().doubleValue();
+            if (lastY > maximum) maximum = lastY;
+            if (lastY < minimum) minimum = lastY;
+        }
+        delta = maximum - minimum;
+        if (limit == 10) {
+            yAxisEnergyPrice.setLowerBound(Math.ceil(minimum - 0.1 * delta));
+        } else {
+            yAxisEnergyPrice.setLowerBound(minimum - 10);
+        }
+        if (limit == 10) {
+            yAxisEnergyPrice.setUpperBound(Math.ceil(maximum + 0.1 * delta));
+        } else {
+            yAxisEnergyPrice.setUpperBound(maximum + 10);
+        }
         if (seriesInflow.getData().size() > 10)
             seriesInflow.getData().remove(0);
         if (seriesEnergyPrice.getData().size() > 10)
             seriesEnergyPrice.getData().remove(0);
 
     }
-    public void timeUpdater(Number newValue){
 
-        int totalHours= newValue.intValue();
-        int hours= totalHours%24;
-        int days= totalHours/24%7+1;
-        int weeks=totalHours/24/7;
+    public void timeUpdater(Number newValue) {
+
+        int totalHours = newValue.intValue();
+        int hours = totalHours % 24;
+        int days = totalHours / 24 % 7 + 1;
+        int weeks = totalHours / 24 / 7;
 
 
-        String weekdayString= "Monday";
+        String weekdayString = "Monday";
 
         switch (days) {
             case 1 -> weekdayString = "Monday";
@@ -138,7 +155,7 @@ public class UIUpdater {
             case 6 -> weekdayString = "Saturday";
             case 7 -> weekdayString = "Sunday";
         }
-        timeLabel.setText(String.format(weekdayString + ": Hour:%02d Day:%02d Week:%02d", (hours%24), days, weeks));
+        timeLabel.setText(String.format(weekdayString + ": Hour:%02d Day:%02d Week:%02d", (hours % 24), days, weeks));
     }
 
 }

@@ -4,7 +4,7 @@ import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class SimulationClock {
-    private int timemult = 2000;
+    private int timemult = 200;
     private IntegerProperty hour = new SimpleIntegerProperty();
     public IntegerProperty hourProperty() { return hour; }
     private double currentTime;
