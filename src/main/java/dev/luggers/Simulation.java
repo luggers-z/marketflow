@@ -9,17 +9,16 @@ import javafx.beans.property.SimpleIntegerProperty;
 public class Simulation {
     public Powerplant start = new Powerplant();
     protected IntegerProperty timeMult = new SimpleIntegerProperty(20);
-
+    protected DoubleProperty money = new SimpleDoubleProperty();
+    protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
     SimulationClock simulationClock = new SimulationClock();
     InflowRepository inflowRepository = new InflowRepository();
     EnergyPriceRepository energyPriceRepository = new EnergyPriceRepository();
     SaveManager saveManager = new SaveManager();
 
-    protected DoubleProperty money= new SimpleDoubleProperty();
-    protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
-
     Simulation() {
     }
+
     public void nextTick(double delta) {
         delta *= timeMult.get();
         System.out.println(timeMult.get());
@@ -41,21 +40,24 @@ public class Simulation {
     public void initiateFlow(double delta) {
         start.processFlow(getInflow(), delta);
     }
+
     public void getRevenue() {
-        double totalEnergy=0;
-        for(int i =0; i<start.getLength(); i++){
+        double totalEnergy = 0;
+        for (int i = 0; i < start.getLength(); i++) {
             totalEnergy += start.getNext(i).collectEnergy();
         }
         double revenue = totalEnergy * getPrice();
-        money.set(money.get()+revenue);
+        money.set(money.get() + revenue);
     }
+
     public void settotalPower() {
-        double totalPower=0;
-        for(int i =0; i<start.getLength(); i++){
+        double totalPower = 0;
+        for (int i = 0; i < start.getLength(); i++) {
             totalPower += start.getNext(i).powerMW.get();
         }
         totalPowerMW.set(totalPower);
     }
+
     public double getPrice() {
         return energyPriceRepository.getPrice(simulationClock.gettotalTime());
     }
@@ -82,7 +84,8 @@ public class Simulation {
     public Powerplant getStart() {
         return start;
     }
-    public void started(){
+
+    public void started() {
 
     }
 }

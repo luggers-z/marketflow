@@ -16,8 +16,9 @@ public class Powerplant {
     private final double minwaterflow;
     private final double height;
     protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
-    private double energy;
     protected DoubleProperty powerMW = new SimpleDoubleProperty();
+    private double energy;
+
     /**
      * Create a new instance of a power plant, with the given capacity....
      *
@@ -92,7 +93,7 @@ public class Powerplant {
 
     private double calculateEnergy(double turbineFlow, double delta) {
         double tempPower = height * turbineFlow * 1000 * 9.81 * efficiency;
-        powerMW.set(tempPower/1000000);
+        powerMW.set(tempPower / 1000000);
 
         return tempPower * delta / MEGA_HOURS;
     }

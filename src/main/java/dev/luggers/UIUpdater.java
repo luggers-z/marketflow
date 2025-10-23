@@ -41,12 +41,11 @@ public class UIUpdater {
     }
 
     private void hourlyListener() {
-        if(simulation.simulationClock.gettotalTime()<3600){
+        if (simulation.simulationClock.gettotalTime() < 3600) {
             setBaseline();
         }
         simulation.simulationClock.totalHours.addListener((observable, oldValue, newValue) -> {
             chartUpdater(newValue);
-
 
 
         });
@@ -55,10 +54,12 @@ public class UIUpdater {
 
         });
     }
+
     private void setBaseline() {
         chartUpdater(0);
         timeUpdater(0);
     }
+
     private void chartSettings() {
 
         rightChart.setLegendVisible(false);
@@ -146,8 +147,8 @@ public class UIUpdater {
     }
 
     public void timeUpdater(Number newValue) {
-        int quarterHour = newValue.intValue()%4+1;
-        int totalHours = newValue.intValue()/4;
+        int quarterHour = newValue.intValue() % 4 + 1;
+        int totalHours = newValue.intValue() / 4;
         int hours = totalHours % 24;
         int days = totalHours / 24 % 7 + 1;
         int weeks = totalHours / 24 / 7;
@@ -165,12 +166,12 @@ public class UIUpdater {
             case 7 -> weekdayString = "Sunday";
         }
         switch (quarterHour) {
-            case 1 -> quarterHourString="00";
-            case 2 -> quarterHourString="15";
-            case 3 -> quarterHourString="30";
-            case 4 -> quarterHourString="45";
+            case 1 -> quarterHourString = "00";
+            case 2 -> quarterHourString = "15";
+            case 3 -> quarterHourString = "30";
+            case 4 -> quarterHourString = "45";
         }
-        timeLabel.setText(String.format("%s: %02d:%s Day: %02d Week: %02d",weekdayString,  (hours % 24), quarterHourString, days, weeks));
+        timeLabel.setText(String.format("%s: %02d:%s Day: %02d Week: %02d", weekdayString, (hours % 24), quarterHourString, days, weeks));
     }
 }
 

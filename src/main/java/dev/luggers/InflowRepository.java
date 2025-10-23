@@ -2,11 +2,7 @@ package dev.luggers;
 
 
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.IntegerProperty;
-
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.scene.chart.LineChart;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -17,9 +13,10 @@ import java.util.List;
 import java.util.Objects;
 
 public class InflowRepository {
+    protected DoubleProperty inflow = new SimpleDoubleProperty();
     private Path inflowPath;
     private List<String> lines;
-   protected DoubleProperty inflow = new SimpleDoubleProperty();
+
     public InflowRepository() {
         try {
             inflowPath = Paths.get((Objects.requireNonNull(getClass().getResource("/inflow.csv"))).toURI());
@@ -38,14 +35,14 @@ public class InflowRepository {
         int index = (fullHours * 4) % lines.size();
 
         String line = lines.get(index).trim();
-        if(line.isEmpty()) {
-            return getInflow(fullTime+3600);
+        if (line.isEmpty()) {
+            return getInflow(fullTime + 3600);
         }
 
         String[] values = line.split(";");
         String numeric = values[1];
-        if(numeric.isEmpty()) {
-            return getInflow(fullTime+3600);
+        if (numeric.isEmpty()) {
+            return getInflow(fullTime + 3600);
         }
 
         inflow.set(Double.parseDouble(values[1].replace(",", ".")));

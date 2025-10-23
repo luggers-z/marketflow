@@ -4,9 +4,9 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class Pool {
+    protected DoubleProperty height = new SimpleDoubleProperty();
     double length;
     double width;
-    protected DoubleProperty height= new SimpleDoubleProperty();
     double volume;
     double minh;
     double maxh;

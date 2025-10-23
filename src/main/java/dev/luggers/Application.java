@@ -1,11 +1,10 @@
 package dev.luggers;
 
 
-import javafx.fxml.FXMLLoader;
 import javafx.animation.AnimationTimer;
-import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-
+import javafx.stage.Stage;
 
 
 public class Application extends javafx.application.Application {
@@ -50,11 +49,10 @@ public class Application extends javafx.application.Application {
             public void handle(long now) {
                 if (lastUpdate > 0) {
                     double delta = (now - lastUpdate) / 1000000000.0;
-                    if (delta<0.25){
+                    if (delta < 0.25) {
                         return;
                     }
-                    if (delta>0.25)
-                    {
+                    if (delta > 0.25) {
                         delta = 0.25;
                     }
                     System.out.println(delta);
