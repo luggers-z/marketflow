@@ -26,10 +26,10 @@ public class SaveManager {
             }
             if (!prop.isEmpty()) {
                 simulation.setMoney(Double.parseDouble(prop.getProperty("money")));
-                simulation.simulationClock.setTime(Double.parseDouble(prop.getProperty("totalTime")));
+                simulation.simulationClock.startupClock(Double.parseDouble(prop.getProperty("totalTime")));
                 int length = simulation.start.getLength();
                 for (int i = 0; i < length; i++) {
-                    Kraftwerk KWi = simulation.getPowerplant(i);
+                    Powerplant KWi = simulation.getPowerplant(i);
                     KWi.pool.setVolume(Double.parseDouble(prop.getProperty(KRAFTWERKVOLUMEN.formatted(i))));
                 }
             }
@@ -54,7 +54,7 @@ public class SaveManager {
         prop.setProperty("money", String.valueOf(simulation.getMoney()));
         int length = simulation.getStart().getLength();
         for (int i = 0; i < length; i++) {
-            Kraftwerk KWi = simulation.getPowerplant(i);
+            Powerplant KWi = simulation.getPowerplant(i);
             prop.setProperty(KRAFTWERKVOLUMEN.formatted(i), String.valueOf(KWi.pool.getVolume()));
         }
 

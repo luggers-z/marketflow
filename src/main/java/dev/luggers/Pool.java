@@ -1,36 +1,39 @@
 package dev.luggers;
 
-public class Speicherbecken {
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
+
+public class Pool {
     double length;
     double width;
-    double height;
+    protected DoubleProperty height= new SimpleDoubleProperty();
     double volume;
     double minh;
     double maxh;
     double maxVolume;
     double minVolume;
-    Speicherbecken next;
+    Pool next;
 
-    Speicherbecken(Speicherbecken next, double length, double width, double height, double minh, double maxh) {
+    Pool(Pool next, double length, double width, double h, double minh, double maxh) {
         this.next = next;
         this.length = length;
         this.width = width;
-        this.height = height;
-        this.volume = length * width * height;
+        height.set(h);
+        this.volume = length * width * h;
         this.minh = minh;
         this.maxh = maxh;
         maxVolume = this.length * width * maxh;
         minVolume = this.length * width * minh;
     }
 
-    Speicherbecken() {
+    Pool() {
         next = null;
         length = 20000;
         width = 15;
-        height = 4;
+        height.set(4);
         minh = 3;
         maxh = 5;
-        volume = length * width * height;
+        volume = length * width * height.get();
         maxVolume = length * width * maxh;
     }
 
@@ -49,7 +52,7 @@ public class Speicherbecken {
                 next.triggerSpillway(projectedVolume - maxVolume);
             }
         }
-        height = volume / width / length;
+        height.set(volume / width / length);
     }
 
     public boolean isFull() {
@@ -74,6 +77,7 @@ public class Speicherbecken {
     public double getVolume() {
         return volume;
     }
+
 
     public void setVolume(double volume) {
         this.volume = volume;

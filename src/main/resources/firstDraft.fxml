@@ -12,22 +12,23 @@
 <?import javafx.scene.layout.HBox?>
 
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Spinner?>
 <StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="776.0" prefWidth="912.0"
-           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+           xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
+           stylesheets="@style.css" >
    <children>
       <ImageView fx:id="background" pickOnBounds="true" preserveRatio="true">
          <image>
             <Image url="@isar.png" />
          </image>
       </ImageView>
-
       <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
-            <Label fx:id="timeLabel" style="-fx-font-family: 'Segoe UI';" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="0.0" />
+            <Label fx:id="timeLabel" style="-fx-font-family: 'Segoe UI';" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="10.0" />
                   <!-- VBox for text fields -->
-                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="0.0">
+                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="10.0">
 
                      <children>
                         <TextField fx:id="moneyField" />
@@ -37,10 +38,10 @@
                   </VBox>
 
                   <!-- HBox containing both charts -->
-                  <HBox fx:id="chartBox" spacing="-30" StackPane.alignment="CENTER_RIGHT" AnchorPane.topAnchor="0.0"  AnchorPane.rightAnchor="0.0"
+                  <HBox fx:id="chartBox" style="-fx-background-color: white" spacing="-30" StackPane.alignment="CENTER_RIGHT" AnchorPane.topAnchor="0.0"  AnchorPane.rightAnchor="0.0"
                   >
                      <children>
-                        <LineChart fx:id="leftChart">
+                        <LineChart fx:id="leftChart" id="leftChart">
                            <xAxis>
                               <NumberAxis side="BOTTOM" />
                            </xAxis>
@@ -49,7 +50,7 @@
                            </yAxis>
                         </LineChart>
 
-                        <LineChart fx:id="rightChart">
+                        <LineChart fx:id="rightChart" id="rightChart">
                            <xAxis>
                               <NumberAxis fx:id="xR" side="BOTTOM" />
                            </xAxis>
@@ -59,10 +60,16 @@
                         </LineChart>
                      </children>
                   </HBox>
-
             <StackPane fx:id="bottomPane"
                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
-                       prefHeight="200.0"/>
+                       prefHeight="200.0">
+            <children>
+               <HBox AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" alignment="CENTER_RIGHT" fx:id="timeMultBox">
+                  <Label>Time Multiplier: &#160; </Label>
+                  <Spinner fx:id="timeMultSpinner" />
+               </HBox>
+            </children>
+            </StackPane>
          </children>
       </AnchorPane>
    </children>

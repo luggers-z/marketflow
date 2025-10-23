@@ -41,15 +41,24 @@ public class UIUpdater {
     }
 
     private void hourlyListener() {
-        simulation.simulationClock.hourProperty().addListener((observable, oldValue, newValue) -> {
-
+        if(simulation.simulationClock.gettotalTime()<3600){
+            setBaseline();
+        }
+        simulation.simulationClock.totalHours.addListener((observable, oldValue, newValue) -> {
             chartUpdater(newValue);
 
+
+
+        });
+        simulation.simulationClock.totalquarterHours.addListener((observable, oldValue, newValue) -> {
             timeUpdater(newValue);
 
         });
     }
-
+    private void setBaseline() {
+        chartUpdater(0);
+        timeUpdater(0);
+    }
     private void chartSettings() {
 
         rightChart.setLegendVisible(false);
@@ -90,7 +99,7 @@ public class UIUpdater {
         }
         double delta = maximum - minimum;
         if (limit == 10) {
-            yAxisInflow.setLowerBound(Math.ceil(minimum - 0.1 * delta));
+            yAxisInflow.setLowerBound(Math.floor(minimum - 0.1 * delta));
         } else {
             yAxisInflow.setLowerBound(minimum - 10);
         }
@@ -137,15 +146,15 @@ public class UIUpdater {
     }
 
     public void timeUpdater(Number newValue) {
-
-        int totalHours = newValue.intValue();
+        int quarterHour = newValue.intValue()%4+1;
+        int totalHours = newValue.intValue()/4;
         int hours = totalHours % 24;
         int days = totalHours / 24 % 7 + 1;
         int weeks = totalHours / 24 / 7;
 
 
         String weekdayString = "Monday";
-
+        String quarterHourString = "00";
         switch (days) {
             case 1 -> weekdayString = "Monday";
             case 2 -> weekdayString = "Tuesday";
@@ -155,8 +164,13 @@ public class UIUpdater {
             case 6 -> weekdayString = "Saturday";
             case 7 -> weekdayString = "Sunday";
         }
-        timeLabel.setText(String.format(weekdayString + ": Hour:%02d Day:%02d Week:%02d", (hours % 24), days, weeks));
+        switch (quarterHour) {
+            case 1 -> quarterHourString="00";
+            case 2 -> quarterHourString="15";
+            case 3 -> quarterHourString="30";
+            case 4 -> quarterHourString="45";
+        }
+        timeLabel.setText(String.format("%s: %02d:%s Day: %02d Week: %02d",weekdayString,  (hours % 24), quarterHourString, days, weeks));
     }
-
 }
 

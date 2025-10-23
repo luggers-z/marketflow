@@ -1,5 +1,11 @@
 package dev.luggers;
 
+
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.IntegerProperty;
+
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.chart.LineChart;
 
 import java.io.IOException;
@@ -13,7 +19,7 @@ import java.util.Objects;
 public class InflowRepository {
     private Path inflowPath;
     private List<String> lines;
-    double inflow;
+   protected DoubleProperty inflow = new SimpleDoubleProperty();
     public InflowRepository() {
         try {
             inflowPath = Paths.get((Objects.requireNonNull(getClass().getResource("/inflow.csv"))).toURI());
@@ -42,7 +48,7 @@ public class InflowRepository {
             return getInflow(fullTime+3600);
         }
 
-        inflow = Double.parseDouble(values[1].replace(",", "."));
-        return inflow;
+        inflow.set(Double.parseDouble(values[1].replace(",", ".")));
+        return inflow.get();
     }
 }

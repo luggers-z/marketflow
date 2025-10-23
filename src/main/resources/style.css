@@ -1,0 +1,24 @@
+#leftChart .default-color0.chart-series-line {
+    -fx-stroke: green;
+    -fx-stroke-width: 2px;
+}
+#leftChart .default-color0.chart-line-symbol {
+    -fx-background-color: green, white;
+}
+
+/* Right chart - blue */
+#rightChart .default-color0.chart-series-line {
+    -fx-stroke: blue;
+    -fx-stroke-width: 2px;
+}
+#rightChart .default-color0.chart-line-symbol {
+    -fx-background-color: blue, white;
+}
+.elementField {
+     -fx-background-color:
+             #192a56;
+     -fx-text-fill: white;
+     -fx-padding: 10;
+     -fx-border-radius: 8;
+     -fx-background-radius: 8;
+ }

@@ -6,18 +6,18 @@ import javafx.beans.property.SimpleDoubleProperty;
 /**
  * Powerplant is ...
  */
-public class Kraftwerk {
-    public static final int KILO_HOURS = 3600000;
-    protected final Speicherbecken pool;
+public class Powerplant {
+    public static final long MEGA_HOURS = 3600000000L;
+    protected final Pool pool;
     private final String name;
-    private final Kraftwerk next;
+    private final Powerplant next;
     private final double efficiency;
     private final double maxwaterflow;
     private final double minwaterflow;
     private final double height;
     protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     private double energy;
-
+    protected DoubleProperty powerMW = new SimpleDoubleProperty();
     /**
      * Create a new instance of a power plant, with the given capacity....
      *
@@ -31,8 +31,8 @@ public class Kraftwerk {
      * @param maxwaterflow The maximum waterflow
      * @param minwaterflow The minimum waterflow
      */
-    public Kraftwerk(final String name, final Kraftwerk next, final Speicherbecken pool, final double height,
-                     final double efficiency, final double maxwaterflow, final double minwaterflow) {
+    public Powerplant(final String name, final Powerplant next, final Pool pool, final double height,
+                      final double efficiency, final double maxwaterflow, final double minwaterflow) {
         this.name = name;
         this.next = next;
         this.pool = pool;
@@ -54,20 +54,20 @@ public class Kraftwerk {
      * * @param maxwaterflow  The maximum waterflow
      * * @param minwaterflow  The minimum waterflow
      */
-    public Kraftwerk(final String name, final Speicherbecken pool, final double height, final double efficiency,
-                     final double maxwaterflow, double minwaterflow) {
+    public Powerplant(final String name, final Pool pool, final double height, final double efficiency,
+                      final double maxwaterflow, double minwaterflow) {
         this(name, null, pool, height, efficiency, maxwaterflow, minwaterflow);
     }
 
-    public Kraftwerk() {
+    public Powerplant() {
         name = null;
         next = null;
-        pool = new Speicherbecken();
+        pool = new Pool();
         height = 1.5;
         efficiency = 0.8;
         turbineFlow.set(700);
         maxwaterflow = 1000;
-        minwaterflow = 50;
+        minwaterflow = 20;
     }
 
     public void processFlow(double incomingFlow, double delta) {
@@ -91,8 +91,10 @@ public class Kraftwerk {
     }
 
     private double calculateEnergy(double turbineFlow, double delta) {
-        double energy = height * turbineFlow * delta * 1000 * 9.81 * efficiency;
-        return energy / KILO_HOURS;
+        double tempPower = height * turbineFlow * 1000 * 9.81 * efficiency;
+        powerMW.set(tempPower/1000000);
+
+        return tempPower * delta / MEGA_HOURS;
     }
 
     public double collectEnergy() {
@@ -110,7 +112,7 @@ public class Kraftwerk {
         return name;
     }
 
-    public Kraftwerk getNext(int i) {
+    public Powerplant getNext(int i) {
         if (i == 0) {
             return this;
         }
