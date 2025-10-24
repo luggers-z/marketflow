@@ -3,7 +3,7 @@ package dev.luggers;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
-import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class UIUpdater {
     private static final int MAX_POINTS = 5;
@@ -13,7 +13,7 @@ public class UIUpdater {
     LineChart<Number, Number> leftChart;
     NumberAxis yAxisEnergyPrice;
     NumberAxis xAxisEnergyPrice;
-    Label timeLabel;
+    TextField timeLabel;
     Simulation simulation;
     XYChart.Series<Number, Number> seriesInflow = new XYChart.Series<>();
     XYChart.Series<Number, Number> seriesEnergyPrice = new XYChart.Series<>();

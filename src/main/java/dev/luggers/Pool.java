@@ -4,6 +4,7 @@ import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
 public class Pool {
+    final double normalHeight;
     protected DoubleProperty height = new SimpleDoubleProperty();
     double length;
     double width;
@@ -14,10 +15,11 @@ public class Pool {
     double minVolume;
     Pool next;
 
-    Pool(Pool next, double length, double width, double h, double minh, double maxh) {
+    Pool(Pool next, double length, double width, double h, double minh, double maxh, int normalHeight, double nHeight) {
         this.next = next;
         this.length = length;
         this.width = width;
+        this.normalHeight = nHeight;
         height.set(h);
         this.volume = length * width * h;
         this.minh = minh;
@@ -33,6 +35,7 @@ public class Pool {
         height.set(4);
         minh = 3;
         maxh = 5;
+        normalHeight = 3.5;
         volume = length * width * height.get();
         maxVolume = length * width * maxh;
     }
@@ -78,7 +81,9 @@ public class Pool {
         return volume;
     }
 
-
+    public double getNormalHeight() {
+        return normalHeight;
+    }
     public void setVolume(double volume) {
         this.volume = volume;
     }

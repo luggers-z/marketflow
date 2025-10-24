@@ -1,12 +1,19 @@
 package dev.luggers;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class Controller {
@@ -30,7 +37,7 @@ public class Controller {
     @FXML
     private TextField inflowField;
     @FXML
-    private Label timeLabel;
+    private TextField timeLabel;
     @FXML
     private HBox timeMultBox;
 
@@ -41,14 +48,19 @@ public class Controller {
 
     @FXML
     private Spinner<Integer> timeMultSpinner;
-
+    List<TabPane> paneList;
+    int currentTab=0;
     @FXML
     public void initialize() {
 
 
-        background.setPreserveRatio(true);
-        background.fitWidthProperty().bind(stackPane.widthProperty());
+        background.fitWidthProperty().bind( Bindings.createDoubleBinding(() ->
+                        stackPane.getWidth() * 1.01, // 1% overscale
+                stackPane.widthProperty()));
         background.fitHeightProperty().bind(stackPane.heightProperty());
+        background.setPreserveRatio(true);
+        background.setSmooth(true);
+
 
         allBind(mainPane, stackPane, 1, 1);
         allBind(bottomPane, stackPane, 1, 0.1);
@@ -68,6 +80,7 @@ public class Controller {
     public void startUp(Simulation sim) {
         simulation = sim;
         int length = simulation.start.getLength();
+        paneList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
             TabPane tabPane = new TabPane();
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
@@ -84,24 +97,42 @@ public class Controller {
             slider.valueProperty().bindBidirectional(kwI.turbineFlow);
 
 
-            Label inflow = new Label();
-            inflow.textProperty().bind(slider.valueProperty().asString("Durchfluss: %.02f m³/s "));
+            Label throughFlow = new Label();
+            throughFlow.textProperty().bind(slider.valueProperty().asString("Durchfluss: %.02f m³/s "));
 
+            TextFlow textFlow = new TextFlow();
+            Label inFlow = new Label();
+            inFlow.textProperty().bind(kwI.specificInflow.asString("Zufluss: %.2f m³/s "));
+            Text deltaInFlow = new Text();
+            deltaInFlow.textProperty().bind(Bindings.subtract( kwI.specificInflow, kwI.turbineFlow).asString("[%+.2f] "));
+            kwI.turbineFlow.addListener((obs, oldValue, newValue) -> {
+                double diff = kwI.specificInflow.doubleValue() - newValue.doubleValue(); // calculate delta
+                deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);  // colorize
+            });
 
+            double normalHeight = kwI.pool.getNormalHeight();
             Label height = new Label();
-            height.textProperty().bind(kwI.pool.height.asString("Stauhöhe: %.2f m "));
+            height.textProperty().bind((kwI.pool.height.asString("Stauhöhe: %.2f m ")));
+            Text deltaHeight = new Text();
+            deltaHeight.textProperty().bind(Bindings.subtract(kwI.pool.height, normalHeight).asString("[%+.2f] "));
+            kwI.pool.height.addListener((obs, oldValue, newValue) -> {
+                double diff = newValue.doubleValue() - normalHeight; // calculate delta
+                deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);  // colorize
+            });
+            textFlow.getChildren().addAll(inFlow, deltaInFlow, height, deltaHeight);
+
 
             Label power = new Label();
-            power.textProperty().bind(kwI.powerMW.asString("Leistung: %.2f Megawatt"));
+            power.textProperty().bind(kwI.powerMW.asString("Leistung: %.2f Megawatt "));
 
 
             HBox controlBox = new HBox();
             controlBox.setAlignment(Pos.CENTER_LEFT);
-            controlBox.getChildren().addAll(inflow, slider);
+            controlBox.getChildren().addAll(throughFlow, slider, power);
 
             HBox variableBox = new HBox();
             variableBox.setAlignment(Pos.CENTER_LEFT);
-            variableBox.getChildren().addAll(height, power);
+            variableBox.getChildren().addAll(textFlow);
 
             VBox boxCointainer = new VBox();
             boxCointainer.setStyle("-fx-background-color: white;");
@@ -116,18 +147,39 @@ public class Controller {
 
             tabPane.setStyle("-fx-background-color: white;");
 
+            paneList.add(tabPane);
             bottomPane.getChildren().add(tabPane);
+            tabPane.setVisible(false);
         }
         timeMultBox.toFront();
-
+        paneList.add(new TabPane(new Tab("test")));
         elementFieldConfig(simulation);
 
         spinnerConfig();
+        paneList.get(currentTab).setVisible(true);
     }
 
+    public void tabLeft(){
+        paneList.get(currentTab).setVisible(false);
+        paneList.get(loopTabs(-1)).setVisible(true);
+    }
+    public void tabRight(){
+        paneList.get(currentTab).setVisible(false);
+        paneList.get(loopTabs(1)).setVisible(true);
+    }
+    public int loopTabs(int change){
+        if(currentTab+change>=0){
+            currentTab+=change;
+        }
+        else{
+            currentTab=paneList.size()-1;
+        }
+        return currentTab%=paneList.size();
+
+    }
     private void spinnerConfig() {
         timeMultSpinner.setEditable(true);
-        timeMultSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 10000, 20, 2));
+        timeMultSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 20, 2));
 
         simulation.timeMult.bind(timeMultSpinner.getValueFactory().valueProperty());
         timeMultSpinner.getEditor().setPrefColumnCount(5);
@@ -146,6 +198,8 @@ public class Controller {
         moneyField.setEditable(false);
         powerField.setEditable(false);
         inflowField.setEditable(false);
+        timeLabel.setEditable(false);
+        timeLabel.setPrefColumnCount(15);
         moneyField.textProperty().bind(simulation.money.asString("Kontostand: %,.0f €"));
         powerField.textProperty().bind(simulation.totalPowerMW.asString("Totaleistung: %.2f MW"));
         inflowField.textProperty().bind(simulation.inflowRepository.inflow.asString("Zufluss: %.0f m³/s"));
@@ -201,7 +255,7 @@ public class Controller {
         return leftChart;
     }
 
-    public Label getTimeLabel() {
+    public TextField getTimeLabel() {
         return timeLabel;
     }
 }

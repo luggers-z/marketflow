@@ -19,18 +19,19 @@
            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
            stylesheets="@style.css" >
    <children>
-      <ImageView fx:id="background" pickOnBounds="true" preserveRatio="true">
+      <ImageView fx:id="background"  >
          <image>
             <Image url="@isar.png" />
          </image>
       </ImageView>
       <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
-            <Label fx:id="timeLabel" style="-fx-font-family: 'Segoe UI';" AnchorPane.topAnchor="0.0" AnchorPane.leftAnchor="10.0" />
+
                   <!-- VBox for text fields -->
-                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="20" AnchorPane.leftAnchor="10.0">
+                  <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10.0">
 
                      <children>
+                        <TextField fx:id="timeLabel" />
                         <TextField fx:id="moneyField" />
                         <TextField fx:id="powerField" />
                         <TextField fx:id="inflowField" />
@@ -63,13 +64,11 @@
             <StackPane fx:id="bottomPane"
                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                        prefHeight="200.0">
-            <children>
-               <HBox AnchorPane.bottomAnchor="0" AnchorPane.rightAnchor="0" alignment="CENTER_RIGHT" fx:id="timeMultBox">
-                  <Label>Time Multiplier: &#160; </Label>
-                  <Spinner fx:id="timeMultSpinner" />
-               </HBox>
-            </children>
             </StackPane>
+            <HBox AnchorPane.bottomAnchor="0"  AnchorPane.rightAnchor="0" alignment="CENTER_RIGHT" fx:id="timeMultBox"  >
+               <Label>Time Multiplier: &#160; </Label>
+               <Spinner fx:id="timeMultSpinner" />
+            </HBox>
          </children>
       </AnchorPane>
    </children>

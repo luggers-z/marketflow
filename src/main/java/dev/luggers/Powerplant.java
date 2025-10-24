@@ -17,6 +17,7 @@ public class Powerplant {
     private final double height;
     protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     protected DoubleProperty powerMW = new SimpleDoubleProperty();
+    protected DoubleProperty specificInflow = new SimpleDoubleProperty();
     private double energy;
 
     /**
@@ -41,6 +42,7 @@ public class Powerplant {
         this.efficiency = efficiency;
         this.maxwaterflow = maxwaterflow;
         this.minwaterflow = minwaterflow;
+
         turbineFlow.set(100);
     }
 
@@ -72,6 +74,7 @@ public class Powerplant {
     }
 
     public void processFlow(double incomingFlow, double delta) {
+        specificInflow.set(incomingFlow);
         double tempTurbineFlow = turbineFlow.get();
 
         if (pool.isFull() && tempTurbineFlow < incomingFlow) {

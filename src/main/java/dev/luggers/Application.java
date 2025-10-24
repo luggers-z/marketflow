@@ -2,8 +2,11 @@ package dev.luggers;
 
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
 
 
@@ -21,26 +24,20 @@ public class Application extends javafx.application.Application {
         Scene scene = new Scene(fxmlLoader.load());
         Controller controller = fxmlLoader.getController();
         controller.startUp(simulation);
-        /*Slider slider1 = new Slider(simulation.start.getMinWaterflow(), simulation.start.getMaxWaterflow(), simulation.getInflow());
-        VBox root = new VBox();
-        slider1.valueProperty().bindBidirectional(simulation.start.turbineFlow);
-        slider1.valueProperty().addListener((obs, oldVal, newVal) -> {
-            System.out.println("Slider value changed to: " + newVal);
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+
+            @Override
+            public void handle(KeyEvent event) {
+                if(event.getCode() == KeyCode.LEFT){
+                    controller.tabLeft();
+                }
+                if(event.getCode() == KeyCode.RIGHT){
+                    controller.tabRight();
+                }
+            }
         });
-        root.getChildren().addAll(slider1);
 
 
-        ArrayList<VBox> Powerplants = new ArrayList<>();
-        int length = simulation.start.getLength();
-        for (int i = 0; i < length; i++) {
-            VBox vbox = new VBox();
-            Kraftwerk KWi = simulation.getPowerplant(i);
-            Slider slider = new Slider(KWi.getMinWaterflow(), KWi.getMaxWaterflow(), simulation.getInflow());
-            slider.valueProperty().bindBidirectional(KWi.turbineFlow);
-            vbox.getChildren().add(slider);
-            Powerplants.add(vbox);
-        }
-        */
 
         simulation.startUp();
         UIUpdater uiUpdater = new UIUpdater(simulation, controller);
@@ -67,6 +64,7 @@ public class Application extends javafx.application.Application {
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);
         primaryStage.show();
+        scene.getRoot().requestFocus();
     }
 
 
