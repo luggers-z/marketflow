@@ -15,7 +15,7 @@ public class Pool {
     double minVolume;
     Pool next;
 
-    Pool(Pool next, double length, double width, double h, double minh, double maxh, int normalHeight, double nHeight) {
+    Pool(Pool next, double length, double width, double h, double minh, double maxh, double nHeight) {
         this.next = next;
         this.length = length;
         this.width = width;
@@ -28,18 +28,9 @@ public class Pool {
         minVolume = this.length * width * minh;
     }
 
-    Pool() {
-        next = null;
-        length = 20000;
-        width = 15;
-        height.set(4);
-        minh = 3;
-        maxh = 5;
-        normalHeight = 3.5;
-        volume = length * width * height.get();
-        maxVolume = length * width * maxh;
+    public void setNext(Pool next) {
+        this.next = next;
     }
-
     public void processFlow(double inFlow) {
         if (isFull()) {
             if (next != null) {
@@ -74,7 +65,9 @@ public class Pool {
     }
 
     public void triggerSpillway(double inFlow) {
-        next.processFlow(inFlow);
+        if(next != null) {
+            next.processFlow(inFlow);
+        }
     }
 
     public double getVolume() {

@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Objects;
 
 public class EnergyPriceRepository {
-    private Path pricePath;
-    private List<String> lines;
+    private final Path pricePath;
+    private final List<String> lines;
 
     public EnergyPriceRepository() {
         try {

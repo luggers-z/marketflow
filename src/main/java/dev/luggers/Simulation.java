@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Simulation {
-    public Powerplant start = new Powerplant();
+    public Powerplant start = new Powerplant(1);
     protected IntegerProperty timeMult = new SimpleIntegerProperty(20);
     protected DoubleProperty money = new SimpleDoubleProperty();
     protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
@@ -70,7 +70,7 @@ public class Simulation {
         if (i == 0) {
             return start;
         }
-        return start.getNext(i - 1);
+        return start.getNext(i);
     }
 
     public double getMoney() {
@@ -85,7 +85,4 @@ public class Simulation {
         return start;
     }
 
-    public void started() {
-
-    }
 }

@@ -18,6 +18,8 @@ import java.util.List;
 
 public class Controller {
     Simulation simulation;
+    List<TabPane> paneList;
+    int currentTab = 0;
     @FXML
     private StackPane stackPane;
     @FXML
@@ -40,21 +42,32 @@ public class Controller {
     private TextField timeLabel;
     @FXML
     private HBox timeMultBox;
-
     @FXML
     private LineChart<Number, Number> rightChart;
     @FXML
     private LineChart<Number, Number> leftChart;
-
     @FXML
     private Spinner<Integer> timeMultSpinner;
-    List<TabPane> paneList;
-    int currentTab=0;
+    @FXML
+    private Button leftButton;
+    @FXML
+    private Button rightButton;
+
+    @FXML
+    private void onLeftClicked() {
+        tabLeft();
+    }
+
+    @FXML
+    private void onRightClicked() {
+        tabRight();
+    }
+
     @FXML
     public void initialize() {
 
 
-        background.fitWidthProperty().bind( Bindings.createDoubleBinding(() ->
+        background.fitWidthProperty().bind(Bindings.createDoubleBinding(() ->
                         stackPane.getWidth() * 1.01, // 1% overscale
                 stackPane.widthProperty()));
         background.fitHeightProperty().bind(stackPane.heightProperty());
@@ -76,6 +89,7 @@ public class Controller {
 
 
     }
+
 
     public void startUp(Simulation sim) {
         simulation = sim;
@@ -104,10 +118,14 @@ public class Controller {
             Label inFlow = new Label();
             inFlow.textProperty().bind(kwI.specificInflow.asString("Zufluss: %.2f m³/s "));
             Text deltaInFlow = new Text();
-            deltaInFlow.textProperty().bind(Bindings.subtract( kwI.specificInflow, kwI.turbineFlow).asString("[%+.2f] "));
+            deltaInFlow.textProperty().bind(Bindings.subtract(kwI.specificInflow, kwI.turbineFlow).asString("[%+.2f] "));
             kwI.turbineFlow.addListener((obs, oldValue, newValue) -> {
-                double diff = kwI.specificInflow.doubleValue() - newValue.doubleValue(); // calculate delta
-                deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);  // colorize
+                double diff = kwI.specificInflow.doubleValue() - newValue.doubleValue();
+                deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
+            });
+            kwI.specificInflow.addListener((obs, oldValue, newValue) -> {
+                double diff = newValue.doubleValue() - kwI.turbineFlow.doubleValue();
+                deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
             });
 
             double normalHeight = kwI.pool.getNormalHeight();
@@ -115,9 +133,9 @@ public class Controller {
             height.textProperty().bind((kwI.pool.height.asString("Stauhöhe: %.2f m ")));
             Text deltaHeight = new Text();
             deltaHeight.textProperty().bind(Bindings.subtract(kwI.pool.height, normalHeight).asString("[%+.2f] "));
-            kwI.pool.height.addListener((obs, oldValue, newValue) -> {
-                double diff = newValue.doubleValue() - normalHeight; // calculate delta
-                deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);  // colorize
+            kwI.getPool().height.addListener((obs, oldValue, newValue) -> {
+                double diff = newValue.doubleValue() - normalHeight;
+                deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
             });
             textFlow.getChildren().addAll(inFlow, deltaInFlow, height, deltaHeight);
 
@@ -152,31 +170,32 @@ public class Controller {
             tabPane.setVisible(false);
         }
         timeMultBox.toFront();
-        paneList.add(new TabPane(new Tab("test")));
         elementFieldConfig(simulation);
 
         spinnerConfig();
         paneList.get(currentTab).setVisible(true);
     }
 
-    public void tabLeft(){
+    public void tabLeft() {
         paneList.get(currentTab).setVisible(false);
         paneList.get(loopTabs(-1)).setVisible(true);
     }
-    public void tabRight(){
+
+    public void tabRight() {
         paneList.get(currentTab).setVisible(false);
         paneList.get(loopTabs(1)).setVisible(true);
     }
-    public int loopTabs(int change){
-        if(currentTab+change>=0){
-            currentTab+=change;
+
+    public int loopTabs(int change) {
+        if (currentTab + change >= 0) {
+            currentTab += change;
+        } else {
+            currentTab = paneList.size() - 1;
         }
-        else{
-            currentTab=paneList.size()-1;
-        }
-        return currentTab%=paneList.size();
+        return currentTab %= paneList.size();
 
     }
+
     private void spinnerConfig() {
         timeMultSpinner.setEditable(true);
         timeMultSpinner.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 10000, 20, 2));
@@ -199,7 +218,7 @@ public class Controller {
         powerField.setEditable(false);
         inflowField.setEditable(false);
         timeLabel.setEditable(false);
-        timeLabel.setPrefColumnCount(15);
+        timeLabel.setPrefColumnCount(16);
         moneyField.textProperty().bind(simulation.money.asString("Kontostand: %,.0f €"));
         powerField.textProperty().bind(simulation.totalPowerMW.asString("Totaleistung: %.2f MW"));
         inflowField.textProperty().bind(simulation.inflowRepository.inflow.asString("Zufluss: %.0f m³/s"));

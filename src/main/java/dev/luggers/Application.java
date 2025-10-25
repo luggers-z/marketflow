@@ -24,19 +24,18 @@ public class Application extends javafx.application.Application {
         Scene scene = new Scene(fxmlLoader.load());
         Controller controller = fxmlLoader.getController();
         controller.startUp(simulation);
-        scene.setOnKeyPressed(new EventHandler<KeyEvent>(){
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override
             public void handle(KeyEvent event) {
-                if(event.getCode() == KeyCode.LEFT){
+                if (event.getCode() == KeyCode.LEFT) {
                     controller.tabLeft();
                 }
-                if(event.getCode() == KeyCode.RIGHT){
+                if (event.getCode() == KeyCode.RIGHT) {
                     controller.tabRight();
                 }
             }
         });
-
 
 
         simulation.startUp();
@@ -59,7 +58,6 @@ public class Application extends javafx.application.Application {
             }
         };
         timer.start();
-        ;
 
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);

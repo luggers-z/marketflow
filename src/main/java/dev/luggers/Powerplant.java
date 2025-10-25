@@ -3,6 +3,13 @@ package dev.luggers;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.List;
+import java.util.Objects;
+
 /**
  * Powerplant is ...
  */
@@ -10,7 +17,6 @@ public class Powerplant {
     public static final long MEGA_HOURS = 3600000000L;
     protected final Pool pool;
     private final String name;
-    private final Powerplant next;
     private final double efficiency;
     private final double maxwaterflow;
     private final double minwaterflow;
@@ -18,59 +24,41 @@ public class Powerplant {
     protected DoubleProperty turbineFlow = new SimpleDoubleProperty();
     protected DoubleProperty powerMW = new SimpleDoubleProperty();
     protected DoubleProperty specificInflow = new SimpleDoubleProperty();
+    private Powerplant next;
     private double energy;
+    private Path path;
+    private List<String> lines;
 
-    /**
-     * Create a new instance of a power plant, with the given capacity....
-     *
-     * @param name         A String representing the human-readable name of the
-     *                     power plant.
-     * @param next         an instance of power plant, following down the line.
-     *                     Maybe null.
-     * @param pool         A reservoir attached to this power plant, never null.
-     * @param height       The falling height of the water generating Power
-     * @param efficiency   The efficiency of the power plant
-     * @param maxwaterflow The maximum waterflow
-     * @param minwaterflow The minimum waterflow
-     */
-    public Powerplant(final String name, final Powerplant next, final Pool pool, final double height,
-                      final double efficiency, final double maxwaterflow, final double minwaterflow) {
-        this.name = name;
-        this.next = next;
-        this.pool = pool;
-        this.height = height;
-        this.efficiency = efficiency;
-        this.maxwaterflow = maxwaterflow;
-        this.minwaterflow = minwaterflow;
-
-        turbineFlow.set(100);
-    }
-
-    /**
-     * Create a new instance of a Powerplant, with the given capacity, without a
-     * downstream power plant.
-     * * @param name          A String representing the human-readable name of the
-     * *                      power plant.
-     * * @param pool          A reservoir attached to this power plant, never null.
-     * * @param height         The falling height of the water generating Power
-     * * @param efficiency    The efficiency of the power plant
-     * * @param maxwaterflow  The maximum waterflow
-     * * @param minwaterflow  The minimum waterflow
-     */
-    public Powerplant(final String name, final Pool pool, final double height, final double efficiency,
-                      final double maxwaterflow, double minwaterflow) {
-        this(name, null, pool, height, efficiency, maxwaterflow, minwaterflow);
-    }
-
-    public Powerplant() {
-        name = null;
-        next = null;
-        pool = new Pool();
-        height = 1.5;
+    public Powerplant(int i) {
         efficiency = 0.8;
-        turbineFlow.set(700);
-        maxwaterflow = 1000;
-        minwaterflow = 20;
+        try {
+            path = Paths.get((Objects.requireNonNull(getClass().getResource("/powerplants.csv"))).toURI());
+        } catch (URISyntaxException e) {
+        }
+        try {
+            lines = Files.readAllLines(path);
+        } catch (Exception e) {
+        }
+        String line = lines.get(i);
+        String[] values = line.split(";");
+        name = values[0];
+        maxwaterflow = Double.parseDouble(values[1]);
+        minwaterflow = Double.parseDouble(values[2]);
+        height = Double.parseDouble(values[3]);
+        next = null;
+        double maxHeight = Double.parseDouble(values[4]);
+        double minHeight = Double.parseDouble(values[5]);
+        double normalHeight = Double.parseDouble(values[6]);
+        double startHeight = Double.parseDouble(values[7]);
+        double width = Double.parseDouble(values[8]);
+        double length = Double.parseDouble(values[9]);
+        pool = new Pool(null, length, width, startHeight, minHeight, maxHeight, normalHeight);
+        if (i < lines.size() - 1) {
+            next = new Powerplant(i + 1);
+            pool.setNext(next.getPool());
+
+        }
+
     }
 
     public void processFlow(double incomingFlow, double delta) {
@@ -137,5 +125,9 @@ public class Powerplant {
 
     public double getMinWaterflow() {
         return minwaterflow;
+    }
+
+    public Pool getPool() {
+        return pool;
     }
 }

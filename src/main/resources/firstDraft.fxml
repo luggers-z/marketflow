@@ -13,6 +13,7 @@
 
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.Button?>
 <StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
            maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
            prefHeight="776.0" prefWidth="912.0"
@@ -65,10 +66,16 @@
                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                        prefHeight="200.0">
             </StackPane>
-            <HBox AnchorPane.bottomAnchor="0"  AnchorPane.rightAnchor="0" alignment="CENTER_RIGHT" fx:id="timeMultBox"  >
+            <VBox AnchorPane.bottomAnchor="0"  AnchorPane.rightAnchor="0"  >
+               <HBox fx:id="tabBox" alignment="CENTER_RIGHT">
+                  <Button fx:id="leftButton" text="←" onAction="#onLeftClicked" />
+                  <Button fx:id="rightButton" text="→" onAction="#onRightClicked" />
+               </HBox>
+            <HBox  fx:id="timeMultBox" alignment="CENTER_RIGHT" >
                <Label>Time Multiplier: &#160; </Label>
                <Spinner fx:id="timeMultSpinner" />
             </HBox>
+            </VBox>
          </children>
       </AnchorPane>
    </children>
