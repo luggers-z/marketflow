@@ -25,6 +25,9 @@
             <Image url="@isar.png" />
          </image>
       </ImageView>
+       <AnchorPane fx:id="buttonPane" >
+
+       </AnchorPane>
       <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
          <children>
 
@@ -66,14 +69,23 @@
                        AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
                        prefHeight="200.0">
             </StackPane>
-            <VBox AnchorPane.bottomAnchor="0"  AnchorPane.rightAnchor="0"  >
-               <HBox fx:id="tabBox" alignment="CENTER_RIGHT">
+            <VBox AnchorPane.bottomAnchor="0"  AnchorPane.rightAnchor="0"  spacing="10">
+               <HBox fx:id="tabBox" alignment="CENTER_RIGHT" >
+
                   <Button fx:id="leftButton" text="←" onAction="#onLeftClicked" />
                   <Button fx:id="rightButton" text="→" onAction="#onRightClicked" />
+
                </HBox>
-            <HBox  fx:id="timeMultBox" alignment="CENTER_RIGHT" >
-               <Label>Time Multiplier: &#160; </Label>
+            <HBox  fx:id="timeMultBox" alignment="CENTER_RIGHT" spacing="2">
+               <Label>Time Multiplier: </Label>
                <Spinner fx:id="timeMultSpinner" />
+                <StackPane>
+                    <children>
+                        <Button fx:id="startButton" text="▶" onAction="#onStartClicked"/>
+                        <Button fx:id="pauseButton" text = "⏸" onAction="#onPauseClicked" />
+
+                    </children>
+                </StackPane>
             </HBox>
             </VBox>
          </children>

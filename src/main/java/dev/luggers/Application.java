@@ -11,7 +11,7 @@ import javafx.stage.Stage;
 
 
 public class Application extends javafx.application.Application {
-    Simulation simulation = new Simulation();
+
     private long lastUpdate = 0;
 
     public static void main(String[] args) {
@@ -23,7 +23,7 @@ public class Application extends javafx.application.Application {
         FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         Controller controller = fxmlLoader.getController();
-        controller.startUp(simulation);
+        controller.startUp();
         scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
 
             @Override
@@ -37,9 +37,6 @@ public class Application extends javafx.application.Application {
             }
         });
 
-
-        simulation.startUp();
-        UIUpdater uiUpdater = new UIUpdater(simulation, controller);
         AnimationTimer timer = new AnimationTimer() {
             @Override
             public void handle(long now) {
@@ -51,14 +48,14 @@ public class Application extends javafx.application.Application {
                     if (delta > 0.25) {
                         delta = 0.25;
                     }
+                    scene.getRoot().requestFocus();
                     System.out.println(delta);
-                    simulation.nextTick(delta);
+                    controller.nextTick(delta);
                 }
                 lastUpdate = now;
             }
         };
         timer.start();
-
         primaryStage.setTitle("Simulation Output");
         primaryStage.setScene(scene);
         primaryStage.show();

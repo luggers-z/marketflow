@@ -14,8 +14,8 @@ import java.util.Objects;
  * Powerplant is ...
  */
 public class Powerplant {
-    public static final long MEGA_HOURS = 3600000000L;
-    protected final Pool pool;
+    private  static final long MEGA_HOURS = 3600000000L;
+    private  final Pool pool;
     private final String name;
     private final double efficiency;
     private final double maxwaterflow;

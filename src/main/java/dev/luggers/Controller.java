@@ -17,9 +17,13 @@ import java.util.List;
 
 
 public class Controller {
-    Simulation simulation;
-    List<TabPane> paneList;
+    private Simulation simulation;
+    private UIHelper uiHelper;
+    private List<TabPane> paneList;
     int currentTab = 0;
+    int prevTimeMult = 0;
+    @FXML
+    private AnchorPane buttonPane;
     @FXML
     private StackPane stackPane;
     @FXML
@@ -52,10 +56,26 @@ public class Controller {
     private Button leftButton;
     @FXML
     private Button rightButton;
+@FXML private Button pauseButton;
+@FXML private Button startButton;
 
     @FXML
     private void onLeftClicked() {
         tabLeft();
+    }
+
+    @FXML
+    private void onPauseClicked() {
+        prevTimeMult = timeMultSpinner.getValue();
+        timeMultSpinner.getValueFactory().setValue(0);
+        startButton.setVisible(true);
+        pauseButton.setVisible(false);
+    }
+    @FXML
+    private void onStartClicked() {
+        timeMultSpinner.getValueFactory().setValue(prevTimeMult);
+        startButton.setVisible(false);
+        pauseButton.setVisible(true);
     }
 
     @FXML
@@ -65,16 +85,18 @@ public class Controller {
 
     @FXML
     public void initialize() {
-
-
+         simulation = new Simulation();
+        uiHelper = new UIHelper(simulation, this);
         background.fitWidthProperty().bind(Bindings.createDoubleBinding(() ->
                         stackPane.getWidth() * 1.01, // 1% overscale
                 stackPane.widthProperty()));
         background.fitHeightProperty().bind(stackPane.heightProperty());
         background.setPreserveRatio(true);
         background.setSmooth(true);
-
-
+        buttonPane.maxWidthProperty().bind(background.fitWidthProperty());
+        buttonPane.maxHeightProperty().bind(background.fitHeightProperty());
+        buttonPane.prefWidthProperty().bind(background.fitWidthProperty());
+        buttonPane.prefHeightProperty().bind(background.fitHeightProperty());
         allBind(mainPane, stackPane, 1, 1);
         allBind(bottomPane, stackPane, 1, 0.1);
 
@@ -91,11 +113,15 @@ public class Controller {
     }
 
 
-    public void startUp(Simulation sim) {
-        simulation = sim;
-        int length = simulation.start.getLength();
+    public void startUp() {
+        simulation.startUp();
+
+        int length = simulation.getStart().getLength();
         paneList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
+            Powerplant kwI = simulation.getPowerplant(i);
+
+
             TabPane tabPane = new TabPane();
             tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
@@ -104,12 +130,12 @@ public class Controller {
 
             AnchorPane anchorPane = new AnchorPane();
 
-            Powerplant kwI = simulation.getPowerplant(i);
 
-            Slider slider = new Slider(kwI.getMinWaterflow(), kwI.getMaxWaterflow(), simulation.getInflow());
+
+            Slider slider = new Slider(kwI.getMinWaterflow(), kwI.getMaxWaterflow(), 0);
             sliderConfig(slider);
             slider.valueProperty().bindBidirectional(kwI.turbineFlow);
-
+            slider.setValue(simulation.getInflow());
 
             Label throughFlow = new Label();
             throughFlow.textProperty().bind(slider.valueProperty().asString("Durchfluss: %.02f m³/s "));
@@ -128,11 +154,11 @@ public class Controller {
                 deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
             });
 
-            double normalHeight = kwI.pool.getNormalHeight();
+            double normalHeight = kwI.getPool().getNormalHeight();
             Label height = new Label();
-            height.textProperty().bind((kwI.pool.height.asString("Stauhöhe: %.2f m ")));
+            height.textProperty().bind((kwI.getPool().height.asString("Stauhöhe: %.2f m ")));
             Text deltaHeight = new Text();
-            deltaHeight.textProperty().bind(Bindings.subtract(kwI.pool.height, normalHeight).asString("[%+.2f] "));
+            deltaHeight.textProperty().bind(Bindings.subtract(kwI.getPool().height, normalHeight).asString("[%+.2f] "));
             kwI.getPool().height.addListener((obs, oldValue, newValue) -> {
                 double diff = newValue.doubleValue() - normalHeight;
                 deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
@@ -151,10 +177,10 @@ public class Controller {
             HBox variableBox = new HBox();
             variableBox.setAlignment(Pos.CENTER_LEFT);
             variableBox.getChildren().addAll(textFlow);
-
+            Label nameLabel = new Label(String.format("Kraftwerk: %s",kwI.getName()));
             VBox boxCointainer = new VBox();
             boxCointainer.setStyle("-fx-background-color: white;");
-            boxCointainer.getChildren().addAll(controlBox, variableBox);
+            boxCointainer.getChildren().addAll(nameLabel, controlBox, variableBox);
             anchorPane.getChildren().add(boxCointainer);
             AnchorPane.setTopAnchor(boxCointainer, 10.0);
             AnchorPane.setLeftAnchor(boxCointainer, 10.0);
@@ -221,7 +247,7 @@ public class Controller {
         timeLabel.setPrefColumnCount(16);
         moneyField.textProperty().bind(simulation.money.asString("Kontostand: %,.0f €"));
         powerField.textProperty().bind(simulation.totalPowerMW.asString("Totaleistung: %.2f MW"));
-        inflowField.textProperty().bind(simulation.inflowRepository.inflow.asString("Zufluss: %.0f m³/s"));
+        inflowField.textProperty().bind(simulation.getInflowRepository().inflow.asString("Zufluss: %.0f m³/s"));
     }
 
     private void enableSliderColor(Slider slider) {
@@ -277,4 +303,6 @@ public class Controller {
     public TextField getTimeLabel() {
         return timeLabel;
     }
-}
+    public void nextTick(double delta) {
+        simulation.nextTick(delta);
+    }}

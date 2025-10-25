@@ -6,13 +6,13 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class Pool {
     final double normalHeight;
     protected DoubleProperty height = new SimpleDoubleProperty();
-    double length;
-    double width;
-    double volume;
-    double minh;
-    double maxh;
-    double maxVolume;
-    double minVolume;
+    private double length;
+    private double width;
+    private double volume;
+    private double minh;
+    private double maxh;
+    private double maxVolume;
+    private double minVolume;
     Pool next;
 
     Pool(Pool next, double length, double width, double h, double minh, double maxh, double nHeight) {
@@ -26,12 +26,16 @@ public class Pool {
         this.maxh = maxh;
         maxVolume = this.length * width * maxh;
         minVolume = this.length * width * minh;
+        System.out.println(minVolume);
     }
 
     public void setNext(Pool next) {
         this.next = next;
     }
     public void processFlow(double inFlow) {
+        if (volume<minVolume){
+            volume = minVolume;
+        }
         if (isFull()) {
             if (next != null) {
                 next.triggerSpillway(inFlow);

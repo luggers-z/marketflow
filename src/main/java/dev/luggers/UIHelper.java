@@ -5,22 +5,21 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.TextField;
 
-public class UIUpdater {
+public class UIHelper {
     private static final int MAX_POINTS = 5;
-    LineChart<Number, Number> rightChart;
-    NumberAxis yAxisInflow;
-    NumberAxis xAxisInflow;
-    LineChart<Number, Number> leftChart;
-    NumberAxis yAxisEnergyPrice;
-    NumberAxis xAxisEnergyPrice;
-    TextField timeLabel;
-    Simulation simulation;
-    XYChart.Series<Number, Number> seriesInflow = new XYChart.Series<>();
-    XYChart.Series<Number, Number> seriesEnergyPrice = new XYChart.Series<>();
+    private LineChart<Number, Number> rightChart;
+    private NumberAxis yAxisInflow;
+    private NumberAxis xAxisInflow;
+    private LineChart<Number, Number> leftChart;
+    private NumberAxis yAxisEnergyPrice;
+    private NumberAxis xAxisEnergyPrice;
+    private TextField timeLabel;
+    private Simulation simulation;
+    private XYChart.Series<Number, Number> seriesInflow = new XYChart.Series<>();
+    private XYChart.Series<Number, Number> seriesEnergyPrice = new XYChart.Series<>();
 
-    public UIUpdater(Simulation sim, Controller controller) {
+    public UIHelper(Simulation sim, Controller controller) {
         assign(sim, controller);
-
         chartSettings();
         hourlyListener();
 
@@ -41,15 +40,15 @@ public class UIUpdater {
     }
 
     private void hourlyListener() {
-        if (simulation.simulationClock.gettotalTime() < 3600) {
+        if (simulation.getSimulationClock().gettotalTime() < 3600) {
             setBaseline();
         }
-        simulation.simulationClock.totalHours.addListener((observable, oldValue, newValue) -> {
+        simulation.getSimulationClock().totalHours.addListener((observable, oldValue, newValue) -> {
             chartUpdater(newValue);
 
 
         });
-        simulation.simulationClock.totalquarterHours.addListener((observable, oldValue, newValue) -> {
+        simulation.getSimulationClock().totalquarterHours.addListener((observable, oldValue, newValue) -> {
             timeUpdater(newValue);
 
         });
@@ -80,7 +79,7 @@ public class UIUpdater {
         double fullTime = newValue.doubleValue() * 3600;
         int dataSize = seriesInflow.getData().size();
         int limit = Math.min(10, dataSize);
-        double inflow = simulation.inflowRepository.getInflow(fullTime);
+        double inflow = simulation.getInflowRepository().getInflow(fullTime);
 
         seriesInflow.getData().add(new XYChart.Data(newValue, inflow));
         xAxisInflow.setLowerBound(newValue.doubleValue() - limit);
@@ -109,7 +108,7 @@ public class UIUpdater {
         } else {
             yAxisInflow.setUpperBound(maximum + 10);
         }
-        double Price = simulation.energyPriceRepository.getPrice(fullTime);
+        double Price = simulation.getEnergyPriceRepository().getPrice(fullTime);
 
         seriesEnergyPrice.getData().add(new XYChart.Data(newValue, Price));
         xAxisEnergyPrice.setLowerBound(newValue.doubleValue() - limit);

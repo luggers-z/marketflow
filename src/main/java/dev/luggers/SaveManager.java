@@ -6,32 +6,38 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Properties;
 
 public class SaveManager {
-    public static final String KRAFTWERKVOLUMEN = "kraftwerksvolumen Nr. %d";
-    Path savePath;
+    private static final String KRAFTWERKVOLUMEN = "kraftwerksvolumenNr.%d";
+    private Path savePath;
 
     public SaveManager() {
-        savePath = Paths.get(System.getProperty("user.home"), "myapp", "save.properties");
+        savePath = Paths.get(System.getProperty("user.home"), ".marketflow", "save.properties");
     }
 
     public void startUp(Simulation simulation) {
         Properties prop = new Properties();
+        boolean changed = false;
         if (Files.exists(savePath)) {
             try {
                 prop.load(Files.newInputStream(savePath));
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            if (!prop.isEmpty()) {
+                if (propertyCheck(prop, "money")) changed= true;
                 simulation.setMoney(Double.parseDouble(prop.getProperty("money")));
-                simulation.simulationClock.startupClock(Double.parseDouble(prop.getProperty("totalTime")));
-                int length = simulation.start.getLength();
+                if (propertyCheck(prop, "totalTime"))changed= true;;
+                simulation.getSimulationClock().startupClock(Double.parseDouble(prop.getProperty("totalTime")));
+                int length = simulation.getStart().getLength();
                 for (int i = 0; i < length; i++) {
                     Powerplant KWi = simulation.getPowerplant(i);
-                    KWi.pool.setVolume(Double.parseDouble(prop.getProperty(KRAFTWERKVOLUMEN.formatted(i))));
+                    if (propertyCheck(prop, KRAFTWERKVOLUMEN.formatted(i))) changed= true;;
+                    KWi.getPool().setVolume(Double.parseDouble(prop.getProperty(KRAFTWERKVOLUMEN.formatted(i))));
                 }
+            if (changed) {
+                saveStore(prop);
             }
         } else {
             try {
@@ -46,22 +52,57 @@ public class SaveManager {
             }
         }
 
-    }
 
+    }
+    private void saveStore(Properties prop) {
+        try {
+            prop.store(
+                    Files.newOutputStream(savePath,
+                            StandardOpenOption.CREATE,
+                            StandardOpenOption.TRUNCATE_EXISTING,
+                            StandardOpenOption.WRITE),
+                    ""
+            );
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    private boolean propertyCheck(Properties prop, String name) {
+
+
+        if (!existsProperty(prop, name)) {
+            prop.setProperty(name, "0");
+            return true;
+        } else if (!isParsable(prop, name)) {
+            prop.setProperty(name, "0");
+            return true;
+        }
+
+        return false;
+    }
+    private boolean isParsable(Properties prop, String property) {
+        try{
+            Double.parseDouble(prop.getProperty(property));
+        }
+        catch (NumberFormatException e){
+            return false;
+        }
+        return true;
+    }
+    private boolean existsProperty(Properties prop,String property) {
+        return prop.getProperty(property)!=null;
+
+    }
     public void save(Simulation simulation) {
         Properties prop = new Properties();
-        prop.setProperty("totalTime", String.valueOf(simulation.simulationClock.gettotalTime()));
+        prop.setProperty("totalTime", String.valueOf(simulation.getSimulationClock().gettotalTime()));
         prop.setProperty("money", String.valueOf(simulation.getMoney()));
         int length = simulation.getStart().getLength();
         for (int i = 0; i < length; i++) {
             Powerplant KWi = simulation.getPowerplant(i);
-            prop.setProperty(KRAFTWERKVOLUMEN.formatted(i), String.valueOf(KWi.pool.getVolume()));
+            prop.setProperty(KRAFTWERKVOLUMEN.formatted(i), String.valueOf(KWi.getPool().getVolume()));
         }
 
-        try {
-            prop.store(Files.newOutputStream(savePath), "");
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        saveStore(prop);
     }
 }

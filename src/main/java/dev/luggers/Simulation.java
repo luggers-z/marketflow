@@ -7,14 +7,14 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Simulation {
-    public Powerplant start = new Powerplant(1);
+    private Powerplant start = new Powerplant(1);
     protected IntegerProperty timeMult = new SimpleIntegerProperty(20);
     protected DoubleProperty money = new SimpleDoubleProperty();
     protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
-    SimulationClock simulationClock = new SimulationClock();
-    InflowRepository inflowRepository = new InflowRepository();
-    EnergyPriceRepository energyPriceRepository = new EnergyPriceRepository();
-    SaveManager saveManager = new SaveManager();
+    private SimulationClock simulationClock = new SimulationClock();
+    private InflowRepository inflowRepository = new InflowRepository();
+    private EnergyPriceRepository energyPriceRepository = new EnergyPriceRepository();
+    private SaveManager saveManager = new SaveManager();
 
     Simulation() {
     }
@@ -31,6 +31,7 @@ public class Simulation {
 
     public void startUp() {
         saveManager.startUp(this);
+
     }
 
     public void save() {
@@ -71,6 +72,19 @@ public class Simulation {
             return start;
         }
         return start.getNext(i);
+    }
+    public void startUpClock(double time){
+        simulationClock.startupClock(time);
+    }
+
+    public SimulationClock getSimulationClock() {
+        return simulationClock;
+    }
+    public InflowRepository getInflowRepository() {
+        return inflowRepository;
+    }
+    public EnergyPriceRepository getEnergyPriceRepository() {
+        return energyPriceRepository;
     }
 
     public double getMoney() {
