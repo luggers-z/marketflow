@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class Simulation {
-    private Powerplant start = new Powerplant(1);
+    private Powerplant start;
     protected IntegerProperty timeMult = new SimpleIntegerProperty(20);
     protected DoubleProperty money = new SimpleDoubleProperty();
     protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
@@ -17,6 +17,10 @@ public class Simulation {
     private SaveManager saveManager = new SaveManager();
 
     Simulation() {
+    }
+
+    public void setStart(Powerplant start) {
+        this.start = start;
     }
 
     public void nextTick(double delta) {

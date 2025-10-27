@@ -12,11 +12,18 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
+import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Controller {
+    public static final int RELATIVEXPOSITION = 10;
+    public static final int RELATIVEYPOSITION = 11;
     private Simulation simulation;
     private UIHelper uiHelper;
     private List<TabPane> paneList;
@@ -47,9 +54,9 @@ public class Controller {
     @FXML
     private HBox timeMultBox;
     @FXML
-    private LineChart<Number, Number> rightChart;
+    private LineChart<Number, Number> inflowChart;
     @FXML
-    private LineChart<Number, Number> leftChart;
+    private LineChart<Number, Number> priceChart;
     @FXML
     private Spinner<Integer> timeMultSpinner;
     @FXML
@@ -85,7 +92,12 @@ public class Controller {
 
     @FXML
     public void initialize() {
-         simulation = new Simulation();
+
+
+
+
+
+        simulation = new Simulation();
         uiHelper = new UIHelper(simulation, this);
         background.fitWidthProperty().bind(Bindings.createDoubleBinding(() ->
                         stackPane.getWidth() * 1.01, // 1% overscale
@@ -98,22 +110,27 @@ public class Controller {
         buttonPane.prefWidthProperty().bind(background.fitWidthProperty());
         buttonPane.prefHeightProperty().bind(background.fitHeightProperty());
         allBind(mainPane, stackPane, 1, 1);
-        allBind(bottomPane, stackPane, 1, 0.1);
+        allBind(bottomPane, stackPane, 1, 0.14);
 
 
         chartBox.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.2));
-        leftChart.prefWidthProperty().bind(chartBox.heightProperty());
-        leftChart.minWidthProperty().bind(leftChart.prefWidthProperty());
-        leftChart.maxWidthProperty().bind(leftChart.prefWidthProperty());
-        rightChart.prefWidthProperty().bind(chartBox.heightProperty());
-        rightChart.minWidthProperty().bind(rightChart.prefWidthProperty());
-        rightChart.maxWidthProperty().bind(rightChart.prefWidthProperty());
+        priceChart.prefWidthProperty().bind(chartBox.heightProperty());
+        priceChart.minWidthProperty().bind(priceChart.prefWidthProperty());
+        priceChart.maxWidthProperty().bind(priceChart.prefWidthProperty());
+        inflowChart.prefWidthProperty().bind(chartBox.heightProperty());
+        inflowChart.minWidthProperty().bind(inflowChart.prefWidthProperty());
+        inflowChart.maxWidthProperty().bind(inflowChart.prefWidthProperty());
 
 
     }
 
 
     public void startUp() {
+        // Create powerplants from CSV
+        Powerplant startPlant = createPowerplantsFromCSV();
+        simulation.setStart(startPlant);
+
+        // Initialize save manager
         simulation.startUp();
 
         int length = simulation.getStart().getLength();
@@ -129,9 +146,6 @@ public class Controller {
             Tab tab2 = new Tab("Information");
 
             AnchorPane anchorPane = new AnchorPane();
-
-
-
             Slider slider = new Slider(kwI.getMinWaterflow(), kwI.getMaxWaterflow(), 0);
             sliderConfig(slider);
             slider.valueProperty().bindBidirectional(kwI.turbineFlow);
@@ -158,12 +172,12 @@ public class Controller {
             Label height = new Label();
             height.textProperty().bind((kwI.getPool().height.asString("Stauhöhe: %.2f m ")));
             Text deltaHeight = new Text();
-            deltaHeight.textProperty().bind(Bindings.subtract(kwI.getPool().height, normalHeight).asString("[%+.2f] "));
+            deltaHeight.textProperty().bind(Bindings.subtract(kwI.getPool().height, normalHeight).asString("[%+.2f]  "));
             kwI.getPool().height.addListener((obs, oldValue, newValue) -> {
                 double diff = newValue.doubleValue() - normalHeight;
                 deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
             });
-            textFlow.getChildren().addAll(inFlow, deltaInFlow, height, deltaHeight);
+            textFlow.getChildren().addAll(height, deltaHeight, inFlow, deltaInFlow);
 
 
             Label power = new Label();
@@ -172,18 +186,23 @@ public class Controller {
 
             HBox controlBox = new HBox();
             controlBox.setAlignment(Pos.CENTER_LEFT);
-            controlBox.getChildren().addAll(throughFlow, slider, power);
+            controlBox.getChildren().addAll(slider, throughFlow);
 
             HBox variableBox = new HBox();
+            HBox informationBox = new HBox(20);
+            informationBox.setAlignment(Pos.CENTER_LEFT);
             variableBox.setAlignment(Pos.CENTER_LEFT);
             variableBox.getChildren().addAll(textFlow);
-            Label nameLabel = new Label(String.format("Kraftwerk: %s",kwI.getName()));
+            Label nameLabel = new Label(String.format("Kraftwerk: %s", kwI.getName()));
+
+            informationBox.getChildren().addAll(nameLabel, power);
             VBox boxCointainer = new VBox();
             boxCointainer.setStyle("-fx-background-color: white;");
-            boxCointainer.getChildren().addAll(nameLabel, controlBox, variableBox);
+            boxCointainer.getChildren().addAll(informationBox, controlBox, variableBox);
             anchorPane.getChildren().add(boxCointainer);
             AnchorPane.setTopAnchor(boxCointainer, 10.0);
             AnchorPane.setLeftAnchor(boxCointainer, 10.0);
+
 
             tab1.setContent(anchorPane);
             tabPane.getTabs().add(tab1);
@@ -244,12 +263,61 @@ public class Controller {
         powerField.setEditable(false);
         inflowField.setEditable(false);
         timeLabel.setEditable(false);
-        timeLabel.setPrefColumnCount(16);
+        timeLabel.setPrefColumnCount(17);
         moneyField.textProperty().bind(simulation.money.asString("Kontostand: %,.0f €"));
         powerField.textProperty().bind(simulation.totalPowerMW.asString("Totaleistung: %.2f MW"));
         inflowField.textProperty().bind(simulation.getInflowRepository().inflow.asString("Zufluss: %.0f m³/s"));
     }
+    private void buttonConfig(Button button, double relativeX, double relativeY, int i) {
+        button.translateXProperty().bind(
+                Bindings.createDoubleBinding(() -> {
+                    double viewWidth = background.getBoundsInParent().getWidth();
+                    double viewHeight = background.getBoundsInParent().getHeight();
+                    double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
+                    double viewRatio = viewWidth / viewHeight;
 
+                    double imageWidth, offsetX;
+                    if (viewRatio > imageRatio) {
+                        imageWidth = viewHeight * imageRatio;
+                        offsetX = (viewWidth - imageWidth) / 2;
+                    } else {
+                        imageWidth = viewWidth;
+                        offsetX = 0;
+                    }
+
+                    return background.getBoundsInParent().getMinX() + offsetX + imageWidth * relativeX - button.getWidth() / 2;
+                }, background.boundsInParentProperty(), background.imageProperty(), button.widthProperty())
+        );
+        button.translateYProperty().bind(
+                Bindings.createDoubleBinding(() -> {
+                    double viewWidth = background.getBoundsInParent().getWidth();
+                    double viewHeight = background.getBoundsInParent().getHeight();
+                    double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
+                    double viewRatio = viewWidth / viewHeight;
+
+                    double imageHeight, offsetY;
+                    if (viewRatio > imageRatio) {
+                        // Bild ist höhenbeschränkt
+                        imageHeight = viewHeight;
+                        offsetY = 0;
+                    } else {
+                        // Bild ist breitenbeschränkt
+                        imageHeight = viewWidth / imageRatio;
+                        offsetY = (viewHeight - imageHeight) / 2;
+                    }
+
+                    return background.getBoundsInParent().getMinY() + offsetY + imageHeight * relativeY - button.getHeight() / 2;
+                }, background.boundsInParentProperty(), background.imageProperty(), button.heightProperty())
+        );
+
+        button.getStyleClass().add("circle-button");
+        mainPane.getChildren().add(button);
+        button.setOnAction(event -> {
+            paneList.get(currentTab).setVisible(false);
+            currentTab = i;
+            paneList.get(currentTab).setVisible(true);
+        });
+    }
     private void enableSliderColor(Slider slider) {
         slider.skinProperty().addListener((obs, oldSkin, newSkin) -> {
             if (newSkin == null) return;
@@ -292,12 +360,12 @@ public class Controller {
         heightBind(paneRoot, paneParent, multiplierHeight);
     }
 
-    public LineChart getRightChart() {
-        return rightChart;
+    public LineChart getInflowChart() {
+        return inflowChart;
     }
 
-    public LineChart getLeftChart() {
-        return leftChart;
+    public LineChart getPriceChart() {
+        return priceChart;
     }
 
     public TextField getTimeLabel() {
@@ -305,4 +373,58 @@ public class Controller {
     }
     public void nextTick(double delta) {
         simulation.nextTick(delta);
-    }}
+    }
+public ImageView getBackground() {
+        return background;
+    }
+
+    private Powerplant createPowerplantsFromCSV() {
+        try {
+            Path path = Paths.get(Objects.requireNonNull(getClass().getResource("/powerplants.csv")).toURI());
+            List<String> lines = Files.readAllLines(path);
+
+            if (lines.isEmpty()) {
+                throw new RuntimeException("Powerplants CSV file is empty");
+            }
+
+            Powerplant firstPlant = null;
+            Powerplant previousPlant = null;
+
+            for (int i = 0; i < lines.size(); i++) {
+                String line = lines.get(i);
+                String[] values = line.split(";");
+
+                String name = values[Powerplant.NAME];
+                double maxwaterflow = Double.parseDouble(values[Powerplant.MAXWATERFLOW]);
+                double minwaterflow = Double.parseDouble(values[Powerplant.MINWATERFLOW]);
+                double height = Double.parseDouble(values[Powerplant.HEIGHT]);
+                double maxHeight = Double.parseDouble(values[Powerplant.MAXHEIGHT]);
+                double minHeight = Double.parseDouble(values[Powerplant.MINHEIGHT]);
+                double normalHeight = Double.parseDouble(values[Powerplant.NORMALHEIGHT]);
+                double startHeight = Double.parseDouble(values[Powerplant.STARTHEIGHT]);
+                double width = Double.parseDouble(values[Powerplant.WIDTH]);
+                double length = Double.parseDouble(values[Powerplant.LENGTH]);
+
+                Powerplant currentPlant = new Powerplant(name, maxwaterflow, minwaterflow, height,
+                        maxHeight, minHeight, normalHeight, startHeight, width, length);
+
+                if (i == 0) {
+                    firstPlant = currentPlant;
+                } else {
+                    previousPlant.setNext(currentPlant);
+                }
+
+                Button infoButton = new Button();
+                double relativeXpos = Double.parseDouble(values[RELATIVEXPOSITION]);
+                double relativeYpos = Double.parseDouble(values[RELATIVEYPOSITION]);
+                buttonConfig(infoButton, relativeXpos, relativeYpos, i);
+                previousPlant = currentPlant;
+            }
+
+            return firstPlant;
+
+        } catch (Exception e) {
+            throw new RuntimeException("Failed to load powerplants from CSV", e);
+        }
+    }
+}

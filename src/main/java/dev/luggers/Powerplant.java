@@ -3,18 +3,21 @@ package dev.luggers;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 
-import java.net.URISyntaxException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
-import java.util.Objects;
-
 /**
  * Powerplant is ...
  */
 public class Powerplant {
+    public static final int MAXWATERFLOW = 1;
+    public static final int MINWATERFLOW = 2;
     private  static final long MEGA_HOURS = 3600000000L;
+    public static final int NAME = 0;
+    public static final int HEIGHT = 3;
+    public static final int MAXHEIGHT = 4;
+    public static final int MINHEIGHT = 5;
+    public static final int NORMALHEIGHT = 6;
+    public static final int STARTHEIGHT = 7;
+    public static final int WIDTH = 8;
+    public static final int LENGTH = 9;
     private  final Pool pool;
     private final String name;
     private final double efficiency;
@@ -26,39 +29,17 @@ public class Powerplant {
     protected DoubleProperty specificInflow = new SimpleDoubleProperty();
     private Powerplant next;
     private double energy;
-    private Path path;
-    private List<String> lines;
 
-    public Powerplant(int i) {
-        efficiency = 0.8;
-        try {
-            path = Paths.get((Objects.requireNonNull(getClass().getResource("/powerplants.csv"))).toURI());
-        } catch (URISyntaxException e) {
-        }
-        try {
-            lines = Files.readAllLines(path);
-        } catch (Exception e) {
-        }
-        String line = lines.get(i);
-        String[] values = line.split(";");
-        name = values[0];
-        maxwaterflow = Double.parseDouble(values[1]);
-        minwaterflow = Double.parseDouble(values[2]);
-        height = Double.parseDouble(values[3]);
-        next = null;
-        double maxHeight = Double.parseDouble(values[4]);
-        double minHeight = Double.parseDouble(values[5]);
-        double normalHeight = Double.parseDouble(values[6]);
-        double startHeight = Double.parseDouble(values[7]);
-        double width = Double.parseDouble(values[8]);
-        double length = Double.parseDouble(values[9]);
-        pool = new Pool(null, length, width, startHeight, minHeight, maxHeight, normalHeight);
-        if (i < lines.size() - 1) {
-            next = new Powerplant(i + 1);
-            pool.setNext(next.getPool());
-
-        }
-
+    public Powerplant(String name, double maxwaterflow, double minwaterflow, double height,
+                      double maxHeight, double minHeight, double normalHeight, double startHeight,
+                      double width, double length) {
+        this.efficiency = 0.8;
+        this.name = name;
+        this.maxwaterflow = maxwaterflow;
+        this.minwaterflow = minwaterflow;
+        this.height = height;
+        this.next = null;
+        this.pool = new Pool(null, length, width, startHeight, minHeight, maxHeight, normalHeight);
     }
 
     public void processFlow(double incomingFlow, double delta) {
@@ -129,5 +110,12 @@ public class Powerplant {
 
     public Pool getPool() {
         return pool;
+    }
+
+    public void setNext(Powerplant next) {
+        this.next = next;
+        if (next != null) {
+            this.pool.setNext(next.getPool());
+        }
     }
 }

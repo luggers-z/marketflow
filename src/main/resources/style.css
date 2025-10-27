@@ -1,24 +1,157 @@
-#leftChart .default-color0.chart-series-line {
+#priceChart .default-color0.chart-series-line {
     -fx-stroke: green;
     -fx-stroke-width: 2px;
 }
-#leftChart .default-color0.chart-line-symbol {
+#priceChart .default-color0.chart-line-symbol {
     -fx-background-color: green, white;
 }
 
 /* Right chart - blue */
-#rightChart .default-color0.chart-series-line {
+#inflowChart .default-color0.chart-series-line {
     -fx-stroke: blue;
     -fx-stroke-width: 2px;
 }
-#rightChart .default-color0.chart-line-symbol {
+#inflowChart .default-color0.chart-line-symbol {
     -fx-background-color: blue, white;
 }
 .elementField {
-     -fx-background-color:
-             #192a56;
-     -fx-text-fill: white;
-     -fx-padding: 10;
-     -fx-border-radius: 8;
-     -fx-background-radius: 8;
- }
+    -fx-background-color:
+            #192a56;
+    -fx-text-fill: white;
+    -fx-padding: 10;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+}
+
+
+.circle-button {
+    -fx-min-width: 14px;
+    -fx-min-height: 14px;
+    -fx-max-width: 14px;
+    -fx-max-height: 14px;
+
+    -fx-background-radius: 50em;
+
+    -fx-background-color: #212121, white;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 50em, 50em;
+
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
+}
+
+.circle-button:hover {
+    -fx-background-color: #2196F3, #E3F2FD;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 50em, 50em;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.6), 4, 0.5, 0, 0);
+    -fx-scale-x: 1.2;
+    -fx-scale-y: 1.2;
+}
+
+.circle-button:pressed {
+    -fx-background-color: #1976D2, #BBDEFB;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 50em, 50em;
+    -fx-effect: dropshadow(gaussian, rgba(25, 118, 210, 0.8), 2, 0.3, 0, 0);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Slider thumb styling */
+.slider .thumb {
+    -fx-background-color: #212121, white;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 50em, 50em;
+    -fx-effect: innershadow(gaussian, rgba(0, 0, 0, 0.15), 3, 0, 0, 1);
+}
+
+.slider:hover .thumb {
+    -fx-background-color: #2196F3, #E3F2FD;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 50em, 50em;
+    -fx-effect: innershadow(gaussian, rgba(33, 150, 243, 0.4), 4, 0.5, 0, 0);
+    -fx-scale-x: 1.15;
+    -fx-scale-y: 1.15;
+}
+
+.slider .thumb:pressed {
+    -fx-background-color: #1976D2, #BBDEFB;
+    -fx-background-insets: 0, 3;
+    -fx-background-radius: 50em, 50em;
+    -fx-effect: innershadow(gaussian, rgba(25, 118, 210, 0.5), 5, 0.4, 0, 0);
+    -fx-scale-x: 1.25;
+    -fx-scale-y: 1.25;
+}
+
+/* Slider track styling */
+.slider .track {
+    -fx-background-color: #e0e0e0;
+    -fx-background-radius: 3;
+}
+
+.slider:hover .track {
+    -fx-background-color: #b3e5fc;
+}
+
+.slider:focused .track {
+    -fx-background-color: #81d4fa;
+}
+
+/* Chart text - larger and more readable */
+.axis {
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-tick-label-fill: #212121;
+}
+
+.axis-label {
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #212121;
+}
+
+/* TabPane spacing and layout */
+.tab-pane {
+    -fx-padding: 0 0 5 0;
+}
+
+.tab-pane .tab-header-area {
+    -fx-padding: 0 0 2 0;
+}
+
+.tab-pane .tab {
+    -fx-padding: 4 8 4 8;
+}
+
+.tab-pane .tab-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab-content-area {
+    -fx-padding: 0 0 8 0;
+}
+
+/* Spacing for VBox and HBox inside tabs */
+.tab-pane VBox {
+    -fx-spacing: 6;
+    -fx-padding: 0 0 5 0;
+}
+
+.tab-pane HBox {
+    -fx-spacing: 8;
+    -fx-padding: 0 0 3 0;
+}
+
+/* Labels inside TabPane with better spacing */
+.tab-pane Label {
+    -fx-padding: 2 5 2 0;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+
+
+
+

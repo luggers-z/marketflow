@@ -46,7 +46,7 @@
                   <HBox fx:id="chartBox" style="-fx-background-color: white" spacing="-30" StackPane.alignment="CENTER_RIGHT" AnchorPane.topAnchor="0.0"  AnchorPane.rightAnchor="0.0"
                   >
                      <children>
-                        <LineChart fx:id="leftChart" id="leftChart">
+                        <LineChart fx:id="priceChart" id="priceChart">
                            <xAxis>
                               <NumberAxis side="BOTTOM" />
                            </xAxis>
@@ -55,7 +55,7 @@
                            </yAxis>
                         </LineChart>
 
-                        <LineChart fx:id="rightChart" id="rightChart">
+                        <LineChart fx:id="inflowChart" id="inflowChart">
                            <xAxis>
                               <NumberAxis fx:id="xR" side="BOTTOM" />
                            </xAxis>

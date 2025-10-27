@@ -7,10 +7,10 @@ import javafx.scene.control.TextField;
 
 public class UIHelper {
     private static final int MAX_POINTS = 5;
-    private LineChart<Number, Number> rightChart;
+    private LineChart<Number, Number> inflowChart;
     private NumberAxis yAxisInflow;
     private NumberAxis xAxisInflow;
-    private LineChart<Number, Number> leftChart;
+    private LineChart<Number, Number> priceChart;
     private NumberAxis yAxisEnergyPrice;
     private NumberAxis xAxisEnergyPrice;
     private TextField timeLabel;
@@ -27,16 +27,16 @@ public class UIHelper {
 
     private void assign(Simulation sim, Controller controller) {
         simulation = sim;
-        rightChart = controller.getRightChart();
-        leftChart = controller.getLeftChart();
+        inflowChart = controller.getInflowChart();
+        priceChart = controller.getPriceChart();
         timeLabel = controller.getTimeLabel();
-        rightChart.getData().add(seriesInflow);
-        leftChart.getData().add(seriesEnergyPrice);
+        inflowChart.getData().add(seriesInflow);
+        priceChart.getData().add(seriesEnergyPrice);
 
-        yAxisEnergyPrice = (NumberAxis) leftChart.getYAxis();
-        xAxisEnergyPrice = (NumberAxis) leftChart.getXAxis();
-        yAxisInflow = (NumberAxis) rightChart.getYAxis();
-        xAxisInflow = (NumberAxis) rightChart.getXAxis();
+        yAxisEnergyPrice = (NumberAxis) priceChart.getYAxis();
+        xAxisEnergyPrice = (NumberAxis) priceChart.getXAxis();
+        yAxisInflow = (NumberAxis) inflowChart.getYAxis();
+        xAxisInflow = (NumberAxis) inflowChart.getXAxis();
     }
 
     private void hourlyListener() {
@@ -61,9 +61,9 @@ public class UIHelper {
 
     private void chartSettings() {
 
-        rightChart.setLegendVisible(false);
+        inflowChart.setLegendVisible(false);
 
-        leftChart.setLegendVisible(false);
+        priceChart.setLegendVisible(false);
 
         yAxisInflow.setAutoRanging(false);
         xAxisInflow.setAutoRanging(false);

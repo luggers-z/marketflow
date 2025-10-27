@@ -5,6 +5,7 @@ import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -45,10 +46,9 @@ public class Application extends javafx.application.Application {
                     if (delta < 0.25) {
                         return;
                     }
-                    if (delta > 0.25) {
+                    if (delta >= 0.25) {
                         delta = 0.25;
                     }
-                    scene.getRoot().requestFocus();
                     System.out.println(delta);
                     controller.nextTick(delta);
                 }

@@ -7,12 +7,7 @@ import org.junit.jupiter.api.Test;
 
 class PowerplantTest {
 
-	@Test
-	void testKraftwerk() {
-		var maxwehr=new Powerplant(1);
-		maxwehr.processFlow(100,360000);
-		System.out.println(maxwehr.collectEnergy()*0.28);
-	}
+
 
 	@Test
 	@Disabled
