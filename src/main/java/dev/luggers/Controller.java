@@ -189,11 +189,10 @@ public class Controller {
             controlBox.getChildren().addAll(slider, throughFlow);
 
             HBox variableBox = new HBox();
-            HBox informationBox = new HBox(20);
-            informationBox.setAlignment(Pos.CENTER_LEFT);
+            HBox informationBox = new HBox();
             variableBox.setAlignment(Pos.CENTER_LEFT);
             variableBox.getChildren().addAll(textFlow);
-            Label nameLabel = new Label(String.format("Kraftwerk: %s", kwI.getName()));
+            Label nameLabel = new Label(String.format("Kraftwerk: %s    ",kwI.getName()));
 
             informationBox.getChildren().addAll(nameLabel, power);
             VBox boxCointainer = new VBox();
