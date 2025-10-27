@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleDoubleProperty;
 public class Powerplant {
     public static final int MAXWATERFLOW = 1;
     public static final int MINWATERFLOW = 2;
-    private  static final long MEGA_HOURS = 3600000000L;
     public static final int NAME = 0;
     public static final int HEIGHT = 3;
     public static final int MAXHEIGHT = 4;
@@ -18,7 +17,8 @@ public class Powerplant {
     public static final int STARTHEIGHT = 7;
     public static final int WIDTH = 8;
     public static final int LENGTH = 9;
-    private  final Pool pool;
+    private static final long MEGA_HOURS = 3600000000L;
+    private final Pool pool;
     private final String name;
     private final double efficiency;
     private final double maxwaterflow;

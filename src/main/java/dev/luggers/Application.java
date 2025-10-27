@@ -5,7 +5,6 @@ import javafx.animation.AnimationTimer;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.stage.Stage;
@@ -56,7 +55,7 @@ public class Application extends javafx.application.Application {
             }
         };
         timer.start();
-        primaryStage.setTitle("Simulation Output");
+        primaryStage.setTitle("MarketFlow");
         primaryStage.setScene(scene);
         primaryStage.show();
         scene.getRoot().requestFocus();

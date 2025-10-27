@@ -26,16 +26,18 @@ public class SaveManager {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-                if (propertyCheck(prop, "money")) changed= true;
-                simulation.setMoney(Double.parseDouble(prop.getProperty("money")));
-                if (propertyCheck(prop, "totalTime"))changed= true;;
-                simulation.getSimulationClock().startupClock(Double.parseDouble(prop.getProperty("totalTime")));
-                int length = simulation.getStart().getLength();
-                for (int i = 0; i < length; i++) {
-                    Powerplant KWi = simulation.getPowerplant(i);
-                    if (propertyCheck(prop, KRAFTWERKVOLUMEN.formatted(i))) changed= true;;
-                    KWi.getPool().setVolume(Double.parseDouble(prop.getProperty(KRAFTWERKVOLUMEN.formatted(i))));
-                }
+            if (propertyCheck(prop, "money")) changed = true;
+            simulation.setMoney(Double.parseDouble(prop.getProperty("money")));
+            if (propertyCheck(prop, "totalTime")) changed = true;
+            ;
+            simulation.getSimulationClock().startupClock(Double.parseDouble(prop.getProperty("totalTime")));
+            int length = simulation.getStart().getLength();
+            for (int i = 0; i < length; i++) {
+                Powerplant KWi = simulation.getPowerplant(i);
+                if (propertyCheck(prop, KRAFTWERKVOLUMEN.formatted(i))) changed = true;
+                ;
+                KWi.getPool().setVolume(Double.parseDouble(prop.getProperty(KRAFTWERKVOLUMEN.formatted(i))));
+            }
             if (changed) {
                 saveStore(prop);
             }
@@ -54,6 +56,7 @@ public class SaveManager {
 
 
     }
+
     private void saveStore(Properties prop) {
         try {
             prop.store(
@@ -67,6 +70,7 @@ public class SaveManager {
             throw new RuntimeException(e);
         }
     }
+
     private boolean propertyCheck(Properties prop, String name) {
 
 
@@ -80,19 +84,21 @@ public class SaveManager {
 
         return false;
     }
+
     private boolean isParsable(Properties prop, String property) {
-        try{
+        try {
             Double.parseDouble(prop.getProperty(property));
-        }
-        catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
         return true;
     }
-    private boolean existsProperty(Properties prop,String property) {
-        return prop.getProperty(property)!=null;
+
+    private boolean existsProperty(Properties prop, String property) {
+        return prop.getProperty(property) != null;
 
     }
+
     public void save(Simulation simulation) {
         Properties prop = new Properties();
         prop.setProperty("totalTime", String.valueOf(simulation.getSimulationClock().gettotalTime()));

@@ -12,7 +12,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
-import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -24,11 +23,11 @@ import java.util.Objects;
 public class Controller {
     public static final int RELATIVEXPOSITION = 10;
     public static final int RELATIVEYPOSITION = 11;
+    int currentTab = 0;
+    int prevTimeMult = 0;
     private Simulation simulation;
     private UIHelper uiHelper;
     private List<TabPane> paneList;
-    int currentTab = 0;
-    int prevTimeMult = 0;
     @FXML
     private AnchorPane buttonPane;
     @FXML
@@ -63,8 +62,10 @@ public class Controller {
     private Button leftButton;
     @FXML
     private Button rightButton;
-@FXML private Button pauseButton;
-@FXML private Button startButton;
+    @FXML
+    private Button pauseButton;
+    @FXML
+    private Button startButton;
 
     @FXML
     private void onLeftClicked() {
@@ -78,6 +79,7 @@ public class Controller {
         startButton.setVisible(true);
         pauseButton.setVisible(false);
     }
+
     @FXML
     private void onStartClicked() {
         timeMultSpinner.getValueFactory().setValue(prevTimeMult);
@@ -92,9 +94,6 @@ public class Controller {
 
     @FXML
     public void initialize() {
-
-
-
 
 
         simulation = new Simulation();
@@ -192,7 +191,7 @@ public class Controller {
             HBox informationBox = new HBox();
             variableBox.setAlignment(Pos.CENTER_LEFT);
             variableBox.getChildren().addAll(textFlow);
-            Label nameLabel = new Label(String.format("Kraftwerk: %s    ",kwI.getName()));
+            Label nameLabel = new Label(String.format("Kraftwerk: %s    ", kwI.getName()));
 
             informationBox.getChildren().addAll(nameLabel, power);
             VBox boxCointainer = new VBox();
@@ -267,6 +266,7 @@ public class Controller {
         powerField.textProperty().bind(simulation.totalPowerMW.asString("Totaleistung: %.2f MW"));
         inflowField.textProperty().bind(simulation.getInflowRepository().inflow.asString("Zufluss: %.0f m³/s"));
     }
+
     private void buttonConfig(Button button, double relativeX, double relativeY, int i) {
         button.translateXProperty().bind(
                 Bindings.createDoubleBinding(() -> {
@@ -317,6 +317,7 @@ public class Controller {
             paneList.get(currentTab).setVisible(true);
         });
     }
+
     private void enableSliderColor(Slider slider) {
         slider.skinProperty().addListener((obs, oldSkin, newSkin) -> {
             if (newSkin == null) return;
@@ -370,10 +371,12 @@ public class Controller {
     public TextField getTimeLabel() {
         return timeLabel;
     }
+
     public void nextTick(double delta) {
         simulation.nextTick(delta);
     }
-public ImageView getBackground() {
+
+    public ImageView getBackground() {
         return background;
     }
 
