@@ -7,7 +7,6 @@ import javafx.beans.property.SimpleDoubleProperty;
  * Powerplant is ...
  */
 public class Powerplant {
-
 	private static final long MEGA_HOURS = 3600000000L;
 
 	private static final double EIGHTY_PERCENT = 0.8;
@@ -37,12 +36,13 @@ public class Powerplant {
 		if (pool.isFull() && tempTurbineFlow < incomingFlow) {
 			turbineFlow.set(incomingFlow);
 			tempTurbineFlow = incomingFlow;
-
 		}
+
 		if (pool.isEmptyif(incomingFlow - tempTurbineFlow) && tempTurbineFlow > incomingFlow) {
 			turbineFlow.set(incomingFlow);
 			tempTurbineFlow = incomingFlow;
 		}
+
 		double flowToPool = (incomingFlow - tempTurbineFlow) * delta;
 		pool.processFlow(flowToPool);
 		energy += calculateEnergy(tempTurbineFlow, delta);
@@ -78,7 +78,6 @@ public class Powerplant {
 			return this;
 		}
 		return next.getNext(i - 1);
-
 	}
 
 	public int getLength() {

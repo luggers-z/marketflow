@@ -34,12 +34,13 @@ import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
 public class Controller {
-
 	int currentTab = 0;
 	int prevTimeMult = 0;
+
 	private Simulation simulation;
 	private UIHelper uiHelper;
 	private List<TabPane> paneList;
+
 	@FXML
 	private AnchorPane buttonPane;
 	@FXML
@@ -261,43 +262,10 @@ public class Controller {
 
 	private Button buttonConfig(double relativeX, double relativeY, int i) {
 		Button button = new Button();
-		button.translateXProperty().bind(Bindings.createDoubleBinding(() -> {
-			double viewWidth = background.getBoundsInParent().getWidth();
-			double viewHeight = background.getBoundsInParent().getHeight();
-			double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
-			double viewRatio = viewWidth / viewHeight;
-
-			double imageWidth, offsetX;
-			if (viewRatio > imageRatio) {
-				imageWidth = viewHeight * imageRatio;
-				offsetX = (viewWidth - imageWidth) / 2;
-			} else {
-				imageWidth = viewWidth;
-				offsetX = 0;
-			}
-
-			return background.getBoundsInParent().getMinX() + offsetX + imageWidth * relativeX - button.getWidth() / 2;
-		}, background.boundsInParentProperty(), background.imageProperty(), button.widthProperty()));
-		button.translateYProperty().bind(Bindings.createDoubleBinding(() -> {
-			double viewWidth = background.getBoundsInParent().getWidth();
-			double viewHeight = background.getBoundsInParent().getHeight();
-			double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
-			double viewRatio = viewWidth / viewHeight;
-
-			double imageHeight, offsetY;
-			if (viewRatio > imageRatio) {
-				// Bild ist höhenbeschränkt
-				imageHeight = viewHeight;
-				offsetY = 0;
-			} else {
-				// Bild ist breitenbeschränkt
-				imageHeight = viewWidth / imageRatio;
-				offsetY = (viewHeight - imageHeight) / 2;
-			}
-
-			return background.getBoundsInParent().getMinY() + offsetY + imageHeight * relativeY
-					- button.getHeight() / 2;
-		}, background.boundsInParentProperty(), background.imageProperty(), button.heightProperty()));
+		button.translateXProperty().bind(Bindings.createDoubleBinding(() -> getXCoordinate(relativeX, button), 
+				background.boundsInParentProperty(), background.imageProperty(), button.widthProperty()));
+		button.translateYProperty().bind(Bindings.createDoubleBinding(() -> getYCoordinate(relativeY,
+				button), background.boundsInParentProperty(), background.imageProperty(), button.heightProperty()));
 
 		button.getStyleClass().add("circle-button");
 		mainPane.getChildren().add(button);
@@ -307,6 +275,45 @@ public class Controller {
 			paneList.get(currentTab).setVisible(true);
 		});
 		return button;
+	}
+
+	private Double getYCoordinate(double relativeY, Button button) {
+		double viewWidth = background.getBoundsInParent().getWidth();
+		double viewHeight = background.getBoundsInParent().getHeight();
+		double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
+		double viewRatio = viewWidth / viewHeight;
+
+		double imageHeight, offsetY;
+		if (viewRatio > imageRatio) {
+			// Bild ist höhenbeschränkt
+			imageHeight = viewHeight;
+			offsetY = 0;
+		} else {
+			// Bild ist breitenbeschränkt
+			imageHeight = viewWidth / imageRatio;
+			offsetY = (viewHeight - imageHeight) / 2;
+		}
+
+		return background.getBoundsInParent().getMinY() + offsetY + imageHeight * relativeY
+				- button.getHeight() / 2;
+	}
+
+	private Double getXCoordinate(double relativeX, Button button) {
+		double viewWidth = background.getBoundsInParent().getWidth();
+		double viewHeight = background.getBoundsInParent().getHeight();
+		double imageRatio = background.getImage().getWidth() / background.getImage().getHeight();
+		double viewRatio = viewWidth / viewHeight;
+
+		double imageWidth, offsetX;
+		if (viewRatio > imageRatio) {
+			imageWidth = viewHeight * imageRatio;
+			offsetX = (viewWidth - imageWidth) / 2;
+		} else {
+			imageWidth = viewWidth;
+			offsetX = 0;
+		}
+
+		return background.getBoundsInParent().getMinX() + offsetX + imageWidth * relativeX - button.getWidth() / 2;
 	}
 
 	public void warnIconConfig(Button button, Powerplant powerplant) {
