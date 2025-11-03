@@ -1,5 +1,10 @@
 package dev.luggers;
-
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
@@ -11,6 +16,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
+import javafx.util.Duration;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -98,40 +104,44 @@ public class Controller {
 
         simulation = new Simulation();
         uiHelper = new UIHelper(simulation, this);
-        background.fitWidthProperty().bind(Bindings.createDoubleBinding(() ->
-                        stackPane.getWidth() * 1.01, // 1% overscale
-                stackPane.widthProperty()));
-        background.fitHeightProperty().bind(stackPane.heightProperty());
-        background.setPreserveRatio(true);
-        background.setSmooth(true);
-        buttonPane.maxWidthProperty().bind(background.fitWidthProperty());
-        buttonPane.maxHeightProperty().bind(background.fitHeightProperty());
-        buttonPane.prefWidthProperty().bind(background.fitWidthProperty());
-        buttonPane.prefHeightProperty().bind(background.fitHeightProperty());
-        allBind(mainPane, stackPane, 1, 1);
-        allBind(bottomPane, stackPane, 1, 0.14);
 
-
-        chartBox.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.2));
-        priceChart.prefWidthProperty().bind(chartBox.heightProperty());
-        priceChart.minWidthProperty().bind(priceChart.prefWidthProperty());
-        priceChart.maxWidthProperty().bind(priceChart.prefWidthProperty());
-        inflowChart.prefWidthProperty().bind(chartBox.heightProperty());
-        inflowChart.minWidthProperty().bind(inflowChart.prefWidthProperty());
-        inflowChart.maxWidthProperty().bind(inflowChart.prefWidthProperty());
-
-
+        paneFormatting();
+    }
+    public void tabLeft() {
+        paneList.get(currentTab).setVisible(false);
+        paneList.get(loopTabs(-1)).setVisible(true);
     }
 
+    public void tabRight() {
+        paneList.get(currentTab).setVisible(false);
+        paneList.get(loopTabs(1)).setVisible(true);
+    }
+
+    public int loopTabs(int change) {
+        if (currentTab + change >= 0) {
+            currentTab += change;
+        } else {
+            currentTab = paneList.size() - 1;
+        }
+        return currentTab %= paneList.size();
+    }
 
     public void startUp() {
-        // Create powerplants from CSV
         Powerplant startPlant = createPowerplantsFromCSV();
         simulation.setStart(startPlant);
 
-        // Initialize save manager
         simulation.startUp();
 
+        powerPlantTabPaneSetup();
+
+        timeMultBox.toFront();
+        elementFieldConfig(simulation);
+
+        spinnerConfig();
+        paneList.get(currentTab).setVisible(true);
+    }
+
+    private void powerPlantTabPaneSetup(){
         int length = simulation.getStart().getLength();
         paneList = new ArrayList<>();
         for (int i = 0; i < length; i++) {
@@ -212,31 +222,6 @@ public class Controller {
             bottomPane.getChildren().add(tabPane);
             tabPane.setVisible(false);
         }
-        timeMultBox.toFront();
-        elementFieldConfig(simulation);
-
-        spinnerConfig();
-        paneList.get(currentTab).setVisible(true);
-    }
-
-    public void tabLeft() {
-        paneList.get(currentTab).setVisible(false);
-        paneList.get(loopTabs(-1)).setVisible(true);
-    }
-
-    public void tabRight() {
-        paneList.get(currentTab).setVisible(false);
-        paneList.get(loopTabs(1)).setVisible(true);
-    }
-
-    public int loopTabs(int change) {
-        if (currentTab + change >= 0) {
-            currentTab += change;
-        } else {
-            currentTab = paneList.size() - 1;
-        }
-        return currentTab %= paneList.size();
-
     }
 
     private void spinnerConfig() {
@@ -267,7 +252,8 @@ public class Controller {
         inflowField.textProperty().bind(simulation.getInflowRepository().inflow.asString("Zufluss: %.0f m³/s"));
     }
 
-    private void buttonConfig(Button button, double relativeX, double relativeY, int i) {
+    private Button buttonConfig(double relativeX, double relativeY, int i) {
+        Button button = new Button();
         button.translateXProperty().bind(
                 Bindings.createDoubleBinding(() -> {
                     double viewWidth = background.getBoundsInParent().getWidth();
@@ -316,7 +302,64 @@ public class Controller {
             currentTab = i;
             paneList.get(currentTab).setVisible(true);
         });
+        return button;
     }
+    public void warnIconConfig(Button button, Powerplant powerplant, double width, double length) {
+        FontAwesomeIconView warnIcon = new FontAwesomeIconView(FontAwesomeIcon.EXCLAMATION_TRIANGLE);
+        warnIcon.setVisible(false);
+        warnIcon.translateXProperty().bind(
+                button.translateXProperty().multiply(0.99)
+        );
+        warnIcon.translateYProperty().bind(
+                button.translateYProperty().multiply(0.98)
+        );
+        Timeline pulse = iconPulseConfig(warnIcon);
+        warnIcon.setGlyphSize(38);
+        powerplant.getPool().height.addListener((obs, oldVal, newVal) -> {
+            double minVolume = powerplant.getPool().getMinVolume();
+            double maxVolume = powerplant.getPool().getMaxVolume();
+            double volume = newVal.doubleValue() * width * length;
+            if(volume>=maxVolume||volume<=minVolume){
+                if(pulse.getStatus()!= Animation.Status.RUNNING){
+                    pulse.play();
+                }
+                warnIcon.setVisible(true);
+            }else{
+                warnIcon.setVisible(false);
+            }
+        });
+        mainPane.getChildren().add(warnIcon);
+    }
+    private Timeline iconPulseConfig(FontAwesomeIconView icon) {
+        icon.setFill(Color.ORANGERED);
+        icon.setOpacity(0.0);
+        icon.setScaleX(1.0);
+        icon.setScaleY(1.0);
+
+        Timeline pulse = new Timeline(
+                new KeyFrame(Duration.ZERO,
+                        new KeyValue(icon.opacityProperty(), 0.5),
+                        new KeyValue(icon.scaleXProperty(), 1.0),
+                        new KeyValue(icon.scaleYProperty(), 1.0),
+                        new KeyValue(icon.fillProperty(), Color.ORANGERED)
+                ),
+                new KeyFrame(Duration.seconds(0.9),
+                        new KeyValue(icon.opacityProperty(), 1.0),
+                        new KeyValue(icon.scaleXProperty(), 1.2),
+                        new KeyValue(icon.scaleYProperty(), 1.2),
+                        new KeyValue(icon.fillProperty(), Color.RED)
+                ),
+                new KeyFrame(Duration.seconds(1.8),
+                        new KeyValue(icon.opacityProperty(), 0.5),
+                        new KeyValue(icon.scaleXProperty(), 1.0),
+                        new KeyValue(icon.scaleYProperty(), 1.0),
+                        new KeyValue(icon.fillProperty(), Color.ORANGERED)
+                )
+        );
+        pulse.setCycleCount(Animation.INDEFINITE);
+        return pulse;
+    }
+
 
     private void enableSliderColor(Slider slider) {
         slider.skinProperty().addListener((obs, oldSkin, newSkin) -> {
@@ -341,7 +384,29 @@ public class Controller {
             });
         });
     }
+    private void paneFormatting(){
+        background.fitWidthProperty().bind(Bindings.createDoubleBinding(() ->
+                        stackPane.getWidth() * 1.01, // 1% overscale
+                stackPane.widthProperty()));
+        background.fitHeightProperty().bind(stackPane.heightProperty());
+        background.setPreserveRatio(true);
+        background.setSmooth(true);
+        buttonPane.maxWidthProperty().bind(background.fitWidthProperty());
+        buttonPane.maxHeightProperty().bind(background.fitHeightProperty());
+        buttonPane.prefWidthProperty().bind(background.fitWidthProperty());
+        buttonPane.prefHeightProperty().bind(background.fitHeightProperty());
+        allBind(mainPane, stackPane, 1, 1);
+        allBind(bottomPane, stackPane, 1, 0.14);
 
+
+        chartBox.prefHeightProperty().bind(mainPane.heightProperty().multiply(0.2));
+        priceChart.prefWidthProperty().bind(chartBox.heightProperty());
+        priceChart.minWidthProperty().bind(priceChart.prefWidthProperty());
+        priceChart.maxWidthProperty().bind(priceChart.prefWidthProperty());
+        inflowChart.prefWidthProperty().bind(chartBox.heightProperty());
+        inflowChart.minWidthProperty().bind(inflowChart.prefWidthProperty());
+        inflowChart.maxWidthProperty().bind(inflowChart.prefWidthProperty());
+    }
     @FXML
     public void heightBind(Pane paneRoot, Pane paneParent, double multiplier) {
         paneRoot.minHeightProperty().bind(paneParent.heightProperty().multiply(multiplier));
@@ -416,10 +481,13 @@ public class Controller {
                     previousPlant.setNext(currentPlant);
                 }
 
-                Button infoButton = new Button();
                 double relativeXpos = Double.parseDouble(values[RELATIVEXPOSITION]);
                 double relativeYpos = Double.parseDouble(values[RELATIVEYPOSITION]);
-                buttonConfig(infoButton, relativeXpos, relativeYpos, i);
+                Button button = buttonConfig(relativeXpos, relativeYpos, i);
+                warnIconConfig(button, currentPlant, width, length);
+
+
+
                 previousPlant = currentPlant;
             }
 

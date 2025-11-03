@@ -21,7 +21,6 @@ public class Simulation {
 
     public void nextTick(double delta) {
         delta *= timeMult.get();
-        System.out.println(timeMult.get());
         simulationClock.time(delta);
         initiateFlow(delta);
         getRevenue();

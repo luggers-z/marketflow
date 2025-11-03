@@ -58,7 +58,6 @@
     -fx-scale-y: 1.1;
 }
 
-/* Slider thumb styling */
 .slider .thumb {
     -fx-background-color: #212121, white;
     -fx-background-insets: 0, 3;
@@ -149,6 +148,32 @@
     -fx-padding: 2 5 2 0;
     -fx-font-size: 12px;
     -fx-font-weight: bold;
+}
+.start-button {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-padding: 20px 50px;
+    -fx-background-color: linear-gradient(to bottom, #66bb6a, #4caf50);
+    -fx-text-fill: white;
+    -fx-background-radius: 15;
+    -fx-border-radius: 15;
+    -fx-border-color: #2e7d32;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 10, 0.3, 0, 4);
+    -fx-cursor: hand;
+}
+
+.start-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #81c784, #66bb6a);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.6), 15, 0.4, 0, 6);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.start-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 5, 0.2, 0, 2);
+    -fx-translate-y: 2;
 }
 
 

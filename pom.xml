@@ -1,31 +1,19 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>luggers.dev</groupId>
     <artifactId>marketflow</artifactId>
-    <version>1.0-SNAPSHOT</version>
-
+    <version>1.0.0-SNAPSHOT</version>
     <properties>
-        <maven.compiler.source>23</maven.compiler.source>
-        <maven.compiler.target>23</maven.compiler.target>
+        <maven.compiler.release>23</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <javafx.version>23</javafx.version>
         <javafx.maven.plugin.version>0.0.8</javafx.maven.plugin.version>
     </properties>
-
     <name>Luggers Powerplant Playground</name>
-    <description>This is a giant powerplant simulation, comprising beautiful powerplants, rivers and huge amounts of
-        water.
-        Beautiful water. Great water, like the great water of the Gulf of Luggers.
-    </description>
-
+    <description>This is a giant powerplant simulation, comprising beautiful powerplants, rivers and huge amounts of water. Beautiful water. Great water, like the great water of the Gulf of Luggers. </description>
     <scm>
         <url>https://github.com/luggers-z/marketflow</url>
     </scm>
-
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -34,23 +22,36 @@
         </dependency>
         <dependency>
             <groupId>org.openjfx</groupId>
-            <artifactId>javafx-fxml</artifactId>
-            <version>23</version>
+            <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
-		<dependency>
-		  <groupId>io.smallrye.config</groupId>
-		  <artifactId>smallrye-config</artifactId>
-		  <version>3.14.1</version>
-		</dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-graphics</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-media</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-9.1.2</version>
+        </dependency>
     </dependencies>
-
-
     <build>
         <pluginManagement>
             <plugins>
@@ -101,7 +102,15 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>dev.luggers.Application</mainClass>
+                    <mainClass>marketflow/dev.luggers.Application</mainClass>
+                    <!--  jlink options start here:  -->
+                    <stripDebug>true</stripDebug>
+                    <noHeaderFiles>true</noHeaderFiles>
+                    <noManPages>true</noManPages>
+                    <launcher>marketflow</launcher>
+                    <jlinkImageName>marketflow</jlinkImageName>
+                    <jlinkZipName>marketflow</jlinkZipName>
+                    <!--  end of jlink options  -->
                 </configuration>
             </plugin>
             <plugin>
@@ -116,10 +125,8 @@
                     </execution>
                 </executions>
             </plugin>
-
         </plugins>
     </build>
-
     <reporting>
         <plugins>
             <plugin>

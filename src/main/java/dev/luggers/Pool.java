@@ -9,7 +9,7 @@ public class Pool {
     Pool next;
     private double length;
     private double width;
-    private double volume;
+    protected double volume;
     private double minh;
     private double maxh;
     private double maxVolume;
@@ -26,7 +26,6 @@ public class Pool {
         this.maxh = maxh;
         maxVolume = this.length * width * maxh;
         minVolume = this.length * width * minh;
-        System.out.println(minVolume);
     }
 
     public void setNext(Pool next) {
@@ -82,7 +81,14 @@ public class Pool {
     public void setVolume(double volume) {
         this.volume = volume;
     }
-
+   public double getMinVolume() {
+        this.minVolume = this.length * this.width * this.minh;
+        return this.minVolume;
+    }
+    public double getMaxVolume() {
+        this.maxVolume = this.length * this.width * this.maxh;
+        return this.maxVolume;
+    }
     public double getNormalHeight() {
         return normalHeight;
     }
