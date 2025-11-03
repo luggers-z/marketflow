@@ -178,11 +178,11 @@ public class Controller {
 			Text deltaInFlow = new Text();
 			deltaInFlow.textProperty()
 					.bind(Bindings.subtract(kwI.specificInflow, kwI.turbineFlow).asString("[%+.2f] "));
-			kwI.turbineFlow.addListener((obs, oldValue, newValue) -> {
+			kwI.turbineFlow.addListener((_, _, newValue) -> {
 				double diff = kwI.specificInflow.doubleValue() - newValue.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
-			kwI.specificInflow.addListener((obs, oldValue, newValue) -> {
+			kwI.specificInflow.addListener((_, _, newValue) -> {
 				double diff = newValue.doubleValue() - kwI.turbineFlow.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
@@ -193,7 +193,7 @@ public class Controller {
 			Text deltaHeight = new Text();
 			deltaHeight.textProperty()
 					.bind(Bindings.subtract(kwI.getPool().height, normalHeight).asString("[%+.2f]  "));
-			kwI.getPool().height.addListener((obs, oldValue, newValue) -> {
+			kwI.getPool().height.addListener((_, _, newValue) -> {
 				double diff = newValue.doubleValue() - normalHeight;
 				deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
@@ -323,7 +323,7 @@ public class Controller {
 		warnIcon.translateYProperty().bind(button.translateYProperty().multiply(0.98));
 		Timeline pulse = iconPulseConfig(warnIcon);
 		warnIcon.setGlyphSize(38);
-		powerplant.getPool().height.addListener((obs, oldVal, newVal) -> {
+		powerplant.getPool().height.addListener((_, _, newVal) -> {
 			double minVolume = powerplant.getPool().getMinVolume();
 			double maxVolume = powerplant.getPool().getMaxVolume();
 			double volume = newVal.doubleValue() * powerplant.width() * powerplant.length();
@@ -345,7 +345,7 @@ public class Controller {
 		icon.setScaleX(1.0);
 		icon.setScaleY(1.0);
 
-		Timeline pulse = new Timeline(
+		final var pulse = new Timeline(
 				new KeyFrame(Duration.ZERO, new KeyValue(icon.opacityProperty(), 0.5),
 						new KeyValue(icon.scaleXProperty(), 1.0), new KeyValue(icon.scaleYProperty(), 1.0),
 						new KeyValue(icon.fillProperty(), Color.ORANGERED)),
@@ -360,7 +360,7 @@ public class Controller {
 	}
 
 	private void enableSliderColor(Slider slider) {
-		slider.skinProperty().addListener((obs, oldSkin, newSkin) -> {
+		slider.skinProperty().addListener((_, _, newSkin) -> {
 			if (newSkin == null)
 				return;
 
@@ -371,7 +371,7 @@ public class Controller {
 
 				track.setStyle("-fx-background-color: linear-gradient(to right, #005b96 0%, #b3cde0 0%);");
 
-				slider.valueProperty().addListener((obsVal, oldVal, newVal) -> {
+				slider.valueProperty().addListener((_, _, newVal) -> {
 					double percent = (newVal.doubleValue() - slider.getMin()) / (slider.getMax() - slider.getMin())
 							* 100.0;
 					String style = String.format(java.util.Locale.US,
