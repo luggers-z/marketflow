@@ -152,77 +152,82 @@ public class Controller {
 		final int length = simulation.getStart().getLength();
 		paneList = new ArrayList<>();
 		for (int i = 0; i < length; i++) {
-			Powerplant kwI = simulation.getPowerplant(i);
+			Powerplant plant = simulation.getPowerplant(i);
 
-			Button button = buttonConfig(kwI.getRelXPos(), kwI.getRelYPos(), i);
-			warnIconConfig(button, kwI);
+			Button button = buttonConfig(plant.getRelXPos(), plant.getRelYPos(), i);
+			warnIconConfig(button, plant);
 
 			TabPane tabPane = new TabPane();
 			tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-			Tab tab1 = new Tab("Controls");
-			Tab tab2 = new Tab("Information");
+			Tab controlTab = new Tab("Controls");
+			Tab infoTab = new Tab("Information");
 
-			AnchorPane anchorPane = new AnchorPane();
-			Slider slider = new Slider(kwI.getMinWaterflow(), kwI.getMaxWaterflow(), 0);
+			Slider slider = new Slider(plant.getMinWaterflow(), plant.getMaxWaterflow(), 0);
 			sliderConfig(slider);
-			slider.valueProperty().bindBidirectional(kwI.turbineFlow);
+			slider.valueProperty().bindBidirectional(plant.turbineFlow);
 			slider.setValue(simulation.getInflow());
 
 			Label throughFlow = new Label();
-			throughFlow.textProperty().bind(slider.valueProperty().asString("Durchfluss: %.02f m³/s "));
+			Label inFlow = new Label();
+			Label height = new Label();
+			Label power = new Label();
+			Label nameLabel = new Label(String.format("Kraftwerk: %s    ", plant.getName()));
 
 			TextFlow textFlow = new TextFlow();
-			Label inFlow = new Label();
-			inFlow.textProperty().bind(kwI.specificInflow.asString("Zufluss: %.2f m³/s "));
 			Text deltaInFlow = new Text();
+			Text deltaHeight = new Text();
+
+			throughFlow.textProperty().bind(slider.valueProperty().asString("Durchfluss: %.02f m³/s "));
+
+			inFlow.textProperty().bind(plant.specificInflow.asString("Zufluss: %.2f m³/s "));
 			deltaInFlow.textProperty()
-					.bind(Bindings.subtract(kwI.specificInflow, kwI.turbineFlow).asString("[%+.2f] "));
-			kwI.turbineFlow.addListener((_, _, newValue) -> {
-				double diff = kwI.specificInflow.doubleValue() - newValue.doubleValue();
+					.bind(Bindings.subtract(plant.specificInflow, plant.turbineFlow).asString("[%+.2f] "));
+			plant.turbineFlow.addListener((_, _, newValue) -> {
+				double diff = plant.specificInflow.doubleValue() - newValue.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
-			kwI.specificInflow.addListener((_, _, newValue) -> {
-				double diff = newValue.doubleValue() - kwI.turbineFlow.doubleValue();
+			plant.specificInflow.addListener((_, _, newValue) -> {
+				double diff = newValue.doubleValue() - plant.turbineFlow.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
 
-			double normalHeight = kwI.getPool().getNormalHeight();
-			Label height = new Label();
-			height.textProperty().bind((kwI.getPool().height.asString("Stauhöhe: %.2f m ")));
-			Text deltaHeight = new Text();
+			final double normalHeight = plant.getPool().getNormalHeight();
+			
+			height.textProperty().bind((plant.getPool().height.asString("Stauhöhe: %.2f m ")));
 			deltaHeight.textProperty()
-					.bind(Bindings.subtract(kwI.getPool().height, normalHeight).asString("[%+.2f]  "));
-			kwI.getPool().height.addListener((_, _, newValue) -> {
+					.bind(Bindings.subtract(plant.getPool().height, normalHeight).asString("[%+.2f]  "));
+			plant.getPool().height.addListener((_, _, newValue) -> {
 				double diff = newValue.doubleValue() - normalHeight;
 				deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
 			textFlow.getChildren().addAll(height, deltaHeight, inFlow, deltaInFlow);
 
-			Label power = new Label();
-			power.textProperty().bind(kwI.powerMW.asString("Leistung: %.2f Megawatt "));
+			power.textProperty().bind(plant.powerMW.asString("Leistung: %.2f Megawatt "));
 
 			HBox controlBox = new HBox();
+			HBox variableBox = new HBox();
+			HBox informationBox = new HBox();
+			VBox boxCointainer = new VBox();
+
 			controlBox.setAlignment(Pos.CENTER_LEFT);
 			controlBox.getChildren().addAll(slider, throughFlow);
 
-			HBox variableBox = new HBox();
-			HBox informationBox = new HBox();
 			variableBox.setAlignment(Pos.CENTER_LEFT);
 			variableBox.getChildren().addAll(textFlow);
-			Label nameLabel = new Label(String.format("Kraftwerk: %s    ", kwI.getName()));
 
 			informationBox.getChildren().addAll(nameLabel, power);
-			VBox boxCointainer = new VBox();
 			boxCointainer.setStyle("-fx-background-color: white;");
 			boxCointainer.getChildren().addAll(informationBox, controlBox, variableBox);
+
+			AnchorPane anchorPane = new AnchorPane();
 			anchorPane.getChildren().add(boxCointainer);
 			AnchorPane.setTopAnchor(boxCointainer, 10.0);
 			AnchorPane.setLeftAnchor(boxCointainer, 10.0);
 
-			tab1.setContent(anchorPane);
-			tabPane.getTabs().add(tab1);
-			tabPane.getTabs().add(tab2);
+			controlTab.setContent(anchorPane);
+			tabPane.getTabs().add(controlTab);
+			tabPane.getTabs().add(infoTab);
 
 			tabPane.setStyle("-fx-background-color: white;");
 
@@ -262,10 +267,10 @@ public class Controller {
 
 	private Button buttonConfig(double relativeX, double relativeY, int i) {
 		Button button = new Button();
-		button.translateXProperty().bind(Bindings.createDoubleBinding(() -> getXCoordinate(relativeX, button), 
+		button.translateXProperty().bind(Bindings.createDoubleBinding(() -> getXCoordinate(relativeX, button),
 				background.boundsInParentProperty(), background.imageProperty(), button.widthProperty()));
-		button.translateYProperty().bind(Bindings.createDoubleBinding(() -> getYCoordinate(relativeY,
-				button), background.boundsInParentProperty(), background.imageProperty(), button.heightProperty()));
+		button.translateYProperty().bind(Bindings.createDoubleBinding(() -> getYCoordinate(relativeY, button),
+				background.boundsInParentProperty(), background.imageProperty(), button.heightProperty()));
 
 		button.getStyleClass().add("circle-button");
 		mainPane.getChildren().add(button);
@@ -294,8 +299,7 @@ public class Controller {
 			offsetY = (viewHeight - imageHeight) / 2;
 		}
 
-		return background.getBoundsInParent().getMinY() + offsetY + imageHeight * relativeY
-				- button.getHeight() / 2;
+		return background.getBoundsInParent().getMinY() + offsetY + imageHeight * relativeY - button.getHeight() / 2;
 	}
 
 	private Double getXCoordinate(double relativeX, Button button) {
