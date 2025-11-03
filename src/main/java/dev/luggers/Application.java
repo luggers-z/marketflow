@@ -45,10 +45,9 @@ public class Application extends javafx.application.Application {
 	}
 
 	private void startGame() {
-		Controller controller = gameLoader.getController();
+		final Controller controller = gameLoader.getController();
 		controller.startUp();
 		gameScene.setOnKeyPressed(event ->
-
 		{
 			if (event.getCode() == KeyCode.LEFT) {
 				controller.tabLeft();
@@ -58,7 +57,7 @@ public class Application extends javafx.application.Application {
 			}
 		});
 
-		AnimationTimer timer = new AnimationTimer() {
+		final AnimationTimer timer = new AnimationTimer() {
 			@Override
 			public void handle(long now) {
 				if (lastUpdate > 0) {
