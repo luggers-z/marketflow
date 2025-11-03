@@ -1,82 +1,80 @@
 package dev.luggers;
 
-
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
-
 public class Application extends javafx.application.Application {
 
-    private long lastUpdate = 0;
-    private Scene gameScene;
-    private Scene tutorialScene;
-    FXMLLoader gameLoader;
-    FXMLLoader tutorialLoader;
-    public static void main(String[] args) {
-        launch(args);
-    }
+	private long lastUpdate = 0;
+	private Scene gameScene;
+	private Scene tutorialScene;
+	FXMLLoader gameLoader;
+	FXMLLoader tutorialLoader;
 
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        gameLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
-        gameScene = new Scene(gameLoader.load());
-        tutorialLoader = new FXMLLoader(getClass().getResource("/tutorial.fxml"));
-        tutorialScene = new Scene(tutorialLoader.load());
-        Button button = new Button("Simulation Starten");
-        button.getStyleClass().add("start-button");
-        button.setOnAction(event -> {
-                startGame();
-                primaryStage.setScene(gameScene);}
-        );
-        Parent root = tutorialLoader.getRoot();
-        ImageView backgroundImage = (ImageView) root.lookup("#tutorialImage");
-        backgroundImage.fitWidthProperty().bind(((Pane) root).widthProperty());
-        backgroundImage.fitHeightProperty().bind(((Pane) root).heightProperty());
-        ((Pane) root).getChildren().add(button);
-        primaryStage.setTitle("MarketFlow");
-        primaryStage.setScene(tutorialScene);
-        primaryStage.show();
-    }
+	public static void main(String[] args) {
+		launch(args);
+	}
 
-    private void startGame() {
-        Controller controller = gameLoader.getController();
-        controller.startUp();
-        gameScene.setOnKeyPressed(event ->
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		gameLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
+		gameScene = new Scene(gameLoader.load());
+		tutorialLoader = new FXMLLoader(getClass().getResource("/tutorial.fxml"));
+		tutorialScene = new Scene(tutorialLoader.load());
+		Button button = new Button("Simulation Starten");
+		button.getStyleClass().add("start-button");
+		button.setOnAction(event -> {
+			startGame();
+			primaryStage.setScene(gameScene);
+		});
+		Parent root = tutorialLoader.getRoot();
+		ImageView backgroundImage = (ImageView) root.lookup("#tutorialImage");
+		backgroundImage.fitWidthProperty().bind(((Pane) root).widthProperty());
+		backgroundImage.fitHeightProperty().bind(((Pane) root).heightProperty());
+		((Pane) root).getChildren().add(button);
+		primaryStage.setTitle("MarketFlow");
+		primaryStage.setScene(tutorialScene);
+		primaryStage.show();
+	}
 
-    {
-        if (event.getCode() == KeyCode.LEFT) {
-            controller.tabLeft();
-        }
-        if (event.getCode() == KeyCode.RIGHT) {
-            controller.tabRight();
-        }
-    });
+	private void startGame() {
+		Controller controller = gameLoader.getController();
+		controller.startUp();
+		gameScene.setOnKeyPressed(event ->
 
-    AnimationTimer timer = new AnimationTimer() {
-        @Override
-        public void handle(long now) {
-            if (lastUpdate > 0) {
-                double delta = (now - lastUpdate) / 1000000000.0;
-                if (delta < 0.25) {
-                    return;
-                }
-                if (delta >= 0.25) {
-                    delta = 0.25;
-                }
-                controller.nextTick(delta);
-            }
-            lastUpdate = now;
-        }
-    };
-        timer.start();
-}
+		{
+			if (event.getCode() == KeyCode.LEFT) {
+				controller.tabLeft();
+			}
+			if (event.getCode() == KeyCode.RIGHT) {
+				controller.tabRight();
+			}
+		});
+
+		AnimationTimer timer = new AnimationTimer() {
+			@Override
+			public void handle(long now) {
+				if (lastUpdate > 0) {
+					double delta = (now - lastUpdate) / 1000000000.0;
+					if (delta < 0.25) {
+						return;
+					}
+					if (delta >= 0.25) {
+						delta = 0.25;
+					}
+					controller.nextTick(delta);
+				}
+				lastUpdate = now;
+			}
+		};
+		timer.start();
+	}
 
 }
