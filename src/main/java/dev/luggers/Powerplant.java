@@ -43,7 +43,7 @@ public class Powerplant {
 			tempTurbineFlow = incomingFlow;
 		}
 
-		double flowToPool = (incomingFlow - tempTurbineFlow) * delta;
+		final var flowToPool = (incomingFlow - tempTurbineFlow) * delta;
 		pool.processFlow(flowToPool);
 		energy += calculateEnergy(tempTurbineFlow, delta);
 		if (next != null) {
@@ -73,7 +73,7 @@ public class Powerplant {
 		return metadata.name();
 	}
 
-	public Powerplant getNext(int i) {
+	public Powerplant getNext(final int i) {
 		if (i == 0) {
 			return this;
 		}
@@ -99,7 +99,7 @@ public class Powerplant {
 		return pool;
 	}
 
-	public void setNext(Powerplant next) {
+	public void setNext(final Powerplant next) {
 		this.next = next;
 		if (next != null) {
 			this.pool.setNext(next.getPool());
