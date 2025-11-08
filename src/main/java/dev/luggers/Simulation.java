@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 
 public class Simulation {
 	protected IntegerProperty timeMult = new SimpleIntegerProperty(20);
+    private int tempTimeMult;
 	protected DoubleProperty money = new SimpleDoubleProperty();
 	protected DoubleProperty totalPowerMW = new SimpleDoubleProperty();
 	private Powerplant start;
@@ -31,7 +32,13 @@ public class Simulation {
 		saveManager.startUp(this);
 
 	}
-
+    public void pause(){
+        tempTimeMult = timeMult.get();
+        timeMult.set(0);
+    }
+    public void resume(){
+       timeMult.set(tempTimeMult);
+    }
 	public void save() {
 		saveManager.save(this);
 	}

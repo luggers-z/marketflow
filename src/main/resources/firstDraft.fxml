@@ -15,8 +15,7 @@
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Button?>
 <StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
-           maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity"
-           prefHeight="776.0" prefWidth="912.0"
+              prefHeight="1080" prefWidth="1920"
            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
            stylesheets="@style.css" >
    <children>

@@ -86,7 +86,7 @@ public class Controller {
 	}
 
 	@FXML
-	private void onPauseClicked() {
+	public void onPauseClicked() {
 		prevTimeMult = timeMultSpinner.getValue();
 		timeMultSpinner.getValueFactory().setValue(0);
 		startButton.setVisible(true);
@@ -94,7 +94,7 @@ public class Controller {
 	}
 
 	@FXML
-	private void onStartClicked() {
+	public void onStartClicked() {
 		timeMultSpinner.getValueFactory().setValue(prevTimeMult);
 		startButton.setVisible(false);
 		pauseButton.setVisible(true);
@@ -122,7 +122,7 @@ public class Controller {
 	public void tabRight() {
 		paneList.get(currentTab).setVisible(false);
 		paneList.get(loopTabs(1)).setVisible(true);
-	}
+    }
 
 	public int loopTabs(int change) {
 		if (currentTab + change >= 0) {
@@ -205,6 +205,7 @@ public class Controller {
 
 			power.textProperty().bind(plant.powerMW.asString("Leistung: %.2f Megawatt "));
 
+			// Layout: inputs left, cube right
 			HBox controlBox = new HBox();
 			HBox variableBox = new HBox();
 			HBox informationBox = new HBox();
@@ -220,10 +221,16 @@ public class Controller {
 			boxCointainer.setStyle("-fx-background-color: white;");
 			boxCointainer.getChildren().addAll(informationBox, controlBox, variableBox);
 
+			// Add cube next to fields
+			HeightCube cube = new HeightCube(plant.getPool(), 12, 120);
+			HBox tabRow = new HBox(16);
+			tabRow.setAlignment(Pos.CENTER_LEFT);
+			tabRow.getChildren().addAll(boxCointainer, cube);
+
 			AnchorPane anchorPane = new AnchorPane();
-			anchorPane.getChildren().add(boxCointainer);
-			AnchorPane.setTopAnchor(boxCointainer, 10.0);
-			AnchorPane.setLeftAnchor(boxCointainer, 10.0);
+			anchorPane.getChildren().add(tabRow);
+			AnchorPane.setTopAnchor(tabRow, 10.0);
+			AnchorPane.setLeftAnchor(tabRow, 10.0);
 
 			controlTab.setContent(anchorPane);
 			tabPane.getTabs().add(controlTab);
@@ -331,7 +338,7 @@ public class Controller {
 			double minVolume = powerplant.getPool().getMinVolume();
 			double maxVolume = powerplant.getPool().getMaxVolume();
 			double volume = newVal.doubleValue() * powerplant.width() * powerplant.length();
-			if (volume >= maxVolume || volume <= minVolume) {
+			if (volume >= maxVolume*0.95 || volume <= minVolume*1.1) {
 				if (pulse.getStatus() != Animation.Status.RUNNING) {
 					pulse.play();
 				}
@@ -389,7 +396,7 @@ public class Controller {
 
 	private void paneFormatting() {
 		background.fitWidthProperty().bind(Bindings.createDoubleBinding(() -> stackPane.getWidth() * 1.01, // 1%
-																											// overscale
+																							// overscale
 				stackPane.widthProperty()));
 		background.fitHeightProperty().bind(stackPane.heightProperty());
 		background.setPreserveRatio(true);
@@ -449,3 +456,4 @@ public class Controller {
 	}
 
 }
+
