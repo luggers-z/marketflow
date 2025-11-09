@@ -14,7 +14,7 @@
            stylesheets="@style.css">
     <ImageView fx:id="tutorialImage" preserveRatio="false">
         <image>
-            <Image url="@tut.PNG"/>
+            <Image url="@tutorial.png"/>
         </image>
     </ImageView>
 
