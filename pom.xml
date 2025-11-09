@@ -43,23 +43,21 @@
             <version>${javafx.version}</version>
         </dependency>
         <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-commons</artifactId>
+            <version>9.1.2</version>
+        </dependency>
+        <dependency>
+            <groupId>de.jensd</groupId>
+            <artifactId>fontawesomefx-fontawesome</artifactId>
+            <version>4.7.0-9.1.2</version>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>5.12.2</version>
             <scope>test</scope>
         </dependency>
-
-            <dependency>
-                <groupId>de.jensd</groupId>
-                <artifactId>fontawesomefx-commons</artifactId>
-                <version>9.1.2</version>
-            </dependency>
-            <dependency>
-                <groupId>de.jensd</groupId>
-                <artifactId>fontawesomefx-fontawesome</artifactId>
-                <version>4.7.0-9.1.2</version>
-            </dependency>
-
     </dependencies>
     <build>
         <pluginManagement>
@@ -120,41 +118,6 @@
                     <jlinkImageName>marketflow</jlinkImageName>
                     <jlinkZipName>marketflow</jlinkZipName>
 					<!--  end of jlink options  -->
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <configuration>
-                    <descriptorRefs>
-                        <descriptorRef>jar-with-dependencies</descriptorRef>
-                    </descriptorRefs>
-                    <archive>
-                        <manifest>
-                            <mainClass>dev.luggers.Marketflow</mainClass>
-                        </manifest>
-                    </archive>
-                </configuration>
-                <executions>
-                    <execution>
-                        <id>make-assembly</id> <!-- this is used for inheritance merges -->
-                        <phase>package</phase> <!-- bind to the packaging phase -->
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <configuration>
-                    <archive>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <mainClass>dev.luggers.Marketflow</mainClass>
-                        </manifest>
-                    </archive>
                 </configuration>
             </plugin>
         </plugins>
