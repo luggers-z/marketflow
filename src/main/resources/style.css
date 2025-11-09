@@ -188,3 +188,44 @@
     -fx-border-radius: 6;
     -fx-effect: innershadow(gaussian, rgba(0,0,0,0.25), 8, 0.4, 0, 2);
 }
+#homeBtn {
+    -fx-padding: 10;
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+    -fx-border-insets: 0;
+}
+
+#homeBtn:hover {
+    -fx-border-color: black;
+    -fx-border-width: 3.5;
+    -fx-border-radius: 5.5;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+    -fx-border-insets: -0.8;
+}
+
+#homeBtn:focused {
+    -fx-padding: 10;
+    -fx-background-color: white;
+    -fx-background-insets: 0;
+    -fx-background-radius: 5;
+    -fx-border-color: white;
+    -fx-border-width: 3;
+    -fx-border-radius: 5;
+    -fx-border-insets: 0;
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+#homeBtn:focused:hover {
+    -fx-border-color: black;
+    -fx-border-width: 3.5;
+    -fx-border-radius: 5.5;
+    -fx-background-radius: 5;
+    -fx-background-insets: 0;
+    -fx-border-insets: -0.8;
+}

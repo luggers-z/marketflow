@@ -35,7 +35,7 @@ import javafx.util.Duration;
 
 public class Controller {
 	int currentTab = 0;
-	int prevTimeMult = 0;
+	int prevTimeMult = 120;
 
 	private Simulation simulation;
 	private UIHelper uiHelper;
@@ -79,7 +79,8 @@ public class Controller {
 	private Button pauseButton;
 	@FXML
 	private Button startButton;
-
+    @FXML
+    private Button homeBtn;
 	@FXML
 	private void onLeftClicked() {
 		tabLeft();
@@ -146,8 +147,28 @@ public class Controller {
 
 		spinnerConfig();
 		paneList.get(currentTab).setVisible(true);
+        setUpHomeButton();
 	}
+    private void setUpHomeButton(){
+        FontAwesomeIconView icon = new FontAwesomeIconView(FontAwesomeIcon.HOME);
+        icon.setGlyphSize(30);
+        icon.setFill(Color.BLACK);
 
+        homeBtn.setGraphic(icon);
+        homeBtn.setFocusTraversable(false);
+        homeBtn.setStyle(
+                "-fx-background-insets: 0;" +
+                        "-fx-padding: 5;"
+        );
+
+        homeBtn.setMinSize(40, 40);
+        homeBtn.setMaxSize(40, 40);
+        homeBtn.setPrefSize(40, 40);
+        homeBtn.setFocusTraversable(false);
+    }
+    public Button getHomeBtn() {
+        return homeBtn;
+    }
 	private void powerPlantTabPaneSetup() {
 		final int length = simulation.getStart().getLength();
 		paneList = new ArrayList<>();

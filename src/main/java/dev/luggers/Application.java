@@ -1,6 +1,7 @@
 package dev.luggers;
 
 import javafx.animation.AnimationTimer;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -31,7 +32,7 @@ public class Application extends javafx.application.Application {
 	@Override
 	public void start(Stage primaryStage) {
 
-		loadGameScene();
+		loadGameScene(primaryStage);
         loadTutorialScene(primaryStage);
 
         Image image = new Image(getClass().getResourceAsStream("/icon.png"));
@@ -41,7 +42,7 @@ public class Application extends javafx.application.Application {
 		primaryStage.setScene(tutorialScene);
 		primaryStage.show();
 	}
-    private void loadGameScene() {
+    private void loadGameScene(Stage primaryStage) {
         gameLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
         try {
             gameScene = new Scene(gameLoader.load());
@@ -49,6 +50,11 @@ public class Application extends javafx.application.Application {
             throw new RuntimeException(e);
         }
         controller = gameLoader.getController();
+        Button homeButton= controller.getHomeBtn();
+        homeButton.setOnAction(event -> {
+            primaryStage.setScene(tutorialScene);
+            controller.onPauseClicked();
+        });
     }
     private void loadTutorialScene(Stage primaryStage) {
         tutorialLoader = new FXMLLoader(getClass().getResource("/tutorial.fxml"));
@@ -61,12 +67,15 @@ public class Application extends javafx.application.Application {
         startGameButton = new Button("Simulation Starten");
         startGameButton.getStyleClass().add("start-button");
         startGameButton.setOnAction(event -> {
+
+
             if(firstStart) {
                 enterGameScene();
                 firstStart = false;
             }
             primaryStage.setScene(gameScene);
             controller.onStartClicked();
+
         });
         Parent tutorialLoaderRoot = tutorialLoader.getRoot();
 

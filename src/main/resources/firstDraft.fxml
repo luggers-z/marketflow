@@ -14,6 +14,9 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.Button?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+
 <StackPane fx:controller="dev.luggers.Controller" fx:id="stackPane"
               prefHeight="1080" prefWidth="1920"
            xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1"
@@ -27,8 +30,19 @@
        <AnchorPane fx:id="buttonPane" >
 
        </AnchorPane>
-      <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" prefWidth="632.0">
+      <AnchorPane fx:id="mainPane" style="-fx-background-color: transparent;" >
          <children>
+
+             <HBox AnchorPane.topAnchor="10.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0"
+                   alignment="CENTER" >
+                 <children>
+                     <Button fx:id="homeBtn" contentDisplay="GRAPHIC_ONLY"
+                              >
+                         <graphic>
+                         </graphic>
+                     </Button>
+                 </children>
+             </HBox>
 
                   <!-- VBox for text fields -->
                   <VBox fx:id="elementField" spacing="10.0" StackPane.alignment="CENTER_LEFT" AnchorPane.topAnchor="10" AnchorPane.leftAnchor="10.0">
