@@ -43,7 +43,7 @@ public class Application extends javafx.application.Application {
 		primaryStage.show();
 	}
     private void loadGameScene(Stage primaryStage) {
-        gameLoader = new FXMLLoader(getClass().getResource("/firstDraft.fxml"));
+        gameLoader = new FXMLLoader(getClass().getResource("/main.fxml"));
         try {
             gameScene = new Scene(gameLoader.load());
         } catch (IOException e) {
