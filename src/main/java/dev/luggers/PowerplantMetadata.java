@@ -2,7 +2,7 @@ package dev.luggers;
 
 public record PowerplantMetadata(String name, double maxwaterflow, double minwaterflow, double height, double maxHeight,
 		double minHeight, double normalHeight, double startHeight, double width, double length, double relXpos,
-		double relYpos, String information) {
+		double relYpos) {
 	private static final int MAXWATERFLOW = 1;
 	private static final int MINWATERFLOW = 2;
 	private static final int NAME = 0;
@@ -15,7 +15,6 @@ public record PowerplantMetadata(String name, double maxwaterflow, double minwat
 	private static final int LENGTH = 9;
 	private static final int RELATIVEXPOSITION = 10;
 	private static final int RELATIVEYPOSITION = 11;
-	private static final int INFORMATION = 12;
 
 	public static PowerplantMetadata getMetadata(String csvData) {
 		try {
@@ -33,12 +32,9 @@ public record PowerplantMetadata(String name, double maxwaterflow, double minwat
 			final var length = Double.parseDouble(values[LENGTH]);
 			final var relXpos = Double.parseDouble(values[RELATIVEXPOSITION]);
 			final var relYpos = Double.parseDouble(values[RELATIVEYPOSITION]);
-			
-			// Information field is optional - use empty string if not present
-			final var information = values.length > INFORMATION ? values[INFORMATION].replace("\\n", "\n") : "";
 
 			return new PowerplantMetadata(name, maxwaterflow, minwaterflow, height, maxHeight, minHeight, normalHeight,
-					startHeight, width, length, relXpos, relYpos, information);
+					startHeight, width, length, relXpos, relYpos);
 		} catch (Exception ex) {
 			System.err.printf("Please check Powerplant CSV data! %s", ex.getMessage());
 			throw new RuntimeException(ex);

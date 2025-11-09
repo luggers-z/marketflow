@@ -121,8 +121,4 @@ public class Powerplant {
 	public double getRelYPos() {
 		return metadata.relYpos();
 	}
-
-	public String getInformation() {
-		return metadata.information();
-	}
 }
