@@ -49,12 +49,12 @@ CSS     █████                                         10.9%
 <td align="center" width="50%">
 <h3>☕ Java</h3>
 <alt="Java 89.1%"/>
-<br><sub><strong>44,429 lines</strong></sub>
+<br><sub><strong>1498 lines</strong></sub>
 </td>
 <td align="center" width="50%">
 <h3>🎨 <br/>CSS</h3>
 <alt="CSS 10.9%"/>
-<br><sub><strong>5,452 bytes</strong></sub>
+<br><sub><strong>231 lines</strong></sub>
 </td>
 </tr>
 </table>
