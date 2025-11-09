@@ -1,6 +1,6 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>luggers.dev</groupId>
     <artifactId>marketflow</artifactId>
@@ -111,15 +111,15 @@
                 <groupId>org.openjfx</groupId>
                 <artifactId>javafx-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>marketflow/dev.luggers.Application</mainClass>
-                    <!--  jlink options start here:  -->
+                    <mainClass>marketflow/dev.luggers.Marketflow</mainClass>
+					<!--  jlink options start here:  -->
                     <stripDebug>true</stripDebug>
                     <noHeaderFiles>true</noHeaderFiles>
                     <noManPages>true</noManPages>
                     <launcher>marketflow</launcher>
                     <jlinkImageName>marketflow</jlinkImageName>
                     <jlinkZipName>marketflow</jlinkZipName>
-                    <!--  end of jlink options  -->
+					<!--  end of jlink options  -->
                 </configuration>
             </plugin>
             <plugin>
