@@ -2,6 +2,7 @@ package dev.luggers;
 
 import java.util.ArrayList;
 import java.util.List;
+import javafx.scene.control.TextArea;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -255,6 +256,20 @@ public class Controller {
 
 			controlTab.setContent(anchorPane);
 			tabPane.getTabs().add(controlTab);
+            TextArea infoTextArea = new TextArea();
+            infoTextArea.setText(plant.getInformation());
+            infoTextArea.setWrapText(true);
+            infoTextArea.setEditable(false);
+            infoTextArea.setStyle("-fx-background-color: white; -fx-control-inner-background: white;");
+
+            AnchorPane infoAnchorPane = new AnchorPane();
+            infoAnchorPane.getChildren().add(infoTextArea);
+            AnchorPane.setTopAnchor(infoTextArea, 10.0);
+            AnchorPane.setLeftAnchor(infoTextArea, 10.0);
+            AnchorPane.setRightAnchor(infoTextArea, 10.0);
+            AnchorPane.setBottomAnchor(infoTextArea, 10.0);
+
+            infoTab.setContent(infoAnchorPane);
 			tabPane.getTabs().add(infoTab);
 
 			tabPane.setStyle("-fx-background-color: white;");
