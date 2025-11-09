@@ -16,6 +16,7 @@ import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
@@ -257,14 +258,22 @@ public class Controller {
 			tabPane.getTabs().add(controlTab);
             Label infoLabel = new Label();
             infoLabel.setText(plant.getInformation());
-            infoLabel.setWrapText(true);
+            infoLabel.setWrapText(false);
             infoLabel.setStyle("-fx-background-color: white;");
 
+            ScrollPane infoScrollPane = new ScrollPane();
+            infoScrollPane.setContent(infoLabel);
+            infoScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+            infoScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.AS_NEEDED);
+            infoScrollPane.setFitToHeight(true);
+            infoScrollPane.setStyle("-fx-background-color: white; -fx-background: white;");
+
             AnchorPane infoAnchorPane = new AnchorPane();
-            infoAnchorPane.getChildren().add(infoLabel);
-            AnchorPane.setTopAnchor(infoLabel, 10.0);
-            AnchorPane.setLeftAnchor(infoLabel, 10.0);
-            AnchorPane.setRightAnchor(infoLabel, 10.0);
+            infoAnchorPane.getChildren().add(infoScrollPane);
+            AnchorPane.setTopAnchor(infoScrollPane, 10.0);
+            AnchorPane.setLeftAnchor(infoScrollPane, 10.0);
+            AnchorPane.setRightAnchor(infoScrollPane, 10.0);
+            AnchorPane.setBottomAnchor(infoScrollPane, 10.0);
 
             infoTab.setContent(infoAnchorPane);
 			tabPane.getTabs().add(infoTab);
