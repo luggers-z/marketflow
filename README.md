@@ -14,7 +14,7 @@
 
 ---
 
-### 📊 Project Statistics
+### Project Statistics
 
 <table>
 <tr>
@@ -37,12 +37,8 @@
 </tr>
 </table>
 
-### 💻 Language Distribution
+### Language Distribution
 
-```
-Java    ██████████████████████████████████████        89.1%
-CSS     █████                                         10.9%
-```
 
 <table>
 <tr>
@@ -63,21 +59,21 @@ CSS     █████                                         10.9%
 
 ---
 
-## 🌊 About MarketFlow
+## About MarketFlow
 
 **MarketFlow** is an interactive simulation and gaming platform that models the complex dynamics of a hydroelectric powerplant chain. Experience the intricate balance between water management, energy production, and market economics in a realistic simulation environment.
 
-### 🎯 Key Features
+###  Key Features
 
-- 🏭 **Multi-Plant Management** - Control and optimize a chain of interconnected water powerplants
-- 💧 **Realistic Water Flow Dynamics** - Simulate realistic water flow physics and reservoir management
-- ⚡ **Energy Production Simulation** - Generate power based on water flow rates and plant efficiency
-- 📈 **Market Economics** - Navigate dynamic energy market prices and demand
-- 🎮 **Interactive Gameplay** - Engage with an intuitive interface for strategic decision-making
+-  **Multi-Plant Management** - Control and optimize a chain of interconnected water powerplants
+-  **Realistic Water Flow Dynamics** - Simulate realistic water flow physics and reservoir management
+-  **Energy Production Simulation** - Generate power based on water flow rates and plant efficiency
+-  **Market Economics** - Navigate dynamic energy market prices and demand
+-  **Interactive Gameplay** - Engage with an intuitive interface for strategic decision-making
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -103,7 +99,7 @@ CSS     █████                                         10.9%
    ```
 ---
 
-## 📁 Project Structure
+##  Project Structure
 
 ```
 marketflow/
@@ -117,7 +113,7 @@ marketflow/
 
 ---
 
-## 🛠️ Built With
+##  Built With
 
 <div align="center">
 
@@ -131,14 +127,14 @@ marketflow/
 
 ---
 
-## 📊 Repository Insights
+##  Repository Insights
 
 <div align="center">
 
 
-### 🔥 Recent Activity
+###  Recent Activity
 
-The project has seen **consistent development** with regular commits and updates throughout 2025!
+The project has seen **consistent development** with regular commits and updates throughout 2025.
 <br/>As it is a W-Seminar project, there are no more Updates coming in the forseeable Future
 
 
@@ -146,13 +142,13 @@ The project has seen **consistent development** with regular commits and updates
 
 ---
 
-## 📝 License
+##  License
 
 This project currently does not have a specified license. Please contact the repository owner for usage permissions.
 
 ---
 
-## 👤 Author
+##  Author
 
 <div align="center">
 
@@ -164,20 +160,20 @@ This project currently does not have a specified license. Please contact the rep
 
 ---
 
-## 📞 Contact & Support
+## Contact & Support
 
 Have questions or suggestions? Feel free to:
 
-- 🐛 [Open an Issue](https://github.com/luggers-z/marketflow/issues)
-- 💬 Start a [Discussion](https://github.com/luggers-z/marketflow/discussions)
-- ⭐ Star this repository if you find it helpful!
+-  [Open an Issue](https://github.com/luggers-z/marketflow/issues)
+-  Start a [Discussion](https://github.com/luggers-z/marketflow/discussions)
+-  Star this repository if you find it helpful!
 
 ---
 
 <div align="center">
 
 
-**Made with Love**
+**Made with Love and no AI**
 
 *Harnessing the power of water, one Powerplant at a time* 💧⚡
 
