@@ -152,7 +152,7 @@ This project currently does not have a specified license. Please contact the rep
 
 <div align="center">
 
-**luggers-z**
+**Lukas Zellner**
 
 [![GitHub](https://img.shields.io/badge/GitHub-luggers--z-181717?style=for-the-badge&logo=github)](https://github.com/luggers-z)
 
