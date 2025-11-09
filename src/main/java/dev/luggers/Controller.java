@@ -21,6 +21,7 @@ import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
@@ -255,6 +256,22 @@ public class Controller {
 
 			controlTab.setContent(anchorPane);
 			tabPane.getTabs().add(controlTab);
+			
+			// Create Information tab content
+			TextArea infoTextArea = new TextArea();
+			infoTextArea.setText(plant.getInformation());
+			infoTextArea.setWrapText(true);
+			infoTextArea.setEditable(false);
+			infoTextArea.setStyle("-fx-background-color: white; -fx-control-inner-background: white;");
+			
+			AnchorPane infoAnchorPane = new AnchorPane();
+			infoAnchorPane.getChildren().add(infoTextArea);
+			AnchorPane.setTopAnchor(infoTextArea, 10.0);
+			AnchorPane.setLeftAnchor(infoTextArea, 10.0);
+			AnchorPane.setRightAnchor(infoTextArea, 10.0);
+			AnchorPane.setBottomAnchor(infoTextArea, 10.0);
+			
+			infoTab.setContent(infoAnchorPane);
 			tabPane.getTabs().add(infoTab);
 
 			tabPane.setStyle("-fx-background-color: white;");
