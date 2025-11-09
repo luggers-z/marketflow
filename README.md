@@ -40,7 +40,7 @@
 ### 💻 Language Distribution
 
 ```
-Java    ████████████████████████████████████████████  89.1%
+Java    ██████████████████████████████████████        89.1%
 CSS     █████                                         10.9%
 ```
 
@@ -48,12 +48,12 @@ CSS     █████                                         10.9%
 <tr>
 <td align="center" width="50%">
 <h3>☕ Java</h3>
-<img src="https://progress-bar.dev/89?title=Core%20Logic&width=200&color=ed8b00" alt="Java 89.1%"/>
-<br><sub><strong>44,429 bytes</strong></sub>
+<alt="Java 89.1%"/>
+<br><sub><strong>44,429 lines</strong></sub>
 </td>
 <td align="center" width="50%">
-<h3>🎨 CSS</h3>
-<img src="https://progress-bar.dev/11?title=Styling&width=200&color=1572B6" alt="CSS 10.9%"/>
+<h3>🎨 <br/>CSS</h3>
+<alt="CSS 10.9%"/>
 <br><sub><strong>5,452 bytes</strong></sub>
 </td>
 </tr>
@@ -93,16 +93,14 @@ CSS     █████                                         10.9%
    cd marketflow
    ```
 
-2. **Build with Maven**
+2. **Run directly**
    ```bash
-   mvn clean install
+   mvn javafx:run
    ```
-
-3. **Run the application**
+3. **Optional: Build Changes**
    ```bash
-   mvn exec:java
+   mvn javafx:jlink
    ```
-
 ---
 
 ## 📁 Project Structure
@@ -137,20 +135,12 @@ marketflow/
 
 <div align="center">
 
-### Activity Overview
-
-| Metric | Value |
-|--------|-------|
-| 📅 **Created** | April 21, 2025 |
-| 🔄 **Last Push** | November 9, 2025 |
-| 📦 **Repository Size** | 155.9 KB |
-| 🔓 **Visibility** | Public |
-| 🌿 **Default Branch** | master |
-| 📋 **Open Issues** | 0 |
 
 ### 🔥 Recent Activity
 
 The project has seen **consistent development** with regular commits and updates throughout 2025!
+<br/>As it is a W-Seminar project, there are no more Updates coming in the forseeable Future
+
 
 </div>
 
@@ -186,13 +176,8 @@ Have questions or suggestions? Feel free to:
 
 <div align="center">
 
-### ⭐ Star History
 
-[![Star History Chart](https://api.star-history.com/svg?repos=luggers-z/marketflow&type=Date)](https://star-history.com/#luggers-z/marketflow&Date)
-
----
-
-**Made with Love and Java**
+**Made with Love**
 
 *Harnessing the power of water, one Powerplant at a time* 💧⚡
 
