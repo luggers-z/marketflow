@@ -1,10 +1,10 @@
 package dev.luggers;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class PowerplantFactory {
 
@@ -13,9 +13,10 @@ public class PowerplantFactory {
 	private Powerplant firstPlant;
 
 	private PowerplantFactory() {
-		try {
-			Path path = Paths.get(Objects.requireNonNull(getClass().getResource("/dev/luggers/data/powerplants.csv")).toURI());
-			List<String> lines = Files.readAllLines(path);
+		try (BufferedReader reader = new BufferedReader(
+				new InputStreamReader(Objects.requireNonNull(
+						getClass().getResourceAsStream("/dev/luggers/data/powerplants.csv"))))) {
+			List<String> lines = reader.lines().collect(Collectors.toList());
 
 			if (lines.isEmpty()) {
 				throw new RuntimeException("Powerplants CSV file is empty");

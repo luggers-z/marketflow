@@ -85,7 +85,7 @@ public class SaveManager {
 	private boolean isParsable(Properties prop, String property) {
 		try {
 			Double.parseDouble(prop.getProperty(property));
-		} catch (NumberFormatException _) {
+		} catch (NumberFormatException e) {
 			return false;
 		}
 		return true;

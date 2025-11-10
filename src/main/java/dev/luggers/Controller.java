@@ -205,11 +205,11 @@ public class Controller {
 			inFlow.textProperty().bind(plant.specificInflow.asString("Zufluss: %.2f m³/s "));
 			deltaInFlow.textProperty()
 					.bind(Bindings.subtract(plant.specificInflow, plant.turbineFlow).asString("[%+.2f] "));
-			plant.turbineFlow.addListener((_, _, newValue) -> {
+			plant.turbineFlow.addListener((obs, oldValue, newValue) -> {
 				double diff = plant.specificInflow.doubleValue() - newValue.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
-			plant.specificInflow.addListener((_, _, newValue) -> {
+			plant.specificInflow.addListener((obs, oldValue, newValue) -> {
 				double diff = newValue.doubleValue() - plant.turbineFlow.doubleValue();
 				deltaInFlow.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
@@ -219,7 +219,7 @@ public class Controller {
 			height.textProperty().bind((plant.getPool().height.asString("Stauhöhe: %.2f m ")));
 			deltaHeight.textProperty()
 					.bind(Bindings.subtract(plant.getPool().height, normalHeight).asString("[%+.2f]  "));
-			plant.getPool().height.addListener((_, _, newValue) -> {
+			plant.getPool().height.addListener((obs, oldValue, newValue) -> {
 				double diff = newValue.doubleValue() - normalHeight;
 				deltaHeight.setFill(diff >= 0 ? Color.GREEN : Color.RED);
 			});
@@ -370,7 +370,7 @@ public class Controller {
 		warnIcon.translateYProperty().bind(button.translateYProperty().multiply(0.98));
 		Timeline pulse = iconPulseConfig(warnIcon);
 		warnIcon.setGlyphSize(38);
-		powerplant.getPool().height.addListener((_, _, newVal) -> {
+		powerplant.getPool().height.addListener((obs, oldValue, newVal) -> {
 			double minVolume = powerplant.getPool().getMinVolume();
 			double maxVolume = powerplant.getPool().getMaxVolume();
 			double volume = newVal.doubleValue() * powerplant.width() * powerplant.length();
@@ -407,7 +407,7 @@ public class Controller {
 	}
 
 	private void enableSliderColor(Slider slider) {
-		slider.skinProperty().addListener((_, _, newSkin) -> {
+		slider.skinProperty().addListener((obs, oldValue, newSkin) -> {
 			if (newSkin == null)
 				return;
 
@@ -418,7 +418,7 @@ public class Controller {
 
 				track.setStyle("-fx-background-color: linear-gradient(to right, #005b96 0%, #b3cde0 0%);");
 
-				slider.valueProperty().addListener((_, _, newVal) -> {
+				slider.valueProperty().addListener((obs2, oldValue2, newVal) -> {
 					double percent = (newVal.doubleValue() - slider.getMin()) / (slider.getMax() - slider.getMin())
 							* 100.0;
 					String style = String.format(java.util.Locale.US,
