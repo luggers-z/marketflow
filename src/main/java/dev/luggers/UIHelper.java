@@ -143,16 +143,16 @@ public class UIHelper {
 		int days = totalHours / 24 % 7 + 1;
 		int weeks = totalHours / 24 / 7;
 
-		String weekdayString = "Monday";
+		String weekdayString = "Montag";
 		String quarterHourString = "00";
 		switch (days) {
-		case 1 -> weekdayString = "Monday";
-		case 2 -> weekdayString = "Tuesday";
-		case 3 -> weekdayString = "Wednesday";
-		case 4 -> weekdayString = "Thursday";
-		case 5 -> weekdayString = "Friday";
-		case 6 -> weekdayString = "Saturday";
-		case 7 -> weekdayString = "Sunday";
+		case 1 -> weekdayString = "Montag";
+		case 2 -> weekdayString = "Dienstag";
+		case 3 -> weekdayString = "Mittwoch";
+		case 4 -> weekdayString = "Donnerstag";
+		case 5 -> weekdayString = "Freitag";
+		case 6 -> weekdayString = "Samstag";
+		case 7 -> weekdayString = "Sonntag";
 		}
 		switch (quarterHour) {
 		case 1 -> quarterHourString = "00";
@@ -160,7 +160,7 @@ public class UIHelper {
 		case 3 -> quarterHourString = "30";
 		case 4 -> quarterHourString = "45";
 		}
-		timeLabel.setText(String.format("%s: %02d:%s Day: %02d Week: %02d", weekdayString, (hours % 24),
+		timeLabel.setText(String.format("%s: %02d:%s Tag: %02d Woche: %02d", weekdayString, (hours % 24),
 				quarterHourString, days, weeks));
 	}
 }

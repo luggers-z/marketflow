@@ -45,6 +45,7 @@ public class Marketflow extends javafx.application.Application {
 
     private void loadGameScene(Stage primaryStage) {
         gameLoader = new FXMLLoader(getClass().getResource("/dev/luggers/main.fxml"));
+
         try {
             gameScene = new Scene(gameLoader.load());
         } catch (IOException e) {
@@ -66,7 +67,12 @@ public class Marketflow extends javafx.application.Application {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-
+       tutorialScene.setOnKeyPressed(event -> {
+            if (KeyCode.F11 == event.getCode()) {
+                Stage stage = (Stage) tutorialScene.getWindow();
+                stage.setFullScreen(!stage.isFullScreen());  // Toggle fullscreen
+            }
+        });
         startGameButton = new Button("Simulation Starten");
         startGameButton.getStyleClass().add("start-button");
         startGameButton.setOnAction(event -> {

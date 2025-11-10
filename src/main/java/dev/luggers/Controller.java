@@ -182,8 +182,8 @@ public class Controller {
 			TabPane tabPane = new TabPane();
 			tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.UNAVAILABLE);
 
-			Tab controlTab = new Tab("Controls");
-			Tab infoTab = new Tab("Information");
+			Tab controlTab = new Tab("Steuerung");
+			Tab infoTab = new Tab("Informationen");
 
 			Slider slider = new Slider(plant.getMinWaterflow(), plant.getMaxWaterflow(), 0);
 			sliderConfig(slider);

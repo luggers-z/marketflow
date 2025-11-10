@@ -12,7 +12,7 @@
             xmlns:fx="http://javafx.com/fxml"
             prefHeight="720" prefWidth="1280"
            stylesheets="@style.css">
-    <ImageView fx:id="tutorialImage" preserveRatio="false">
+    <ImageView fx:id="tutorialImage" preserveRatio="true">
         <image>
             <Image url="@tutorial.png"/>
         </image>

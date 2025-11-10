@@ -61,19 +61,19 @@
                      <children>
                         <LineChart fx:id="priceChart" id="priceChart">
                            <xAxis>
-                              <NumberAxis side="BOTTOM" />
+                              <NumberAxis side="BOTTOM" label ="vergangene Zeit in h"/>
                            </xAxis>
                            <yAxis>
-                              <NumberAxis side="LEFT" label="Price in €"/>
+                              <NumberAxis side="LEFT" label="Strompreis in €"/>
                            </yAxis>
                         </LineChart>
 
                         <LineChart fx:id="inflowChart" id="inflowChart">
                            <xAxis>
-                              <NumberAxis fx:id="xR" side="BOTTOM" />
+                              <NumberAxis fx:id="xR" side="BOTTOM" label ="vergangene Zeit in h"/>
                            </xAxis>
                            <yAxis>
-                              <NumberAxis fx:id= "yR" side="LEFT" label="Inflow in m³/s"/>
+                              <NumberAxis fx:id= "yR" side="LEFT" label="Zufluss in m³/s"/>
                            </yAxis>
                         </LineChart>
                      </children>
@@ -90,7 +90,7 @@
 
                </HBox>
             <HBox  fx:id="timeMultBox" alignment="CENTER_RIGHT" spacing="2">
-               <Label>Time Multiplier: </Label>
+               <Label>Zeitmultiplikator: </Label>
                <Spinner fx:id="timeMultSpinner" />
                 <StackPane>
                     <children>
