@@ -39,6 +39,7 @@ public class Marketflow extends javafx.application.Application {
 
         primaryStage.setTitle("MarketFlow");
         primaryStage.setScene(tutorialScene);
+        primaryStage.setFullScreen(true);
         primaryStage.show();
     }
 
@@ -53,6 +54,7 @@ public class Marketflow extends javafx.application.Application {
         Button homeButton = controller.getHomeBtn();
         homeButton.setOnAction(event -> {
             primaryStage.setScene(tutorialScene);
+            primaryStage.setFullScreen(true);
             controller.onPauseClicked();
         });
     }
@@ -73,7 +75,9 @@ public class Marketflow extends javafx.application.Application {
                 firstStart = false;
             }
             primaryStage.setScene(gameScene);
+            primaryStage.setFullScreen(true);
             controller.onStartClicked();
+
         });
         
         final Parent tutorialLoaderRoot = tutorialLoader.getRoot();
@@ -93,6 +97,10 @@ public class Marketflow extends javafx.application.Application {
             }
             if (KeyCode.RIGHT == event.getCode()) {
                 controller.tabRight();
+            }
+            if (KeyCode.F11 == event.getCode()) {
+                Stage stage = (Stage) gameScene.getWindow();
+                stage.setFullScreen(!stage.isFullScreen());  // Toggle fullscreen
             }
         });
 
