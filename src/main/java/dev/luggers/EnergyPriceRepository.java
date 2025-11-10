@@ -1,31 +1,31 @@
 package dev.luggers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 public class EnergyPriceRepository {
-	private final Path pricePath;
+	
 	private final List<String> lines;
 
 	public EnergyPriceRepository() {
-		try {
-			pricePath = Paths.get(Objects.requireNonNull(getClass().getResource("/dev/luggers/data/energyPrice.csv")).toURI());
-		} catch (URISyntaxException e) {
-			throw new RuntimeException(e);
-		}
-
-		try {
-			lines = Files.readAllLines(pricePath);
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
-
+        try  {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(Objects.requireNonNull(
+                            getClass().getResourceAsStream("/dev/luggers/data/energyPrice.csv"))));
+            lines = reader.lines().collect(Collectors.toList());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
 	public double getPrice(double fullTime) {
 		int fullHours = (int) Math.floor(fullTime / 3600);
 		double price;

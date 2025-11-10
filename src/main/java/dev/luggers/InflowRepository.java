@@ -1,12 +1,15 @@
 package dev.luggers;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,16 +20,16 @@ public class InflowRepository {
 	private List<String> lines;
 
 	public InflowRepository() {
-		try {
-			inflowPath = Paths.get((Objects.requireNonNull(getClass().getResource("/dev/luggers/data/inflow.csv"))).toURI());
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		try {
-			lines = Files.readAllLines(inflowPath);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+        try {
+            BufferedReader reader = new BufferedReader(
+                    new InputStreamReader(Objects.requireNonNull(
+                            getClass().getResourceAsStream("/dev/luggers/data/inflow.csv"))));
+
+            lines = reader.lines().collect(Collectors.toList());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 	}
 
 	public double getInflow(double fullTime) {
