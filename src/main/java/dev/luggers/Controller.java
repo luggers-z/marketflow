@@ -2,7 +2,8 @@ package dev.luggers;
 
 import java.util.ArrayList;
 import java.util.List;
-import javafx.scene.control.TextArea;
+
+import javafx.scene.control.*;
 
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -15,14 +16,6 @@ import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
-import javafx.scene.control.Spinner;
-import javafx.scene.control.SpinnerValueFactory;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
@@ -185,6 +178,9 @@ public class Controller {
 			Tab controlTab = new Tab("Steuerung");
 			Tab infoTab = new Tab("Informationen");
 
+            ScrollPane controlPane = new ScrollPane();
+
+
 			Slider slider = new Slider(plant.getMinWaterflow(), plant.getMaxWaterflow(), 0);
 			sliderConfig(slider);
 			slider.valueProperty().bindBidirectional(plant.turbineFlow);
@@ -244,7 +240,7 @@ public class Controller {
 			boxCointainer.getChildren().addAll(informationBox, controlBox, variableBox);
 
 			// Add cube next to fields
-			HeightCube cube = new HeightCube(plant.getPool(), 12, 120);
+			HeightCube cube = new HeightCube(plant.getPool(), 12, 80);
 			HBox tabRow = new HBox(16);
 			tabRow.setAlignment(Pos.CENTER_LEFT);
 			tabRow.getChildren().addAll(boxCointainer, cube);
@@ -254,7 +250,9 @@ public class Controller {
 			AnchorPane.setTopAnchor(tabRow, 10.0);
 			AnchorPane.setLeftAnchor(tabRow, 10.0);
 
-			controlTab.setContent(anchorPane);
+            controlPane.setContent(anchorPane);
+
+			controlTab.setContent(controlPane);
 			tabPane.getTabs().add(controlTab);
             TextArea infoTextArea = new TextArea();
             infoTextArea.setText(plant.getInformation());

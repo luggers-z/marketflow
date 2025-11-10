@@ -19,7 +19,7 @@ public class HeightCube extends StackPane {
         getStyleClass().add("height-cube");
         face.getStyleClass().add("height-cube-face");
 
-        setAlignment(Pos.BOTTOM_CENTER);
+        setAlignment(Pos.TOP_CENTER);
         setMinSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
         setPrefSize(64, maxPx + 8);
         setMaxSize(Region.USE_PREF_SIZE, Region.USE_PREF_SIZE);
