@@ -112,7 +112,7 @@
    java -jar target/marketflow-1.0.0-SNAPSHOT.jar
    ```
    
-   **Cross-Platform Support:** The fat JAR includes JavaFX native libraries for Windows, macOS, and Linux, so you can share the same JAR file with friends on any platform!
+   **Cross-Platform Support:** The fat JAR automatically includes JavaFX native libraries for Windows, macOS, and Linux, so you can share the same JAR file with friends on any platform!
    
    **Requirements:** 
    - Building requires Java 25. The build script will automatically detect and use Java 25 if available.

@@ -26,7 +26,7 @@ fi
 echo "Using Java:"
 "${JAVA_HOME}/bin/java" -version 2>&1 | head -1
 
-# Build the fat JAR
+# Build the fat JAR with cross-platform support
 echo ""
 echo "Running Maven package..."
 mvn clean package -DskipTests
