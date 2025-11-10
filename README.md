@@ -93,7 +93,17 @@
    ```bash
    mvn javafx:run
    ```
-3. **Optional: Build Changes**
+
+3. **Build a fat JAR (executable JAR with all dependencies)**
+   ```bash
+   mvn clean package
+   ```
+   This creates `target/marketflow-1.0.0-SNAPSHOT.jar` which can be run with:
+   ```bash
+   java -jar target/marketflow-1.0.0-SNAPSHOT.jar
+   ```
+
+4. **Optional: Build a jlink image**
    ```bash
    mvn javafx:jlink
    ```
