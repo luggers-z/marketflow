@@ -95,13 +95,23 @@
    ```
 
 3. **Build a fat JAR (executable JAR with all dependencies)**
+   
+   Using the build script (recommended):
+   ```bash
+   ./build-jar.sh
+   ```
+   
+   Or manually with Maven:
    ```bash
    mvn clean package
    ```
+   
    This creates `target/marketflow-1.0.0-SNAPSHOT.jar` which can be run with:
    ```bash
    java -jar target/marketflow-1.0.0-SNAPSHOT.jar
    ```
+   
+   **Note:** Building requires Java 25. The build script will automatically detect and use Java 25 if available.
 
 4. **Optional: Build a jlink image**
    ```bash
