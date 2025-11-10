@@ -19,7 +19,7 @@
 <table>
 <tr>
 <td align="center">
-<img src="https://img.shields.io/badge/Total_Commits-70+-blue?style=for-the-badge" alt="Commits"/>
+<img src="https://img.shields.io/badge/Total_Commits-80+-blue?style=for-the-badge" alt="Commits"/>
 <br><strong>Commits</strong>
 </td>
 <td align="center">
@@ -45,12 +45,12 @@
 <td align="center" width="50%">
 <h3>☕ Java</h3>
 <alt="Java 89.1%"/>
-<br><sub><strong>1498 lines</strong></sub>
+<br><sub><strong>1500+ lines</strong></sub>
 </td>
 <td align="center" width="50%">
 <h3>🎨 <br/>CSS</h3>
 <alt="CSS 10.9%"/>
-<br><sub><strong>231 lines</strong></sub>
+<br><sub><strong>200+ lines</strong></sub>
 </td>
 </tr>
 </table>
