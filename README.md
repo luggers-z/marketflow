@@ -77,8 +77,7 @@
 
 ### Prerequisites
 
-- **Java Development Kit (JDK)** 8 or higher
-- **Apache Maven** 3.6+
+- **Java Development Kit (JDK)** 25
 - Your favorite IDE (IntelliJ IDEA recommended)
 
 ### Installation
@@ -93,9 +92,9 @@
    ```bash
    mvn javafx:run
    ```
-3. **Optional: Build Changes**
+3. **Optional: Change Data and build new .jar with alternate Scenario**
    ```bash
-   mvn javafx:jlink
+   mvn clean package
    ```
 ---
 
