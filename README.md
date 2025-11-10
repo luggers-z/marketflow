@@ -77,7 +77,8 @@
 
 ### Prerequisites
 
-- **Java Development Kit (JDK)** 8 or higher
+- **Java Development Kit (JDK)** 25
+  - Download from [Eclipse Temurin](https://adoptium.net/) or [Oracle](https://www.oracle.com/java/technologies/downloads/)
 - **Apache Maven** 3.6+
 - Your favorite IDE (IntelliJ IDEA recommended)
 
