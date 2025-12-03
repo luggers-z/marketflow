@@ -80,6 +80,9 @@
 - **Java Development Kit (JDK)** 25
 - Your favorite IDE (IntelliJ IDEA recommended)
 
+### Running the Simulation
+- Download the newest release marketflow-x.x.jar and run it using Java 25
+
 ### Installation
 
 1. **Clone the repository**
