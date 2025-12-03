@@ -81,7 +81,7 @@
 - Your favorite IDE (IntelliJ IDEA recommended)
 
 ### Running the Simulation
-- Download the newest release marketflow-x.x.jar and run it using Java 25
+- Download the newest release marketflow-x.x.x.jar and run it using Java 25
 
 ### Installation
 
@@ -137,7 +137,7 @@ marketflow/
 ###  Recent Activity
 
 The project has seen **consistent development** with regular commits and updates throughout 2025.
-<br/>As it is a W-Seminar project, there are no more Updates coming in the forseeable Future
+<br/>As it is a W-Seminar project, there are no more Updates coming in the forseeable future
 
 
 </div>
