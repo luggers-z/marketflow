@@ -19,7 +19,7 @@
 <table>
 <tr>
 <td align="center">
-<img src="https://img.shields.io/badge/Total_Commits-80+-blue?style=for-the-badge" alt="Commits"/>
+<img src="https://img.shields.io/badge/Total_Commits-90+-blue?style=for-the-badge" alt="Commits"/>
 <br><strong>Commits</strong>
 </td>
 <td align="center">
